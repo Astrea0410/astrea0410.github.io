@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모바일 포트폴리오 홈</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        /* 상단 메뉴 (Navigation) */
+        nav { background: #2c3e50; color: white; padding: 15px; position: sticky; top: 0; z-index: 1000; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: bold; font-size: 0.9rem; }
+
+        /* 공통 섹션 스타일 */
+        section { padding: 40px 20px; border-bottom: 1px solid #ddd; background: white; }
+        h2 { font-size: 1.4rem; margin-bottom: 15px; color: #2c3e50; border-left: 5px solid #27ae60; padding-left: 10px; }
+        .container { max-width: 600px; margin: 0 auto; }
+
+        /* 섹션 1: 문학예술 소개 */
+        #intro { background: #e8f4f8; text-align: center; }
+        #intro p { font-size: 1rem; color: #555; }
+
+        /* 섹션 2: 기술 목록 */
+        .tech-list { list-style: none; }
+        .tech-list li { background: #fff; margin-bottom: 8px; padding: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .tech-link { font-size: 0.9rem; color: #3498db; text-decoration: none; border: 1px solid #3498db; padding: 4px 10px; border-radius: 20px; }
+
+        /* 섹션 3: 사진 갤러리 */
+        .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .gallery-item { background: #eee; height: 120px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #999; }
+
+        /* 섹션 4: 전문 콘텐츠 */
+        .content-box { display: flex; flex-direction: column; gap: 10px; }
+        .card { padding: 15px; border-radius: 8px; color: white; }
+        .ai { background: #8e44ad; }
+        .prog { background: #2980b9; }
+        .web { background: #16a085; }
+
+        /* 섹션 5: SNS 메뉴 */
+        .sns-menu { display: flex; justify-content: space-around; padding: 20px 0; }
+        .sns-item { text-align: center; text-decoration: none; color: #333; font-size: 0.8rem; }
+        .sns-icon { width: 40px; height: 40px; background: #ddd; border-radius: 50%; margin-bottom: 5px; display: inline-block; }
+
+        footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #888; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#intro">소개</a>
+        <a href="#tech">기술</a>
+        <a href="#gallery">갤러리</a>
+        <a href="#content">콘텐츠</a>
+        <a href="#sns">SNS</a>
+    </nav>
+
+    <section id="intro">
+        <div class="container">
+            <h2>문학 및 예술 작품 세계</h2>
+            <p>영화, 소설, 웹툰 등 다양한 매체를 통해 전달되는 이야기의 힘을 탐구합니다. 창의적인 시각으로 예술 작품을 분석하고 소개하는 공간입니다.</p>
+        </div>
+    </section>
+
+    <section id="tech">
+        <div class="container">
+            <h2>웹 개발 기술 (Web Tech)</h2>
+            <ul class="tech-list">
+                <li>
+                    <span>HTML5 기본 구조</span>
+                    <a href="frameHtml.html" class="tech-link">예제 보기</a>
+                </li>
+                <li>
+                    <span>CSS3 & 메타데이터</span>
+                    <a href="metaHtml.html" class="tech-link">예제 보기</a>
+                </li>
+                <li>
+                    <span>JavaScript & 특수문자</span>
+                    <a href="sChar.Html" class="tech-link">예제 보기</a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <h2>사진 갤러리</h2>
+            <div class="gallery">
+                <div class="gallery-item">이미지 1</div>
+                <div class="gallery-item">이미지 2</div>
+                <div class="gallery-item">이미지 3</div>
+                <div class="gallery-item">이미지 4</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <div class="container">
+            <h2>미래 콘텐츠 및 기술</h2>
+            <div class="content-box">
+                <div class="card ai">
+                    <h3>AI 콘텐츠</h3>
+                    <p>인공지능을 활용한 스토리텔링 및 이미지 생성</p>
+                </div>
+                <div class="card prog">
+                    <h3>프로그래밍</h3>
+                    <p>파이썬, 자바스크립트 등 효율적인 코드 설계</p>
+                </div>
+                <div class="card web">
+                    <h3>AI 웹 개발</h3>
+                    <p>지능형 알고리즘이 적용된 반응형 모바일 웹</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sns">
+        <div class="container">
+            <h2>소셜 네트워크 (SNS)</h2>
+            <div class="sns-menu">
+                <a href="#" class="sns-item"><span class="sns-icon"></span><br>Instagram</a>
+                <a href="#" class="sns-item"><span class="sns-icon"></span><br>YouTube</a>
+                <a href="#" class="sns-item"><span class="sns-icon"></span><br>Blog</a>
+                <a href="#" class="sns-item"><span class="sns-icon"></span><br>GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 웹 콘텐츠 포트폴리오. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
