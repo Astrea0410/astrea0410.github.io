@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML 학습 인덱스</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --card: #20232f;
+            --border: #2e3245;
+            --accent: #4f8ef7;
+            --accent-dim: #1e3a6e;
+            --text-main: #e8ecf5;
+            --text-muted: #7a84a3;
+            --text-tag: #4f8ef7;
+            --green: #3dd68c;
+            --amber: #f0a84e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Nanum Gothic', sans-serif;
+            min-height: 100vh;
+            padding: 0 0 4rem;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(79, 142, 247, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header-tag {
+            font-family: 'Nanum Gothic Coding', monospace;
+            font-size: 0.78rem;
+            color: var(--text-tag);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        header h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .badge-count {
+            display: inline-block;
+            margin-top: 1rem;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.78rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 99px;
+            border: 1px solid rgba(79, 142, 247, 0.3);
+        }
+
+        main {
+            max-width: 860px;
+            margin: 2.5rem auto 0;
+            padding: 0 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.1rem 1.2rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            transition: border-color 0.18s, background 0.18s, transform 0.18s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(79, 142, 247, 0.04) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.18s;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            background: #23273a;
+            transform: translateY(-2px);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-dim);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Nanum Gothic Coding', monospace;
+            font-size: 0.68rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .arrow {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            align-self: center;
+            flex-shrink: 0;
+            transition: color 0.18s, transform 0.18s;
+        }
+
+        .card:hover .arrow {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-tag">&lt;!-- HTML 파일 모음 --&gt;</div>
+        <h1>HTML <span>학습</span> 인덱스</h1>
+        <p class="subtitle">아래 파일을 클릭하여 이동하세요</p>
+        <span class="badge-count">총 18개 파일</span>
+    </header>
+
+    <main>
+        <div class="grid">
+
+            <a class="card" href="anseksHtml.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">anseksHtml.html</div>
+                    <div class="card-desc">앤섹스 HTML</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="diviframe.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">diviframe.html</div>
+                    <div class="card-desc">div / iframe</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="formTag.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">formTag.html</div>
+                    <div class="card-desc">폼 태그</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="frameHtml.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">frameHtml.html</div>
+                    <div class="card-desc">프레임 HTML</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="Html.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">Html.html</div>
+                    <div class="card-desc">HTML 기초</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="htmlTag.html">
+                <div class="icon">&lt;/&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">htmlTag.html</div>
+                    <div class="card-desc">HTML 태그</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="hyperlink.html">
+                <div class="icon">&lt;a&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">hyperlink.html</div>
+                    <div class="card-desc">하이퍼링크</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="img.html">
+                <div class="icon">img</div>
+                <div class="card-body">
+                    <div class="card-name">img.html</div>
+                    <div class="card-desc">이미지 태그</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="metaHtml.html">
+                <div class="icon">meta</div>
+                <div class="card-body">
+                    <div class="card-name">metaHtml.html</div>
+                    <div class="card-desc">메타 태그</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="sChar.Html">
+                <div class="icon">&amp;#;</div>
+                <div class="card-body">
+                    <div class="card-name">sChar.Html</div>
+                    <div class="card-desc">특수문자</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="selectForm.html">
+                <div class="icon">sel</div>
+                <div class="card-body">
+                    <div class="card-name">selectForm.html</div>
+                    <div class="card-desc">셀렉트 폼</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="table.Html">
+                <div class="icon">tbl</div>
+                <div class="card-body">
+                    <div class="card-name">table.Html</div>
+                    <div class="card-desc">테이블</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="tablespan.html">
+                <div class="icon">span</div>
+                <div class="card-body">
+                    <div class="card-name">tablespan.html</div>
+                    <div class="card-desc">테이블 병합</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="tagHtml.html">
+                <div class="icon">&lt;h&gt;</div>
+                <div class="card-body">
+                    <div class="card-name">tagHtml.html</div>
+                    <div class="card-desc">태그 HTML</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="text.html">
+                <div class="icon">txt</div>
+                <div class="card-body">
+                    <div class="card-name">text.html</div>
+                    <div class="card-desc">텍스트 태그</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="text4주차.html">
+                <div class="icon">4주</div>
+                <div class="card-body">
+                    <div class="card-name">text4주차.html</div>
+                    <div class="card-desc">4주차 텍스트</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a class="card" href="web.html">
+                <div class="icon">web</div>
+                <div class="card-body">
+                    <div class="card-name">web.html</div>
+                    <div class="card-desc">웹 기초</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>
+        HTML 학습 파일 인덱스 &nbsp;·&nbsp; 파일을 클릭하면 해당 페이지로 이동합니다
+    </footer>
+
+</body>
+
+</html>
