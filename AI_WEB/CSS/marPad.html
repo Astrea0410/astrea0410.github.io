@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Margin & Padding 가이드</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --white: #ffffff;
+    --border: #dee2e6;
+    --text: #212529;
+    --muted: #6c757d;
+    --m: #3b82f6;      /* margin — 파랑 */
+    --p: #22c55e;      /* padding — 초록 */
+    --content: #f97316;/* content — 오렌지 */
+    --mono: 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── 헤더 ── */
+  header {
+    background: var(--text);
+    color: white;
+    padding: 32px 24px;
+    text-align: center;
+  }
+  header h1 { font-size: 22px; margin-bottom: 6px; }
+  header h1 span.m { color: #60a5fa; }
+  header h1 span.p { color: #4ade80; }
+  header p { color: #9ca3af; font-size: 13px; }
+
+  /* ── 레이아웃 ── */
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 60px; }
+
+  /* ── 섹션 제목 ── */
+  .sec-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .sec-title.m { background: rgba(59,130,246,.12); color: var(--m); }
+  .sec-title.p { background: rgba(34,197,94,.12);  color: var(--p); }
+  .sec-title.both { background: #f3f4f6; color: var(--muted); }
+
+  section { margin-bottom: 36px; }
+
+  /* ── 카드 ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  /* ── 코드 ── */
+  pre {
+    background: #1e2330;
+    color: #e2e8f0;
+    border-radius: 7px;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+  .cm  { color: #64748b; }
+  .kw  { color: #93c5fd; }
+  .val { color: #86efac; }
+  .sel { color: #fcd34d; }
+
+  /* ── 박스 모델 다이어그램 ── */
+  .box-model {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+  }
+  .bm-margin {
+    background: rgba(59,130,246,.12);
+    border: 2px dashed var(--m);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+  }
+  .bm-border {
+    background: rgba(100,116,139,.15);
+    border: 3px solid #64748b;
+    border-radius: 5px;
+    padding: 16px;
+  }
+  .bm-padding {
+    background: rgba(34,197,94,.12);
+    border: 2px dashed var(--p);
+    border-radius: 4px;
+    padding: 14px;
+  }
+  .bm-content {
+    background: rgba(249,115,22,.18);
+    border: 2px solid var(--content);
+    border-radius: 3px;
+    padding: 12px 20px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--content);
+    font-family: var(--mono);
+  }
+  .bm-label {
+    font-size: 10px;
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: .06em;
+    position: absolute;
+    top: 4px; left: 8px;
+  }
+  .bm-label.m { color: var(--m); }
+  .bm-label.bd { color: #64748b; }
+  .bm-label.p { color: var(--p); }
+
+  /* ── 방향 예제 그리드 ── */
+  .dir-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .dir-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 12px;
+  }
+  .dir-item .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .dir-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+  }
+  .inner {
+    background: rgba(249,115,22,.2);
+    border: 1px solid var(--content);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--content);
+    white-space: nowrap;
+  }
+
+  /* ── 마진 예제 박스 ── */
+  .m-demo { background: rgba(59,130,246,.07); border-radius: 6px; padding: 12px; }
+  .m-box {
+    background: var(--m);
+    color: white;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* ── 패딩 예제 박스 ── */
+  .p-demo { background: rgba(34,197,94,.07); border-radius: 6px; padding: 12px; }
+  .p-outer {
+    background: rgba(34,197,94,.2);
+    border: 2px solid var(--p);
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .p-inner {
+    background: var(--p);
+    color: white;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  /* ── 비교표 ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  td:first-child { font-family: var(--mono); font-size: 12px; color: var(--text); }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge.m { background: rgba(59,130,246,.12); color: var(--m); }
+  .badge.p { background: rgba(34,197,94,.12);  color: var(--p); }
+  .check { color: #22c55e; font-weight: 700; }
+  .cross { color: #ef4444; font-weight: 700; }
+
+  /* ── 단축 속성 시각화 ── */
+  .shorthand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .sh-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+  }
+  .sh-card .code {
+    font-family: var(--mono);
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+  .sh-vis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+  }
+  .sh-vis div {
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-family: var(--mono);
+    font-weight: 700;
+  }
+  .sh-top    { grid-column: 2; background: rgba(59,130,246,.3); color: var(--m); }
+  .sh-right  { grid-column: 3; grid-row: 2; background: rgba(59,130,246,.2); color: var(--m); }
+  .sh-bottom { grid-column: 2; grid-row: 3; background: rgba(59,130,246,.15); color: var(--m); }
+  .sh-left   { grid-column: 1; grid-row: 2; background: rgba(59,130,246,.1); color: var(--m); }
+  .sh-center { grid-column: 2; grid-row: 2; background: #f97316; border-radius: 3px; color: white; font-size: 8px; }
+  .sh-empty  { background: transparent; }
+
+  /* ── auto margin ── */
+  .auto-demo { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+  .auto-box {
+    background: var(--m);
+    color: white;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 8px 0 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><span class="m">Margin</span> &amp; <span class="p">Padding</span> 완전 가이드</h1>
+  <p>요소의 바깥 여백(margin)과 안쪽 여백(padding)을 이해하는 CSS 레퍼런스</p>
+</header>
+
+<main>
+
+  <!-- ① 박스 모델 -->
+  <section>
+    <div class="sec-title both">박스 모델 Box Model</div>
+    <div class="card">
+      <h3>모든 HTML 요소는 4개의 영역으로 구성됩니다</h3>
+      <div class="box-model">
+        <div class="bm-margin" style="position:relative;">
+          <span class="bm-label m">MARGIN</span>
+          <div class="bm-border" style="position:relative;">
+            <span class="bm-label bd" style="top:4px;left:8px;">BORDER</span>
+            <div class="bm-padding" style="position:relative;">
+              <span class="bm-label p">PADDING</span>
+              <div class="bm-content">CONTENT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table style="margin-top:12px;">
+        <tr><th>영역</th><th>역할</th><th>배경색 적용</th></tr>
+        <tr><td>content</td><td>실제 내용 (텍스트, 이미지)</td><td class="check">✓</td></tr>
+        <tr><td>padding</td><td>content와 border 사이 안쪽 여백</td><td class="check">✓</td></tr>
+        <tr><td>border</td><td>요소 테두리</td><td class="check">✓</td></tr>
+        <tr><td style="border-bottom:none;">margin</td><td style="border-bottom:none;">요소 바깥 여백 (투명)</td><td class="cross" style="border-bottom:none;">✗</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ② Margin -->
+  <section>
+    <div class="sec-title m">Margin — 바깥 여백</div>
+
+    <div class="card">
+      <h3>기본 문법</h3>
+      <pre><span class="sel">.box</span> {
+  <span class="kw">margin-top</span>:    <span class="val">20px</span>;  <span class="cm">/* 위 */</span>
+  <span class="kw">margin-right</span>:  <span class="val">16px</span>;  <span class="cm">/* 오른쪽 */</span>
+  <span class="kw">margin-bottom</span>: <span class="val">20px</span>;  <span class="cm">/* 아래 */</span>
+  <span class="kw">margin-left</span>:   <span class="val">16px</span>;  <span class="cm">/* 왼쪽 */</span>
+
+  <span class="cm">/* 단축 속성 */</span>
+  <span class="kw">margin</span>: <span class="val">20px</span>;             <span class="cm">/* 상하좌우 동일 */</span>
+  <span class="kw">margin</span>: <span class="val">20px 16px</span>;       <span class="cm">/* 상하 | 좌우 */</span>
+  <span class="kw">margin</span>: <span class="val">10px 16px 20px</span>;  <span class="cm">/* 상 | 좌우 | 하 */</span>
+  <span class="kw">margin</span>: <span class="val">10px 8px 20px 16px</span>; <span class="cm">/* 상 우 하 좌 (시계방향) */</span>
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>margin 예제 — 요소 사이 간격 만들기</h3>
+      <div class="m-demo">
+        <div class="m-box" style="margin-bottom:8px;">margin-bottom: 8px</div>
+        <div class="m-box" style="margin-bottom:24px;">margin-bottom: 24px</div>
+        <div class="m-box">기준 박스</div>
+      </div>
+      <pre style="margin-top:12px;"><span class="sel">.box1</span> { <span class="kw">margin-bottom</span>: <span class="val">8px</span>; }
+<span class="sel">.box2</span> { <span class="kw">margin-bottom</span>: <span class="val">24px</span>; }</pre>
+    </div>
+
+    <div class="card">
+      <h3>margin: auto — 가운데 정렬</h3>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:10px;">좌우 margin을 auto로 설정하면 block 요소가 수평 가운데 정렬됩니다.</p>
+      <div class="auto-demo">
+        <div class="auto-box" style="width:60%;margin:0 auto;">margin: 0 auto</div>
+      </div>
+      <pre style="margin-top:12px;"><span class="sel">.center</span> {
+  <span class="kw">width</span>: <span class="val">60%</span>;
+  <span class="kw">margin</span>: <span class="val">0 auto</span>; <span class="cm">/* 상하 0, 좌우 자동 */</span>
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>⚠ margin 겹침 (Collapsing)</h3>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:10px;">상하 인접 요소의 margin은 더해지지 않고 <strong>큰 쪽 하나만</strong> 적용됩니다. 좌우는 겹치지 않습니다.</p>
+      <div class="m-demo" style="display:flex;align-items:center;gap:16px;">
+        <div style="flex:1">
+          <div class="m-box" style="margin-bottom:30px;font-size:11px;">margin-bottom: 30px</div>
+          <div class="m-box" style="margin-top:20px;font-size:11px;">margin-top: 20px</div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);text-align:center;">
+          실제 간격<br>
+          <strong style="font-size:18px;color:var(--m);">30px</strong><br>
+          <span style="font-size:11px;">(30+20 아님)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ Padding -->
+  <section>
+    <div class="sec-title p">Padding — 안쪽 여백</div>
+
+    <div class="card">
+      <h3>기본 문법</h3>
+      <pre><span class="sel">.box</span> {
+  <span class="kw">padding-top</span>:    <span class="val">20px</span>;  <span class="cm">/* 위 */</span>
+  <span class="kw">padding-right</span>:  <span class="val">16px</span>;  <span class="cm">/* 오른쪽 */</span>
+  <span class="kw">padding-bottom</span>: <span class="val">20px</span>;  <span class="cm">/* 아래 */</span>
+  <span class="kw">padding-left</span>:   <span class="val">16px</span>;  <span class="cm">/* 왼쪽 */</span>
+
+  <span class="cm">/* 단축 속성 — margin과 동일한 규칙 */</span>
+  <span class="kw">padding</span>: <span class="val">20px</span>;
+  <span class="kw">padding</span>: <span class="val">12px 24px</span>;        <span class="cm">/* 상하 | 좌우 */</span>
+  <span class="kw">padding</span>: <span class="val">8px 16px 12px 16px</span>; <span class="cm">/* 상 우 하 좌 */</span>
+}</pre>
+    </div>
+
+    <div class="card">
+      <h3>padding 예제 — 내용과 테두리 사이 공간</h3>
+      <div class="p-demo" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:monospace;">padding: 4px 8px</div>
+          <div class="p-outer"><div class="p-inner" style="padding:4px 8px;">텍스트</div></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:monospace;">padding: 12px 24px</div>
+          <div class="p-outer"><div class="p-inner" style="padding:12px 24px;">텍스트</div></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:monospace;">padding: 24px 40px</div>
+          <div class="p-outer"><div class="p-inner" style="padding:24px 40px;">텍스트</div></div>
+        </div>
+      </div>
+      <pre style="margin-top:12px;"><span class="sel">.btn-sm</span> { <span class="kw">padding</span>: <span class="val">4px 8px</span>; }
+<span class="sel">.btn-md</span> { <span class="kw">padding</span>: <span class="val">12px 24px</span>; }
+<span class="sel">.btn-lg</span> { <span class="kw">padding</span>: <span class="val">24px 40px</span>; }</pre>
+    </div>
+
+    <div class="card">
+      <h3>padding과 box-sizing</h3>
+      <p style="color:var(--muted);font-size:12px;margin-bottom:12px;"><code>box-sizing: content-box</code>(기본)는 padding이 width에 더해지지만, <code>border-box</code>는 padding을 width 안에 포함합니다.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:monospace;">content-box (기본)</div>
+          <div style="width:150px;padding:16px;background:rgba(34,197,94,.15);border:2px solid var(--p);border-radius:4px;font-size:11px;font-family:monospace;color:var(--p);">
+            실제 너비:<br>150 + 32 = <strong>182px</strong>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-family:monospace;">border-box (권장)</div>
+          <div style="width:150px;padding:16px;box-sizing:border-box;background:rgba(59,130,246,.15);border:2px solid var(--m);border-radius:4px;font-size:11px;font-family:monospace;color:var(--m);">
+            실제 너비:<br>그대로 <strong>150px</strong>
+          </div>
+        </div>
+      </div>
+      <pre style="margin-top:12px;"><span class="cm">/* 모든 요소에 border-box 적용 (권장) */</span>
+<span class="sel">*, *::before, *::after</span> {
+  <span class="kw">box-sizing</span>: <span class="val">border-box</span>;
+}</pre>
+    </div>
+  </section>
+
+  <!-- ④ 비교 -->
+  <section>
+    <div class="sec-title both">Margin vs Padding 비교</div>
+    <div class="card">
+      <table>
+        <tr>
+          <th>항목</th>
+          <th><span class="badge m">margin</span></th>
+          <th><span class="badge p">padding</span></th>
+        </tr>
+        <tr>
+          <td>위치</td>
+          <td>요소 바깥</td>
+          <td>요소 안쪽</td>
+        </tr>
+        <tr>
+          <td>배경색 영향</td>
+          <td class="cross">✗ 투명 (색 없음)</td>
+          <td class="check">✓ 배경색 채워짐</td>
+        </tr>
+        <tr>
+          <td>클릭 영역</td>
+          <td class="cross">✗ 클릭 불가</td>
+          <td class="check">✓ 클릭 가능</td>
+        </tr>
+        <tr>
+          <td>겹침(collapse)</td>
+          <td>상하 방향 겹침 발생</td>
+          <td class="cross">✗ 겹침 없음</td>
+        </tr>
+        <tr>
+          <td>음수 값</td>
+          <td class="check">✓ 가능 (요소 당김)</td>
+          <td class="cross">✗ 불가</td>
+        </tr>
+        <tr>
+          <td style="border-bottom:none;">주요 용도</td>
+          <td style="border-bottom:none;">요소 간 간격, 정렬</td>
+          <td style="border-bottom:none;">내부 공간, 클릭 영역 확대</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ⑤ 단축 속성 값 읽는 법 -->
+  <section>
+    <div class="sec-title both">단축 속성 값 읽는 법</div>
+    <div class="card">
+      <div class="shorthand-grid">
+        <div class="sh-card">
+          <div class="code">margin: <strong>20px</strong></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">상하좌우 모두 20px</div>
+          <div class="sh-vis">
+            <div class="sh-empty"></div><div class="sh-top">20</div><div class="sh-empty"></div>
+            <div class="sh-left" style="background:rgba(59,130,246,.3);color:var(--m);">20</div><div class="sh-center">box</div><div class="sh-right" style="background:rgba(59,130,246,.3);color:var(--m);">20</div>
+            <div class="sh-empty"></div><div class="sh-bottom" style="background:rgba(59,130,246,.3);color:var(--m);">20</div><div class="sh-empty"></div>
+          </div>
+        </div>
+        <div class="sh-card">
+          <div class="code">margin: <strong>10px 20px</strong></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">상하 10px | 좌우 20px</div>
+          <div class="sh-vis">
+            <div class="sh-empty"></div><div class="sh-top">10</div><div class="sh-empty"></div>
+            <div class="sh-left" style="background:rgba(59,130,246,.2);color:var(--m);">20</div><div class="sh-center">box</div><div class="sh-right" style="background:rgba(59,130,246,.2);color:var(--m);">20</div>
+            <div class="sh-empty"></div><div class="sh-bottom" style="background:rgba(59,130,246,.25);color:var(--m);">10</div><div class="sh-empty"></div>
+          </div>
+        </div>
+        <div class="sh-card">
+          <div class="code">margin: <strong>5px 10px 20px</strong></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">상 5 | 좌우 10 | 하 20</div>
+          <div class="sh-vis">
+            <div class="sh-empty"></div><div class="sh-top" style="background:rgba(59,130,246,.15);">5</div><div class="sh-empty"></div>
+            <div class="sh-left" style="background:rgba(59,130,246,.2);color:var(--m);">10</div><div class="sh-center">box</div><div class="sh-right" style="background:rgba(59,130,246,.2);color:var(--m);">10</div>
+            <div class="sh-empty"></div><div class="sh-bottom" style="background:rgba(59,130,246,.4);color:var(--m);">20</div><div class="sh-empty"></div>
+          </div>
+        </div>
+        <div class="sh-card">
+          <div class="code">margin: <strong>5px 10px 15px 20px</strong></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">상 우 하 좌 (시계방향)</div>
+          <div class="sh-vis">
+            <div class="sh-empty"></div><div class="sh-top" style="background:rgba(59,130,246,.12);">5</div><div class="sh-empty"></div>
+            <div class="sh-left" style="background:rgba(59,130,246,.4);color:var(--m);">20</div><div class="sh-center">box</div><div class="sh-right" style="background:rgba(59,130,246,.2);color:var(--m);">10</div>
+            <div class="sh-empty"></div><div class="sh-bottom" style="background:rgba(59,130,246,.3);color:var(--m);">15</div><div class="sh-empty"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
