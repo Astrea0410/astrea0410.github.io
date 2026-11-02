@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AI소프트웨어과 학생을 위한 게임 개발자 취업 15단계 로드맵">
+<title>게임 개발자 취업 로드맵</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#182235;--muted:#64748b;--blue:#3157d5;--soft:#eaf0ff;--line:#e2e8f0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
+.hero{padding:58px 20px;color:#fff;background:linear-gradient(130deg,#172554,#3157d5 70%,#6284ed)}.wrap{width:min(1060px,calc(100% - 36px));margin:auto}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;font-weight:800;opacity:.8}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.2;margin:12px 0}h2{font-size:1.65rem;margin:0 0 5px}h3{font-size:1.1rem;margin:0 0 8px}
+.hero p{max-width:760px;color:#e4eaff}.nav{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}.nav a{color:white;border:1px solid #ffffff70;padding:7px 13px;border-radius:30px;text-decoration:none;font-size:.9rem}
+main{padding:28px 0 60px}section{margin:30px 0;scroll-margin-top:18px}.sub,.muted{color:var(--muted)}.sub{margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card,.stage,.month,.callout{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 10px 28px #192a4d0b}
+.card p,.stage p,.month p{color:var(--muted);margin:5px 0 10px}.notice{margin:16px 0;padding:14px 17px;background:var(--soft);border-left:4px solid var(--blue);border-radius:9px}
+.roadmap,.timeline{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.stage-top{display:flex;align-items:center;gap:11px;margin-bottom:8px}.num{width:36px;height:36px;display:grid;place-items:center;flex:none;border-radius:11px;background:var(--soft);color:var(--blue);font-weight:800}
+.tag{display:inline-block;margin:2px 3px 2px 0;padding:2px 8px;background:#f1f5f9;color:#475569;border-radius:20px;font-size:.78rem}.stage ul,.month ul{padding-left:20px;margin:8px 0}.task{border-top:1px solid var(--line);padding-top:10px;margin-top:10px;font-size:.93rem}.task b{color:#16845b}
+.period{color:var(--blue);font-size:.82rem;font-weight:800}table{width:100%;border-collapse:collapse;background:#fff;border-radius:13px;overflow:hidden;box-shadow:0 8px 24px #192a4d0b}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf2ff}tr:last-child td{border:0}
+.checks,.resources{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.check{display:flex;gap:10px;padding:12px;background:white;border:1px solid var(--line);border-radius:10px}.check input{margin-top:6px;accent-color:var(--blue)}
+.bar{height:10px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin:12px 0 5px}.bar div{height:100%;width:0;background:var(--blue);transition:width .2s}.resource{padding:14px;background:white;border:1px solid var(--line);border-radius:11px}.resource small{display:block;color:var(--muted);margin-top:3px}
+a{color:var(--blue)}footer{padding:24px 0 40px;color:var(--muted);border-top:1px solid var(--line);font-size:.9rem}.top{position:fixed;right:17px;bottom:17px;background:var(--blue);color:#fff;padding:8px 14px;border-radius:25px;text-decoration:none}
+@media(max-width:720px){.grid,.roadmap,.timeline,.checks,.resources{grid-template-columns:1fr}.hero{padding:45px 0}th,td{padding:9px;font-size:.88rem}}
+</style>
+</head>
+<body>
+<header class="hero" id="top"><div class="wrap"><div class="eyebrow">CAREER ROADMAP · GAME DEVELOPMENT</div>
+<h1>게임 개발자 취업 로드맵</h1><p>AI소프트웨어과에서 배운 프로그래밍 기초를 실제 게임 제작 능력으로 연결하고, 프로젝트와 포트폴리오를 통해 게임 개발 직무 취업을 준비하는 15단계 가이드입니다.</p>
+<nav class="nav"><a href="#roadmap">15단계 로드맵</a><a href="#plan">1년 학습 계획</a><a href="#stack">기술 스택</a><a href="#portfolio">포트폴리오</a><a href="#check">진행 체크</a></nav></div></header>
+<main class="wrap">
+<section><h2>목표와 학습 방향</h2><p class="sub">학습한 기술을 실제로 작동하는 게임으로 연결하는 것이 핵심입니다.</p>
+<div class="grid"><article class="card"><h3>🎯 최종 목표</h3><p>게임 개발 직무에 필요한 프로그래밍 역량, 제작 경험, 협업 경험, 포트폴리오를 확보합니다.</p></article>
+<article class="card"><h3>🧭 우선 경로</h3><p>Unity와 C#을 중심으로 게임 클라이언트 개발을 먼저 학습합니다. 한 엔진을 충분히 익힌 뒤 다른 엔진으로 확장합니다.</p></article>
+<article class="card"><h3>🧪 학습 원칙</h3><p>개념을 배운 날 작은 기능을 직접 구현하고, 매달 실행 가능한 결과물을 완성합니다.</p></article></div>
+<div class="notice"><b>추천 시작점:</b> Unity 6.3 LTS 환경을 사용하고 있다면 Unity + C#으로 학습 경로를 통일하세요. 여러 엔진을 동시에 시작하기보다 하나의 엔진으로 완성 경험을 쌓는 편이 효율적입니다.</div></section>
+<section id="roadmap"><h2>게임 개발자 취업을 위한 15단계</h2><p class="sub">각 단계마다 개념 학습과 실습 결과물을 함께 남기세요.</p><div class="roadmap">
+<article class="stage"><div class="stage-top"><span class="num">01</span><h3>직무 이해 및 선택</h3></div><p>게임 개발의 세부 직무를 비교하고 목표 역할을 정합니다.</p><span class="tag">클라이언트, 서버, 게임플레이</span><div class="task"><b>실습:</b> 관심 기업 채용 공고 5개를 읽고 공통 요구 기술을 정리합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">02</span><h3>C# 프로그래밍 기초</h3></div><p>게임 로직의 기본이 되는 C# 문법을 익힙니다.</p><span class="tag">자료형, 조건문, 반복문, 함수, 클래스</span><div class="task"><b>실습:</b> 숫자 맞히기, 전투 계산기, 아이템 구매 콘솔 프로그램을 만듭니다.</div></article><article class="stage"><div class="stage-top"><span class="num">03</span><h3>자료구조와 알고리즘</h3></div><p>데이터를 효율적으로 저장하고 처리하는 방법을 배웁니다.</p><span class="tag">배열, 리스트, 스택, 큐, 탐색, 정렬</span><div class="task"><b>실습:</b> 인벤토리 자료구조와 아이템 검색·정렬 기능을 구현합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">04</span><h3>Unity 엔진 기초</h3></div><p>게임 오브젝트와 컴포넌트 구조를 이해하고 스크립트로 제어합니다.</p><span class="tag">Scene, GameObject, Component, Prefab, MonoBehaviour</span><div class="task"><b>실습:</b> 바닥, 캐릭터, 카메라가 있는 3D 테스트 장면을 만듭니다.</div></article><article class="stage"><div class="stage-top"><span class="num">05</span><h3>3D 게임 제작 기초</h3></div><p>공간 이동과 물리 작동 방식을 익힙니다.</p><span class="tag">Transform, Rigidbody, Collider, Animation</span><div class="task"><b>실습:</b> 키보드로 움직이고 장애물과 충돌하는 캐릭터를 구현합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">06</span><h3>핵심 게임 시스템</h3></div><p>게임에서 반복적으로 쓰이는 기능을 모듈 단위로 구현합니다.</p><span class="tag">이동, 전투, 체력, 아이템, 인벤토리</span><div class="task"><b>실습:</b> 적을 공격하고 아이템을 획득하는 미니 게임을 만듭니다.</div></article><article class="stage"><div class="stage-top"><span class="num">07</span><h3>UI와 사용자 경험</h3></div><p>플레이어가 게임 상태를 쉽게 이해하고 조작하도록 화면을 구성합니다.</p><span class="tag">Canvas, TextMeshPro, 버튼 이벤트</span><div class="task"><b>실습:</b> 시작·설정·게임 오버 화면과 체력바를 제작합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">08</span><h3>게임 AI와 NPC</h3></div><p>NPC가 상황에 따라 판단하고 행동하도록 구현합니다.</p><span class="tag">FSM, NavMesh, 경로 탐색</span><div class="task"><b>실습:</b> 플레이어를 발견하면 추적하고 가까워지면 공격하는 적 AI를 만듭니다.</div></article><article class="stage"><div class="stage-top"><span class="num">09</span><h3>데이터 저장과 구조 설계</h3></div><p>게임 진행 상황을 저장하고 관리하기 쉬운 코드 구조를 만듭니다.</p><span class="tag">PlayerPrefs, JSON, 클래스 설계, 이벤트</span><div class="task"><b>실습:</b> 최고 점수와 설정값을 저장하고 불러옵니다.</div></article><article class="stage"><div class="stage-top"><span class="num">10</span><h3>Git과 GitHub 협업</h3></div><p>코드 변경 이력을 관리하고 협업하는 방법을 익힙니다.</p><span class="tag">commit, push, pull, branch, merge</span><div class="task"><b>실습:</b> Unity 프로젝트를 GitHub에 올리고 기능별 커밋을 남깁니다.</div></article><article class="stage"><div class="stage-top"><span class="num">11</span><h3>개인 게임 프로젝트</h3></div><p>배운 기술을 하나의 플레이 가능한 게임으로 연결합니다.</p><span class="tag">기획, 구현, 테스트, 빌드</span><div class="task"><b>실습:</b> 1~2개 스테이지의 3D 액션 또는 퍼즐 게임을 완성합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">12</span><h3>팀 프로젝트</h3></div><p>역할을 나누고 문제를 해결하며 결과물을 통합합니다.</p><span class="tag">협업, 코드 리뷰, 문서화, 일정 관리</span><div class="task"><b>실습:</b> 2~4명 팀으로 작은 게임을 만들고 본인의 기여를 기록합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">13</span><h3>포트폴리오 제작</h3></div><p>무엇을 만들었는지뿐 아니라 문제를 어떻게 해결했는지 보여줍니다.</p><span class="tag">GitHub, 시연 영상, 기술 문서</span><div class="task"><b>실습:</b> 대표 프로젝트 2개를 선정해 README와 시연 영상을 정리합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">14</span><h3>이력서와 기술 면접</h3></div><p>채용 공고에 맞춰 역량을 설명하고 코드의 동작 원리를 말할 수 있어야 합니다.</p><span class="tag">C#, 객체지향, 자료구조, Unity</span><div class="task"><b>실습:</b> 프로젝트별 예상 질문 10개와 답변을 작성합니다.</div></article><article class="stage"><div class="stage-top"><span class="num">15</span><h3>게임 개발 직무 지원</h3></div><p>회사별 요구 기술을 비교하고 지원과 피드백을 반복합니다.</p><span class="tag">채용 공고 분석, 이력서, 면접</span><div class="task"><b>실습:</b> 회사, 마감일, 요구 기술, 지원 상태를 표로 관리합니다.</div></article>
+</div></section>
+<section id="plan"><h2>1년 취업 준비 일정</h2><p class="sub">졸업까지 약 1년이 남았다는 가정의 예시입니다. 현재 실력과 학사 일정에 맞춰 조정하세요.</p><div class="timeline">
+<article class="month"><div class="period">1~2개월</div><h3>C# 프로그래밍 기초</h3><p>문법과 객체지향 학습, 코딩 문제 풀이, 콘솔 프로그램 2~3개 제작</p></article><article class="month"><div class="period">3~4개월</div><h3>Unity와 3D 기초</h3><p>캐릭터 이동·점프·카메라, 충돌과 트리거 처리, 기능별 실습</p></article><article class="month"><div class="period">5~6개월</div><h3>게임 시스템과 AI</h3><p>전투·체력·아이템·UI, NPC 상태 머신과 추적, 저장·불러오기</p></article><article class="month"><div class="period">7~8개월</div><h3>개인 프로젝트 완성</h3><p>기획 범위 확정, 주요 기능 구현과 테스트, 실행 가능한 빌드 제작</p></article><article class="month"><div class="period">9~10개월</div><h3>팀 프로젝트와 포트폴리오</h3><p>팀 프로젝트 참여, 코드와 문서 정리, 시연 영상 및 README 제작</p></article><article class="month"><div class="period">11~12개월</div><h3>지원과 면접 준비</h3><p>이력서·자기소개서 작성, 기술 면접과 코딩 테스트, 지원 결과 분석</p></article>
+</div><div class="notice"><b>주간 학습 예시:</b> 전공·코딩 기초 5시간, Unity 실습 7시간, 개인 프로젝트 5시간, 복습·문서화 2시간. 무리한 시간표보다 매주 작동하는 결과물을 남기는 것이 중요합니다.</div></section>
+<section id="stack"><h2>추천 기술 스택</h2><p class="sub">처음부터 모든 기술을 배울 필요는 없습니다. 목표 직무에 맞춰 핵심부터 익힙니다.</p>
+<table><thead><tr><th>분야</th><th>추천 기술</th><th>학습 목적</th><th>우선순위</th></tr></thead><tbody>
+<tr><td>프로그래밍</td><td>C#</td><td>Unity 게임 로직 구현</td><td>필수</td></tr><tr><td>게임 엔진</td><td>Unity 6</td><td>게임 장면과 시스템 제작</td><td>필수</td></tr><tr><td>기초 CS</td><td>자료구조·알고리즘·객체지향</td><td>문제 해결과 코드 설계</td><td>필수</td></tr><tr><td>협업</td><td>Git·GitHub</td><td>코드 이력과 협업 관리</td><td>필수</td></tr><tr><td>게임 AI</td><td>FSM·NavMesh·경로 탐색</td><td>NPC 행동 구현</td><td>권장</td></tr><tr><td>데이터</td><td>JSON·SQL 기초</td><td>게임 데이터 저장과 관리</td><td>권장</td></tr><tr><td>확장 엔진</td><td>Unreal Engine·C++</td><td>언리얼 기반 직무로 확장</td><td>선택</td></tr><tr><td>개발 도구</td><td>Visual Studio 또는 Rider·Blender</td><td>코드 작성과 3D 에셋 제작</td><td>권장</td></tr>
+</tbody></table></section>
+<section id="portfolio"><h2>취업 포트폴리오 구성</h2><p class="sub">작품 개수보다 완성도와 본인의 기여를 명확하게 설명하는 것이 중요합니다.</p><div class="grid">
+<article class="card"><h3>프로젝트 1 · 기초 게임</h3><p>캐릭터 이동, 충돌, UI 등 기본기를 보여주는 작은 게임입니다. 실행 방법과 핵심 코드 설명을 포함합니다.</p></article>
+<article class="card"><h3>프로젝트 2 · 대표 게임</h3><p>전투, NPC AI, 인벤토리, 저장 시스템 등 본인의 강점을 보여줄 핵심 프로젝트입니다.</p></article>
+<article class="card"><h3>프로젝트 3 · 협업 작품</h3><p>팀 내 담당 역할, Git 협업 방식, 문제 해결 과정, 본인의 실제 기여를 기록합니다.</p></article></div>
+<div class="callout" style="margin-top:14px"><h3>GitHub README 권장 구성</h3><ol><li>프로젝트 이름과 한 줄 소개</li><li>게임 플레이 영상 및 스크린샷</li><li>개발 환경: Unity 버전, C# 등</li><li>주요 기능과 구현 방식</li><li>담당 기능과 본인의 기여도</li><li>실행 방법 및 조작법</li><li>해결한 오류와 개선 내용</li><li>향후 개선 계획</li></ol></div></section>
+<section id="check"><h2>학습 진행 체크리스트</h2><p class="sub">체크 상태는 현재 브라우저에서만 유지됩니다.</p><div class="bar"><div id="progress"></div></div><p class="muted" id="progressText" aria-live="polite">0 / 10개 완료</p><div class="checks">
+<label class="check"><input type="checkbox"><span>C# 기초 문법과 객체지향 개념을 설명할 수 있다.</span></label><label class="check"><input type="checkbox"><span>배열·리스트·자료구조를 활용할 수 있다.</span></label><label class="check"><input type="checkbox"><span>Unity에서 캐릭터 이동과 충돌을 구현했다.</span></label><label class="check"><input type="checkbox"><span>전투·체력·아이템·UI 핵심 시스템을 구현했다.</span></label><label class="check"><input type="checkbox"><span>NPC 상태 전환 또는 경로 이동을 구현했다.</span></label><label class="check"><input type="checkbox"><span>GitHub에 프로젝트를 올리고 README를 작성했다.</span></label><label class="check"><input type="checkbox"><span>개인 게임 프로젝트를 빌드하고 테스트했다.</span></label><label class="check"><input type="checkbox"><span>팀 프로젝트에서 담당 기능을 완성했다.</span></label><label class="check"><input type="checkbox"><span>시연 영상과 기술 설명이 포함된 포트폴리오를 만들었다.</span></label><label class="check"><input type="checkbox"><span>관심 기업의 채용 공고를 분석하고 지원을 시작했다.</span></label>
+</div></section>
+<section id="resources"><h2>추천 학습 자료와 도구</h2><p class="sub">공식 문서와 실습 중심 자료를 우선 활용합니다.</p><div class="resources">
+<div class="resource"><a href="https://learn.unity.com/" target="_blank" rel="noopener">Unity Learn</a><small>Unity 공식 학습 플랫폼과 프로젝트 실습</small></div><div class="resource"><a href="https://docs.unity3d.com/Manual/index.html" target="_blank" rel="noopener">Unity Manual</a><small>Unity 기능과 컴포넌트 공식 설명서</small></div><div class="resource"><a href="https://learn.microsoft.com/ko-kr/dotnet/csharp/" target="_blank" rel="noopener">Microsoft C# 문서</a><small>C# 문법과 언어 기능 학습</small></div><div class="resource"><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a><small>프로젝트 코드 관리와 포트폴리오 공개</small></div><div class="resource"><a href="https://dev.epicgames.com/documentation/ko-kr/unreal-engine" target="_blank" rel="noopener">Unreal Engine 문서</a><small>언리얼 엔진과 C++ 학습 자료</small></div><div class="resource"><a href="https://www.blender.org/" target="_blank" rel="noopener">Blender</a><small>3D 모델링과 에셋 제작 도구</small></div>
+</div></section>
+<section><h2>실무에서 기억할 핵심 원칙</h2><div class="callout"><ul>
+<li><b>완성 우선:</b> 기능이 많은 미완성 게임보다 작더라도 끝까지 플레이할 수 있는 게임이 낫습니다.</li>
+<li><b>코드 설명:</b> 복사한 코드에서 끝내지 말고 각 스크립트의 역할과 원리를 설명할 수 있어야 합니다.</li>
+<li><b>문제 해결 기록:</b> 오류, 원인, 해결 방법을 기록하면 면접에서 활용할 기술 사례가 됩니다.</li>
+<li><b>작게 나누어 개발:</b> 큰 기능을 이동, 입력, 충돌, 상태 관리처럼 작은 단위로 나누어 구현하고 테스트합니다.</li>
+<li><b>채용 공고 역산:</b> 관심 기업의 실제 요구 기술을 확인해 학습 우선순위를 조정합니다.</li>
+<li><b>AI 도구는 보조 수단:</b> 생성된 코드의 오류, 성능, 라이선스와 보안 문제를 직접 검토합니다.</li>
+</ul></div></section>
+</main>
+<footer class="wrap"><b>Game Developer Roadmap</b> · 개인 학습 및 취업 준비용 문서<br>이 로드맵은 학습 방향을 제시하는 예시이며, 실제 채용 요구 사항과 개인의 진도에 따라 수정할 수 있습니다.</footer>
+<a class="top" href="#top">↑ TOP</a>
+<script>
+const boxes=[...document.querySelectorAll('.check input')],bar=document.getElementById('progress'),label=document.getElementById('progressText');
+function update(){const n=boxes.filter(x=>x.checked).length;bar.style.width=(n/boxes.length*100)+'%';label.textContent=n+' / '+boxes.length+'개 완료';}
+boxes.forEach(x=>x.addEventListener('change',update));update();
+</script>
+</body></html>
