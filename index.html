@@ -29,17 +29,17 @@
         rel="stylesheet">
     <style>
         :root {
-            --bg: #050d1a;
-            --surface: #0a1628;
-            --card: #0f1f38;
-            --border: #1a3a5c;
-            --accent1: #00d4ff;
-            --accent2: #7b2fff;
-            --accent3: #ff6b35;
-            --text: #e8f0fe;
-            --text-muted: #7a9bc0;
-            --glow1: rgba(0, 212, 255, 0.15);
-            --glow2: rgba(123, 47, 255, 0.15);
+            --bg: #07111c;
+            --surface: #0b1b2b;
+            --card: #102338;
+            --border: #1c3b52;
+            --accent1: #36e3d2;
+            --accent2: #8b7bff;
+            --accent3: #ffb86b;
+            --text: #edf5ff;
+            --text-muted: #94aac3;
+            --glow1: rgba(54, 227, 210, 0.12);
+            --glow2: rgba(139, 123, 255, 0.13);
         }
 
         * {
@@ -54,9 +54,26 @@
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: var(--bg);
+            background:
+                radial-gradient(ellipse at 12% 10%, rgba(54, 227, 210, 0.09), transparent 34rem),
+                radial-gradient(ellipse at 90% 44%, rgba(139, 123, 255, 0.1), transparent 38rem),
+                var(--bg);
             color: var(--text);
             overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.24;
+            background-image:
+                linear-gradient(rgba(67, 155, 201, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(67, 155, 201, 0.12) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(to bottom, black, transparent 88%);
         }
 
         #bg-canvas {
@@ -67,6 +84,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
+            opacity: 0.55;
         }
 
         header {
@@ -80,9 +98,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(5, 13, 26, 0.85);
+            background: rgba(7, 17, 28, 0.88);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
         }
 
         .logo {
@@ -130,6 +149,51 @@
             justify-content: center;
             text-align: center;
             padding: 100px 20px 60px;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 50% 34%, rgba(17, 66, 87, 0.2), transparent 48%),
+                linear-gradient(180deg, rgba(7, 17, 28, 0.12), transparent 82%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.25;
+            background:
+                linear-gradient(135deg, transparent 49.8%, rgba(54, 227, 210, 0.16) 50%, transparent 50.2%) 0 0 / 96px 96px,
+                linear-gradient(45deg, transparent 49.8%, rgba(139, 123, 255, 0.12) 50%, transparent 50.2%) 0 0 / 128px 128px;
+            mask-image: radial-gradient(ellipse at 50% 42%, black, transparent 76%);
+        }
+
+        .hero::after {
+            content: 'AI / SYSTEM ONLINE\A\A MODEL LAYER     128\A HIDDEN NODES     064\A OUTPUT CLASSES   008\A\A PROCESSING  ██████░ 86%\A STATUS: READY';
+            white-space: pre;
+            position: absolute;
+            top: 50%;
+            right: max(6vw, calc((100vw - 1240px) / 2));
+            z-index: 1;
+            width: 224px;
+            padding: 20px 18px;
+            border: 1px solid rgba(54, 227, 210, 0.25);
+            border-radius: 12px;
+            background:
+                linear-gradient(145deg, rgba(13, 39, 54, 0.92), rgba(19, 28, 55, 0.88)),
+                repeating-linear-gradient(0deg, transparent 0 25px, rgba(54, 227, 210, 0.06) 26px);
+            box-shadow: 0 20px 70px rgba(0, 0, 0, 0.24), inset 0 1px rgba(255, 255, 255, 0.05);
+            color: #9cb5ca;
+            font: 10px/1.9 'Space Mono', monospace;
+            letter-spacing: 0.04em;
+            text-align: left;
+            transform: translateY(-42%);
+            pointer-events: none;
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 2;
         }
 
         .hero-badge {
@@ -176,6 +240,7 @@
             font-size: clamp(36px, 6vw, 72px);
             font-weight: 900;
             line-height: 1.1;
+            letter-spacing: -0.045em;
             margin-bottom: 24px;
             opacity: 0;
             animation: fadeSlideUp 0.8s 0.4s forwards;
@@ -219,7 +284,7 @@
             flex-direction: column;
             align-items: flex-start;
             padding: 24px 32px;
-            border-radius: 16px;
+            border-radius: 14px;
             text-decoration: none;
             width: 240px;
             overflow: hidden;
@@ -302,7 +367,7 @@
         main {
             position: relative;
             z-index: 1;
-            max-width: 1000px;
+            max-width: 1120px;
             margin: 0 auto;
             padding: 0 30px 80px;
         }
@@ -324,6 +389,8 @@
             align-items: center;
             gap: 16px;
             margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(77, 139, 190, 0.2);
         }
 
         .section-num {
@@ -347,7 +414,8 @@
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 32px;
+            padding: 36px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
         }
 
         .glass p {
@@ -369,7 +437,8 @@
             padding: 24px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s, border-color 0.3s;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         .proj-card::after {
@@ -387,6 +456,7 @@
         .proj-card:hover {
             transform: translateY(-4px);
             border-color: var(--accent1);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.2), 0 0 24px var(--glow1);
         }
 
         .proj-card:hover::after {
@@ -437,14 +507,16 @@
             border-radius: 12px;
             padding: 18px 22px;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
             color: var(--text);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
 
         .file-item:hover {
             border-color: var(--accent1);
             background: rgba(0, 212, 255, 0.04);
             transform: translateX(6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
         }
 
         .file-icon {
@@ -517,6 +589,7 @@
         .doc-item:hover {
             border-color: var(--accent2);
             background: var(--glow2);
+            transform: translateY(-2px);
         }
 
         .doc-dot {
@@ -524,6 +597,7 @@
             height: 8px;
             border-radius: 50%;
             background: var(--accent2);
+            box-shadow: 0 0 12px rgba(139, 123, 255, 0.4);
             flex-shrink: 0;
         }
 
@@ -538,6 +612,7 @@
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
         }
 
         .img-frame img {
@@ -556,7 +631,7 @@
             left: 0;
             right: 0;
             padding: 20px 24px;
-            background: linear-gradient(transparent, rgba(5, 13, 26, 0.9));
+            background: linear-gradient(transparent, rgba(7, 17, 28, 0.94));
             font-size: 13px;
             color: var(--text-muted);
         }
@@ -622,7 +697,7 @@
             z-index: 200;
             width: 44px;
             height: 44px;
-            border-radius: 50%;
+            border-radius: 12px;
             background: var(--accent1);
             color: var(--bg);
             border: none;
@@ -649,11 +724,25 @@
         @media(max-width: 600px) {
             header {
                 padding: 0 16px;
+                gap: 12px;
+            }
+
+            nav {
+                flex: 1;
+                min-width: 0;
+                justify-content: flex-end;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+
+            nav::-webkit-scrollbar {
+                display: none;
             }
 
             nav a {
-                font-size: 11px;
-                padding: 6px 10px;
+                flex-shrink: 0;
+                font-size: 10px;
+                padding: 6px 8px;
             }
 
             .logo {
@@ -673,6 +762,41 @@
                 width: 100%;
                 max-width: 320px;
             }
+
+            .glass {
+                padding: 24px;
+            }
+
+            .hero::after {
+                display: none;
+            }
+
+            footer {
+                padding: 32px 18px;
+            }
+        }
+
+        @media(max-width: 1100px) {
+            .hero::after {
+                display: none;
+            }
+        }
+
+        @media(prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent1);
+            outline-offset: 4px;
         }
     </style>
 </head>
@@ -858,7 +982,7 @@
                 this.vx = (Math.random() - 0.5) * 0.3;
                 this.vy = (Math.random() - 0.5) * 0.3;
                 this.a = Math.random() * 0.5 + 0.1;
-                this.color = Math.random() > 0.5 ? '0,212,255' : '123,47,255';
+                this.color = Math.random() > 0.5 ? '54,227,210' : '139,123,255';
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
@@ -880,11 +1004,11 @@
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 100) {
+                    if (dist < 112) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0,212,255,${0.07 * (1 - dist / 100)})`;
+                        ctx.strokeStyle = `rgba(54,227,210,${0.1 * (1 - dist / 112)})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
