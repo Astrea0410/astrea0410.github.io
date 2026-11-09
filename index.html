@@ -538,6 +538,18 @@
             margin-top: 10px;
         }
 
+        .visitor-counter {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .visitor-counter img {
+            display: block;
+            width: 115px;
+            height: 28px;
+        }
+
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
@@ -744,8 +756,12 @@
 
     </main>
 
-        <footer>
+    <footer>
         <p class="footer-copy">© 2026 여주대학교 AI 소프트웨어 학과 · All rights reserved.</p>
+        <div class="visitor-counter">
+            <img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fastrea0410.github.io%2F&amp;label=VISITORS&amp;labelColor=%230a1628&amp;countColor=%2300d4ff"
+                alt="방문자 수">
+        </div>
     </footer>
 
     <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>

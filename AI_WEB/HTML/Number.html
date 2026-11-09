@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number 속성과 메소드</title>
+</head>
+
+<body>
+    <section>
+        <h3>Number 속성</h3>
+        <p>MAX_VALUE: <b id="max-value"></b></p>
+        <p>MIN_VALUE: <b id="min-value"></b></p>
+        <p>POSITIVE_INFINITY: <b id="positive-infinity"></b></p>
+        <p>NEGATIVE_INFINITY: <b id="negative-infinity"></b></p>
+    </section>
+
+    <section>
+        <h3>Number 메소드</h3>
+        <p>isFinite: <b id="is-finite"></b></p>
+        <p>isInteger: <b id="is-integer"></b></p>
+        <p>isNaN: <b id="is-nan"></b></p>
+        <p>toExponential: <b id="to-exponential"></b></p>
+        <p>toFixed: <b id="to-fixed"></b></p>
+        <p>toPrecision: <b id="to-precision"></b></p>
+        <p>toString: <b id="to-string"></b></p>
+        <p>valueOf: <b id="value-of"></b></p>
+    </section>
+
+    <script>
+        const number = 1234.567;
+
+        document.getElementById("max-value").textContent = Number.MAX_VALUE;
+        document.getElementById("min-value").textContent = Number.MIN_VALUE;
+        document.getElementById("positive-infinity").textContent = Number.POSITIVE_INFINITY;
+        document.getElementById("negative-infinity").textContent = Number.NEGATIVE_INFINITY;
+
+        document.getElementById("is-finite").textContent = Number.isFinite(number);
+        document.getElementById("is-integer").textContent = Number.isInteger(number);
+        document.getElementById("is-nan").textContent = Number.isNaN(number);
+        document.getElementById("to-exponential").textContent = number.toExponential(2);
+        document.getElementById("to-fixed").textContent = number.toFixed(1);
+        document.getElementById("to-precision").textContent = number.toPrecision(4);
+        document.getElementById("to-string").textContent = number.toString();
+        document.getElementById("value-of").textContent = number.valueOf();
+    </script>
+</body>
+
+</html>
