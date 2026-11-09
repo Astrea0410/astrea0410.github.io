@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS3 선택자 가이드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1714;
+      --paper: #f5f0e8;
+      --cream: #ede8dc;
+      --rust: #c0440a;
+      --rust-light: #f0d5c8;
+      --teal: #1a6b6b;
+      --teal-light: #d0e8e8;
+      --gold: #b8860b;
+      --gold-light: #f5ecc8;
+      --border: #c8bea8;
+      --code-bg: #2a2520;
+      --code-text: #f0e8d8;
+      --code-key: #e8a87c;
+      --code-val: #98d4a0;
+      --code-sel: #7ec8e3;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ─── HEADER ─────────────────────────────── */
+    header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.04) 39px, rgba(255,255,255,.04) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.04) 39px, rgba(255,255,255,.04) 40px);
+    }
+    .header-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem;
+      letter-spacing: .2em;
+      color: var(--rust);
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+      position: relative;
+    }
+    header h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      position: relative;
+      line-height: 1.2;
+    }
+    header p {
+      margin-top: 1rem;
+      font-size: .95rem;
+      color: rgba(245,240,232,.6);
+      position: relative;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────── */
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+    }
+
+    /* ─── SELECTOR CARD ──────────────────────── */
+    .selector-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      margin-bottom: 3rem;
+      overflow: hidden;
+      box-shadow: 4px 4px 0 var(--cream);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      color: var(--paper);
+      background: var(--ink);
+      padding: .25rem .6rem;
+      border-radius: 2px;
+      letter-spacing: .1em;
+    }
+    .card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--rust);
+    }
+    .card-badge {
+      margin-left: auto;
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .2rem .7rem;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      color: #888;
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 600px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+
+    .card-desc {
+      padding: 1.5rem;
+      border-right: 1px solid var(--cream);
+    }
+    .card-desc h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .6rem;
+      color: var(--ink);
+    }
+    .card-desc p {
+      font-size: .88rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    .card-desc .syntax {
+      margin-top: 1rem;
+      background: var(--cream);
+      border-left: 3px solid var(--rust);
+      padding: .5rem .8rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .82rem;
+      color: var(--rust);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .card-code {
+      padding: 1.5rem;
+      background: var(--code-bg);
+    }
+    .card-code pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .sel  { color: var(--code-sel); }
+    .key  { color: var(--code-key); }
+    .val  { color: var(--code-val); }
+    .cmt  { color: #6b7a6b; font-style: italic; }
+    .punc { color: #a09888; }
+
+    /* ─── DEMO AREA ──────────────────────────── */
+    .demo-area {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      background: var(--paper);
+    }
+    .demo-label {
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ━━━ DEMO 1: 요소 선택자 ━━━━━━━━━━━━━━━━━━━ */
+    .demo1 p {
+      background: var(--teal-light);
+      border-left: 3px solid var(--teal);
+      padding: .5rem .9rem;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: .4rem;
+      font-size: .88rem;
+      color: var(--teal);
+      font-weight: 500;
+    }
+
+    /* ━━━ DEMO 2: 클래스 선택자 ━━━━━━━━━━━━━━━━━ */
+    .demo2 .tag {
+      display: inline-block;
+      padding: .3rem .9rem;
+      border-radius: 99px;
+      font-size: .82rem;
+      font-weight: 500;
+      margin: .2rem;
+    }
+    .demo2 .tag-html  { background: #ffe0cc; color: #c04400; }
+    .demo2 .tag-css   { background: #cce5ff; color: #0055aa; }
+    .demo2 .tag-js    { background: #fff3cc; color: #885500; }
+    .demo2 .tag-plain { background: var(--cream); color: #777; border: 1px solid var(--border); }
+
+    /* ━━━ DEMO 3: ID 선택자 ━━━━━━━━━━━━━━━━━━━━ */
+    #demo3-hero {
+      background: linear-gradient(135deg, var(--ink) 60%, #3a2f26);
+      color: var(--paper);
+      padding: 1.2rem 1.5rem;
+      border-radius: 4px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      position: relative;
+      overflow: hidden;
+    }
+    #demo3-hero::after {
+      content: '#id';
+      position: absolute;
+      right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem;
+      color: var(--rust);
+      opacity: .8;
+    }
+
+    /* ━━━ DEMO 4: 자손 선택자 ━━━━━━━━━━━━━━━━━━ */
+    .demo4 .ancestor {
+      border: 1.5px dashed var(--border);
+      padding: 1rem;
+      border-radius: 4px;
+    }
+    .demo4 .ancestor > .child-label {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #bbb;
+      margin-bottom: .5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .demo4 .ancestor span {
+      display: inline-block;
+      background: var(--gold-light);
+      color: var(--gold);
+      border: 1px solid #d4a520;
+      padding: .25rem .75rem;
+      border-radius: 3px;
+      font-size: .85rem;
+      font-weight: 500;
+      margin: .2rem;
+    }
+    .demo4 .ancestor p {
+      color: #666;
+      font-size: .82rem;
+      margin-top: .5rem;
+    }
+
+    /* ━━━ DEMO 5: 가상 클래스 선택자 ━━━━━━━━━━━ */
+    .demo5 ul {
+      list-style: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .demo5 li {
+      padding: .6rem 1rem;
+      font-size: .88rem;
+      border-bottom: 1px solid var(--cream);
+      transition: background .2s;
+      cursor: default;
+    }
+    .demo5 li:last-child { border-bottom: none; }
+    .demo5 li:first-child {
+      background: var(--rust-light);
+      color: var(--rust);
+      font-weight: 500;
+    }
+    .demo5 li:nth-child(even) {
+      background: var(--cream);
+    }
+    .demo5 li:hover {
+      background: var(--teal-light);
+      color: var(--teal);
+    }
+    .demo5 .legend {
+      margin-top: .8rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .demo5 .legend span {
+      font-size: .72rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      color: #666;
+    }
+    .demo5 .legend .dot {
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    /* ━━━ DEMO 6: 속성 선택자 ━━━━━━━━━━━━━━━━━━ */
+    .demo6 .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .demo6 input {
+      padding: .55rem .9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: .88rem;
+      background: white;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .demo6 input[type="email"] {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-light);
+    }
+    .demo6 input[type="password"] {
+      border-color: var(--rust);
+      box-shadow: 0 0 0 3px var(--rust-light);
+    }
+    .demo6 input[type="text"] {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-light);
+    }
+    .demo6 .attr-label {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .demo6 .attr-label input { flex: 1; }
+    .demo6 .attr-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      padding: .15rem .5rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .demo6 .attr-tag.teal { background: var(--teal-light); color: var(--teal); }
+    .demo6 .attr-tag.rust { background: var(--rust-light); color: var(--rust); }
+    .demo6 .attr-tag.gold { background: var(--gold-light); color: var(--gold); }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: .78rem;
+      color: #aaa;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="header-label">CSS3 Reference Guide</p>
+  <h1>CSS3 선택자<br>완전 정복</h1>
+  <p>6가지 핵심 선택자 · 실습 예제 포함</p>
+</header>
+
+<main>
+
+  <!-- ═══ 01. 요소 선택자 ═══════════════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">01</span>
+      <span class="card-title">element { }</span>
+      <span class="card-badge">Element Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>요소(태그) 선택자</h3>
+        <p>HTML 태그 이름으로 요소를 직접 선택합니다. 페이지 내 해당 태그가 붙은 <strong>모든 요소</strong>에 스타일이 적용됩니다. 전역 기본 스타일을 설정할 때 주로 사용합니다.</p>
+        <div class="syntax">p { color: teal; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">p</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#d0e8e8</span><span class="punc">;</span>
+  <span class="key">border-left</span><span class="punc">:</span> <span class="val">3px solid teal</span><span class="punc">;</span>
+  <span class="key">padding</span><span class="punc">:</span> <span class="val">.5rem .9rem</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#1a6b6b</span><span class="punc">;</span>
+<span class="punc">}</span>
+
+<span class="cmt">/* 모든 &lt;p&gt; 태그에 적용 */</span></pre></div>
+    </div>
+    <div class="demo-area demo1">
+      <p class="demo-label">▸ live demo</p>
+      <p>첫 번째 단락입니다. 요소 선택자로 스타일이 적용됩니다.</p>
+      <p>두 번째 단락입니다. 같은 태그라면 모두 같은 스타일을 받습니다.</p>
+      <p>세 번째 단락입니다. 전역 기본 스타일 설정에 유용합니다.</p>
+    </div>
+  </article>
+
+  <!-- ═══ 02. 클래스 선택자 ════════════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">02</span>
+      <span class="card-title">.class { }</span>
+      <span class="card-badge">Class Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>클래스 선택자</h3>
+        <p>HTML 요소의 <code>class</code> 속성 값으로 선택합니다. 점(<code>.</code>)으로 시작하며, 여러 요소에 같은 클래스를 붙여 <strong>재사용</strong>할 수 있습니다. 가장 실용적인 선택자입니다.</p>
+        <div class="syntax">.tag-html { background: #ffe0cc; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">.tag-html</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#ffe0cc</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#c04400</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="sel">.tag-css</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#cce5ff</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#0055aa</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="cmt">/* class="tag-html" 요소에 적용 */</span></pre></div>
+    </div>
+    <div class="demo-area demo2">
+      <p class="demo-label">▸ live demo</p>
+      <span class="tag tag-html">HTML5</span>
+      <span class="tag tag-css">CSS3</span>
+      <span class="tag tag-js">JavaScript</span>
+      <span class="tag tag-plain">기타</span>
+      <span class="tag tag-html">시맨틱 태그</span>
+      <span class="tag tag-css">플렉스박스</span>
+    </div>
+  </article>
+
+  <!-- ═══ 03. ID 선택자 ════════════════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">03</span>
+      <span class="card-title">#id { }</span>
+      <span class="card-badge">ID Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>ID 선택자</h3>
+        <p>HTML 요소의 <code>id</code> 속성 값으로 선택합니다. 샵(<code>#</code>)으로 시작하며, ID는 페이지 내 <strong>단 하나</strong>의 요소에만 사용해야 합니다. 특정 단일 요소에 고유 스타일을 줄 때 사용합니다.</p>
+        <div class="syntax">#demo3-hero { background: #1a1714; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">#demo3-hero</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#1a1714</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#f5f0e8</span><span class="punc">;</span>
+  <span class="key">padding</span><span class="punc">:</span> <span class="val">1.2rem 1.5rem</span><span class="punc">;</span>
+  <span class="key">border-radius</span><span class="punc">:</span> <span class="val">4px</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="cmt">/* id="demo3-hero" 단 하나에 적용 */</span></pre></div>
+    </div>
+    <div class="demo-area">
+      <p class="demo-label">▸ live demo</p>
+      <div id="demo3-hero">ID 선택자는 페이지에서 유일한 요소를 정확히 지정합니다.</div>
+    </div>
+  </article>
+
+  <!-- ═══ 04. 자손 선택자 ══════════════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">04</span>
+      <span class="card-title">ancestor descendant { }</span>
+      <span class="card-badge">Descendant Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>자손(하위) 선택자</h3>
+        <p>특정 요소의 <strong>내부에 있는 모든 하위 요소</strong>를 선택합니다. 공백(<code> </code>)으로 구분하며, 직접 자식뿐 아니라 깊이에 관계없이 모든 자손에게 적용됩니다.</p>
+        <div class="syntax">.ancestor span { color: gold; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">.ancestor span</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#f5ecc8</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#b8860b</span><span class="punc">;</span>
+  <span class="key">padding</span><span class="punc">:</span> <span class="val">.25rem .75rem</span><span class="punc">;</span>
+  <span class="key">border-radius</span><span class="punc">:</span> <span class="val">3px</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="cmt">/* .ancestor 안 모든 span에 적용 */</span></pre></div>
+    </div>
+    <div class="demo-area demo4">
+      <p class="demo-label">▸ live demo</p>
+      <div class="ancestor">
+        <p class="child-label">.ancestor (부모 컨테이너)</p>
+        <span>HTML</span>
+        <span>CSS</span>
+        <div>
+          <span>중첩된 span도 선택됨</span>
+          <span>자손이면 모두 적용</span>
+        </div>
+        <p>이 p 태그는 선택되지 않습니다 (span이 아님)</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══ 05. 가상 클래스 선택자 ══════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">05</span>
+      <span class="card-title">selector:pseudo-class { }</span>
+      <span class="card-badge">Pseudo-class Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>가상 클래스 선택자</h3>
+        <p>요소의 <strong>특정 상태</strong>나 <strong>위치</strong>에 따라 스타일을 적용합니다. 콜론(<code>:</code>)으로 구분하며 <code>:hover</code>, <code>:first-child</code>, <code>:nth-child()</code> 등이 있습니다.</p>
+        <div class="syntax">li:first-child { background: pink; }<br>li:nth-child(even) { background: #eee; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">li:first-child</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#f0d5c8</span><span class="punc">;</span>
+  <span class="key">color</span><span class="punc">:</span> <span class="val">#c0440a</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="sel">li:nth-child(even)</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#ede8dc</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="sel">li:hover</span> <span class="punc">{</span>
+  <span class="key">background</span><span class="punc">:</span> <span class="val">#d0e8e8</span><span class="punc">;</span>
+<span class="punc">}</span></pre></div>
+    </div>
+    <div class="demo-area demo5">
+      <p class="demo-label">▸ live demo (마우스를 올려보세요)</p>
+      <ul>
+        <li>첫 번째 항목 — :first-child 적용</li>
+        <li>두 번째 항목 — :nth-child(even) 적용</li>
+        <li>세 번째 항목 — 기본 스타일</li>
+        <li>네 번째 항목 — :nth-child(even) 적용</li>
+        <li>다섯 번째 항목 — 기본 스타일</li>
+        <li>여섯 번째 항목 — :nth-child(even) + :last-child</li>
+      </ul>
+      <div class="legend">
+        <span><span class="dot" style="background:#f0d5c8; border: 1px solid #c0440a;"></span> :first-child</span>
+        <span><span class="dot" style="background:#ede8dc; border: 1px solid #c8bea8;"></span> :nth-child(even)</span>
+        <span><span class="dot" style="background:#d0e8e8; border: 1px solid #1a6b6b;"></span> :hover</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══ 06. 속성 선택자 ══════════════════════ -->
+  <article class="selector-card">
+    <div class="card-header">
+      <span class="card-number">06</span>
+      <span class="card-title">[attribute="value"] { }</span>
+      <span class="card-badge">Attribute Selector</span>
+    </div>
+    <div class="card-body">
+      <div class="card-desc">
+        <h3>속성 선택자</h3>
+        <p>요소의 <strong>HTML 속성과 값</strong>으로 선택합니다. 대괄호(<code>[ ]</code>)로 표현하며, <code>[type="email"]</code>처럼 속성 값에 따라 각기 다른 스타일을 줄 수 있어 폼(form) 디자인에 특히 유용합니다.</p>
+        <div class="syntax">input[type="email"] { border: teal; }<br>input[type="password"] { border: rust; }</div>
+      </div>
+      <div class="card-code"><pre>
+<span class="sel">input[type="text"]</span> <span class="punc">{</span>
+  <span class="key">border-color</span><span class="punc">:</span> <span class="val">gold</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="sel">input[type="email"]</span> <span class="punc">{</span>
+  <span class="key">border-color</span><span class="punc">:</span> <span class="val">teal</span><span class="punc">;</span>
+<span class="punc">}</span>
+<span class="sel">input[type="password"]</span> <span class="punc">{</span>
+  <span class="key">border-color</span><span class="punc">:</span> <span class="val">rust</span><span class="punc">;</span>
+<span class="punc">}</span></pre></div>
+    </div>
+    <div class="demo-area demo6">
+      <p class="demo-label">▸ live demo</p>
+      <div class="form-row">
+        <div class="attr-label">
+          <input type="text" placeholder="이름 (type=&quot;text&quot;)">
+          <span class="attr-tag gold">[type="text"]</span>
+        </div>
+        <div class="attr-label">
+          <input type="email" placeholder="이메일 (type=&quot;email&quot;)">
+          <span class="attr-tag teal">[type="email"]</span>
+        </div>
+        <div class="attr-label">
+          <input type="password" placeholder="비밀번호 (type=&quot;password&quot;)">
+          <span class="attr-tag rust">[type="password"]</span>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  CSS3 Selector Reference &nbsp;·&nbsp; 6 selectors covered &nbsp;·&nbsp; Made with HTML &amp; CSS
+</footer>
+
+</body>
+</html>

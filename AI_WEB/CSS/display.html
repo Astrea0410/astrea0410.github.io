@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Display — Block & Inline 완전 가이드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── 토큰 ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --card:      #1c2330;
+      --border:    #30363d;
+
+      --block-hue:  #4f8ef7;   /* 블루 */
+      --inline-hue: #f7934f;   /* 오렌지 */
+      --inline2-hue:#b47cf7;   /* 퍼플 (inline-block) */
+      --none-hue:   #f74f6a;   /* 레드 */
+
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --code-bg:   #0d1117;
+
+      --radius: 10px;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Noto Sans KR', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ── 헤더 ─────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #1a1f35 50%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 40px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(79,142,247,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    header .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--block-hue);
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+    }
+    header h1 span.b { color: var(--block-hue); }
+    header h1 span.i { color: var(--inline-hue); }
+    header p.sub {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 540px;
+      margin-inline: auto;
+    }
+
+    /* ── 레이아웃 ─────────────────────────────────────── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── 섹션 타이틀 ─────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 52px 0 20px;
+    }
+    .section-label .pill {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: .08em;
+    }
+    .pill-block  { background: rgba(79,142,247,.15); color: var(--block-hue);  border: 1px solid rgba(79,142,247,.3); }
+    .pill-inline { background: rgba(247,147,79,.15);  color: var(--inline-hue); border: 1px solid rgba(247,147,79,.3); }
+    .pill-ib     { background: rgba(180,124,247,.15); color: var(--inline2-hue);border: 1px solid rgba(180,124,247,.3); }
+    .pill-none   { background: rgba(247,79,106,.15);  color: var(--none-hue);   border: 1px solid rgba(247,79,106,.3); }
+
+    .section-label h2 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .section-label .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── 카드 ─────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .card .desc {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-bottom: 18px;
+    }
+
+    /* ── 코드 블록 ────────────────────────────────────── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .kw  { color: #ff7b72; }
+    .prop{ color: #79c0ff; }
+    .val { color: #a5d6ff; }
+    .tag { color: #7ee787; }
+    .cm  { color: #8b949e; font-style: italic; }
+    .str { color: #f0883e; }
+
+    /* ── 라이브 프리뷰 ────────────────────────────────── */
+    .preview-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    /* ── BLOCK 요소 프리뷰 ────────────────────────────── */
+    .pv-div {
+      background: rgba(79,142,247,.12);
+      border: 2px dashed var(--block-hue);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--block-hue);
+      font-family: var(--mono);
+    }
+    .pv-div::before { content: '<div> '; }
+    .pv-div::after  { content: ' </div>'; }
+
+    .pv-p {
+      background: rgba(79,142,247,.07);
+      border-left: 3px solid var(--block-hue);
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .pv-h {
+      background: rgba(79,142,247,.07);
+      border-left: 3px solid #7ab3ff;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 0 6px 6px 0;
+    }
+    .pv-h1 { font-size: 22px; font-weight: 700; }
+    .pv-h2 { font-size: 18px; font-weight: 700; }
+    .pv-h3 { font-size: 15px; font-weight: 600; }
+
+    .pv-ul {
+      background: rgba(79,142,247,.07);
+      border-left: 3px solid var(--block-hue);
+      padding: 10px 14px 10px 30px;
+      margin-bottom: 8px;
+      border-radius: 0 6px 6px 0;
+      font-size: 13px;
+    }
+    .pv-ul li { margin-bottom: 4px; }
+
+    .pv-table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .pv-table th, .pv-table td {
+      border: 1px solid var(--block-hue);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .pv-table th {
+      background: rgba(79,142,247,.2);
+      color: var(--block-hue);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .06em;
+    }
+
+    .pv-section {
+      border: 2px solid rgba(79,142,247,.4);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .pv-section-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--block-hue);
+      letter-spacing: .1em;
+      margin-bottom: 6px;
+    }
+
+    /* ── INLINE 요소 프리뷰 ───────────────────────────── */
+    .inline-demo {
+      font-size: 14px;
+      line-height: 2.2;
+    }
+    .pv-span   { background: rgba(247,147,79,.2); color: var(--inline-hue); padding: 1px 5px; border-radius: 3px; }
+    .pv-a      { color: #58a6ff; text-decoration: underline; cursor: default; }
+    .pv-strong { font-weight: 700; color: #fff; }
+    .pv-em     { font-style: italic; color: #d2a679; }
+    .pv-code   { font-family: var(--mono); background: rgba(180,124,247,.2); color: var(--inline2-hue); padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+    .pv-mark   { background: rgba(255,220,80,.3); color: #ffd050; padding: 1px 4px; border-radius: 2px; }
+    .pv-sub    { vertical-align: sub; font-size: 11px; color: var(--muted); }
+    .pv-sup    { vertical-align: super; font-size: 11px; color: var(--muted); }
+    .pv-abbr   { text-decoration: underline dotted; cursor: help; color: #79c0ff; }
+    .pv-label  { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-right: 4px; }
+
+    /* ── INLINE-BLOCK 프리뷰 ─────────────────────────── */
+    .ib-demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .ib-box {
+      display: inline-block;
+      background: rgba(180,124,247,.15);
+      border: 1px solid var(--inline2-hue);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--inline2-hue);
+      text-align: center;
+    }
+    .ib-box.tall { padding: 20px 14px; }
+    .ib-box.wide { padding: 8px 32px; }
+
+    /* ── NONE 프리뷰 ─────────────────────────────────── */
+    .none-demo .visible {
+      background: rgba(247,79,106,.1);
+      border: 1px dashed var(--none-hue);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .none-demo .hidden-box {
+      display: none;
+    }
+    .none-demo .note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--none-hue);
+      padding: 8px 12px;
+      background: rgba(247,79,106,.07);
+      border-radius: 6px;
+      border: 1px dashed rgba(247,79,106,.3);
+    }
+
+    /* ── 비교 표 ─────────────────────────────────────── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    @media (max-width: 640px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .cmp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .cmp-card h4 {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cmp-card ul {
+      list-style: none;
+      font-size: 13px;
+    }
+    .cmp-card ul li {
+      padding: 4px 0;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cmp-card ul li::before { content: '·'; font-size: 18px; line-height: 1; }
+    .cmp-card ul li.yes::before { content: '✓'; color: #3fb950; font-size: 12px; }
+    .cmp-card ul li.no::before  { content: '✗'; color: var(--none-hue); font-size: 12px; }
+    .cmp-card ul li.neutral::before { content: '~'; color: var(--inline2-hue); font-size: 14px; }
+
+    /* ── 시각적 비교 다이어그램 ──────────────────────── */
+    .flow-demo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .flow-row:last-child { margin-bottom: 0; }
+    .flow-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      width: 80px;
+      flex-shrink: 0;
+      color: var(--muted);
+    }
+    .flow-block-item {
+      background: rgba(79,142,247,.15);
+      border: 1px solid rgba(79,142,247,.5);
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: var(--block-hue);
+      font-family: var(--mono);
+      width: 100%;
+    }
+    .flow-inline-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .flow-inline-item {
+      background: rgba(247,147,79,.12);
+      border: 1px solid rgba(247,147,79,.4);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--inline-hue);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+    .flow-ib-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .flow-ib-item {
+      background: rgba(180,124,247,.12);
+      border: 1px solid rgba(180,124,247,.4);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--inline2-hue);
+      font-family: var(--mono);
+    }
+    .flow-ib-item.h1 { padding: 14px 10px; }
+    .flow-ib-item.h2 { padding: 10px; }
+
+    /* ── 태그 리스트 ─────────────────────────────────── */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag-chip {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid;
+    }
+    .tag-chip.b { background: rgba(79,142,247,.1);  color: var(--block-hue);  border-color: rgba(79,142,247,.3); }
+    .tag-chip.i { background: rgba(247,147,79,.1);  color: var(--inline-hue); border-color: rgba(247,147,79,.3); }
+
+    /* ── 푸터 ─────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+    }
+
+    /* ── 뱃지 ─────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .badge-block  { background: rgba(79,142,247,.2);  color: var(--block-hue); }
+    .badge-inline { background: rgba(247,147,79,.2);  color: var(--inline-hue); }
+    .badge-ib     { background: rgba(180,124,247,.2); color: var(--inline2-hue); }
+  </style>
+</head>
+<body>
+
+<!-- ───────────── HEADER ───────────── -->
+<header>
+  <div class="eyebrow">CSS Display Property · Reference Guide</div>
+  <h1>
+    <span class="b">Block</span> 요소 vs
+    <span class="i">Inline</span> 요소
+  </h1>
+  <p class="sub">HTML 요소가 화면에 배치되는 방식을 결정하는 <code style="font-family:monospace;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;">display</code> 속성의 완전 가이드</p>
+</header>
+
+<main>
+
+  <!-- ══════════════════════════════════════
+       1. 개념 요약 비교
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-block">개요</span>
+    <h2>Display 속성 비교</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="compare-grid">
+    <div class="cmp-card">
+      <h4 style="color:var(--block-hue)">⬛ block</h4>
+      <ul>
+        <li class="yes">새 줄에서 시작</li>
+        <li class="yes">가로폭 100% 차지</li>
+        <li class="yes">width / height 적용</li>
+        <li class="yes">margin / padding 모두 적용</li>
+        <li class="no">옆에 나란히 배치 불가</li>
+      </ul>
+    </div>
+    <div class="cmp-card">
+      <h4 style="color:var(--inline-hue)">▬ inline</h4>
+      <ul>
+        <li class="no">새 줄 시작 안 함</li>
+        <li class="no">콘텐츠 크기만큼만 차지</li>
+        <li class="no">width / height 무시됨</li>
+        <li class="neutral">좌우 margin/padding만 완전 적용</li>
+        <li class="yes">텍스트 흐름 안에 배치</li>
+      </ul>
+    </div>
+    <div class="cmp-card">
+      <h4 style="color:var(--inline2-hue)">⊡ inline-block</h4>
+      <ul>
+        <li class="no">새 줄 시작 안 함</li>
+        <li class="yes">width / height 적용</li>
+        <li class="yes">margin / padding 모두 적용</li>
+        <li class="yes">옆에 나란히 배치 가능</li>
+        <li class="neutral">block + inline의 혼합</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       2. 시각적 흐름 다이어그램
+  ══════════════════════════════════════ -->
+  <div class="section-label" style="margin-top:40px;">
+    <span class="pill pill-block">다이어그램</span>
+    <h2>배치 흐름 비교</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="flow-demo">
+    <div class="flow-row">
+      <div class="flow-tag">block</div>
+      <div style="flex:1">
+        <div class="flow-block-item">div — 전체 가로폭 점유</div>
+        <div class="flow-block-item" style="margin-top:6px;">p — 다음 줄에 배치</div>
+        <div class="flow-block-item" style="margin-top:6px;">h1 — 또 다음 줄에 배치</div>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-tag">inline</div>
+      <div class="flow-inline-items" style="flex:1">
+        <div class="flow-inline-item">span</div>
+        <div class="flow-inline-item">a 링크</div>
+        <div class="flow-inline-item">strong</div>
+        <div class="flow-inline-item">em</div>
+        <div class="flow-inline-item">코드</div>
+        <div class="flow-inline-item" style="opacity:.4">← 같은 줄에 나란히</div>
+      </div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-tag">inline-block</div>
+      <div class="flow-ib-items" style="flex:1">
+        <div class="flow-ib-item h1">크기<br>조절<br>가능</div>
+        <div class="flow-ib-item h2">width/<br>height</div>
+        <div class="flow-ib-item">나란히</div>
+        <div class="flow-ib-item">배치도</div>
+        <div class="flow-ib-item">가능!</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       3. BLOCK 요소 예제
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-block">BLOCK</span>
+    <h2>Block 요소 예제</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- div -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;div&gt; — 범용 블록 컨테이너</h3>
+    <p class="desc">의미 없는 레이아웃 묶음. 항상 새 줄에서 시작하고 가로폭 전체를 차지합니다.</p>
+    <pre><span class="tag">&lt;div</span> <span class="prop">style</span>=<span class="str">"background:#1e3a5f; padding:16px; border-radius:8px;"</span><span class="tag">&gt;</span>
+  첫 번째 div
+<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="prop">style</span>=<span class="str">"background:#3a1e5f; padding:16px; border-radius:8px;"</span><span class="tag">&gt;</span>
+  두 번째 div — 자동으로 다음 줄에 배치
+<span class="tag">&lt;/div&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="pv-div" style="margin-bottom:8px;">첫 번째 div</div>
+      <div class="pv-div" style="margin-bottom:0;">두 번째 div — 자동으로 다음 줄에 배치됨</div>
+    </div>
+  </div>
+
+  <!-- 제목 태그 -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;h1&gt; ~ &lt;h6&gt; — 제목 태그</h3>
+    <p class="desc">문서의 계층적 제목을 나타냅니다. 모두 block 요소로, 각자 새 줄을 차지합니다.</p>
+    <pre><span class="tag">&lt;h1&gt;</span>H1 — 최상위 제목<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>H2 — 하위 제목<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span>H3 — 소제목<span class="tag">&lt;/h3&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="pv-h pv-h1">H1 — 최상위 제목</div>
+      <div class="pv-h pv-h2">H2 — 하위 제목</div>
+      <div class="pv-h pv-h3">H3 — 소제목</div>
+    </div>
+  </div>
+
+  <!-- p -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;p&gt; — 단락</h3>
+    <p class="desc">텍스트 단락을 묶는 가장 기본적인 블록 요소. 위아래 여백이 자동으로 추가됩니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>첫 번째 단락입니다. Block이므로 독립적인 줄을 가집니다.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span>두 번째 단락. 자동으로 아래 줄에 위치합니다.<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="pv-p">첫 번째 단락입니다. Block이므로 독립적인 줄을 가집니다.</div>
+      <div class="pv-p">두 번째 단락. 자동으로 아래 줄에 위치합니다.</div>
+    </div>
+  </div>
+
+  <!-- ul / ol -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;ul&gt; / &lt;ol&gt; / &lt;li&gt; — 목록</h3>
+    <p class="desc">순서 없는 목록(ul)과 순서 있는 목록(ol). &lt;li&gt; 항목 자체도 block 요소입니다.</p>
+    <pre><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>HTML 기초<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>CSS 레이아웃<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>JavaScript<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <ul class="pv-ul">
+        <li>HTML 기초</li>
+        <li>CSS 레이아웃</li>
+        <li>JavaScript</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;table&gt; — 표</h3>
+    <p class="desc">2차원 데이터를 행과 열로 표현합니다. 기본값은 <code style="font-family:monospace">display: table</code>이지만 블록처럼 동작합니다.</p>
+    <pre><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;tr&gt;</span><span class="tag">&lt;th&gt;</span>이름<span class="tag">&lt;/th&gt;</span><span class="tag">&lt;th&gt;</span>타입<span class="tag">&lt;/th&gt;</span><span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;tr&gt;</span><span class="tag">&lt;td&gt;</span>div<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;td&gt;</span>block<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;/tr&gt;</span>
+<span class="tag">&lt;/table&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <table class="pv-table">
+        <tr><th>태그</th><th>기본 display</th><th>설명</th></tr>
+        <tr><td>div</td><td>block</td><td>범용 컨테이너</td></tr>
+        <tr><td>p</td><td>block</td><td>단락</td></tr>
+        <tr><td>section</td><td>block</td><td>의미적 섹션</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 시맨틱 block 태그 -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">&lt;section&gt; &lt;article&gt; &lt;header&gt; &lt;footer&gt; &lt;main&gt; &lt;nav&gt; — 시맨틱 태그</h3>
+    <p class="desc">HTML5의 의미론적 블록 요소들. div처럼 동작하지만 콘텐츠의 역할을 명시합니다.</p>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="pv-section">
+        <div class="pv-section-title">&lt;header&gt;</div>
+        <div style="font-size:13px;">사이트 헤더 영역</div>
+      </div>
+      <div class="pv-section">
+        <div class="pv-section-title">&lt;main&gt; → &lt;article&gt;</div>
+        <div style="font-size:13px;">본문 콘텐츠 영역</div>
+      </div>
+      <div class="pv-section" style="margin-bottom:0">
+        <div class="pv-section-title">&lt;footer&gt;</div>
+        <div style="font-size:13px;">사이트 푸터 영역</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- block 태그 목록 -->
+  <div class="card">
+    <h3 style="color:var(--block-hue)">주요 Block 요소 전체 목록</h3>
+    <div class="tag-list">
+      <span class="tag-chip b">div</span><span class="tag-chip b">p</span>
+      <span class="tag-chip b">h1~h6</span><span class="tag-chip b">ul</span>
+      <span class="tag-chip b">ol</span><span class="tag-chip b">li</span>
+      <span class="tag-chip b">table</span><span class="tag-chip b">form</span>
+      <span class="tag-chip b">header</span><span class="tag-chip b">footer</span>
+      <span class="tag-chip b">main</span><span class="tag-chip b">nav</span>
+      <span class="tag-chip b">section</span><span class="tag-chip b">article</span>
+      <span class="tag-chip b">aside</span><span class="tag-chip b">blockquote</span>
+      <span class="tag-chip b">pre</span><span class="tag-chip b">hr</span>
+      <span class="tag-chip b">fieldset</span><span class="tag-chip b">address</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       4. INLINE 요소 예제
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-inline">INLINE</span>
+    <h2>Inline 요소 예제</h2>
+    <div class="line"></div>
+  </div>
+
+  <!-- span -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">&lt;span&gt; — 범용 인라인 컨테이너</h3>
+    <p class="desc">텍스트 일부에 스타일을 적용할 때 사용. 자체 의미는 없으며 텍스트 흐름을 유지합니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>
+  가격: <span class="tag">&lt;span</span> <span class="prop">style</span>=<span class="str">"color:orange; font-weight:bold;"</span><span class="tag">&gt;</span>29,000원<span class="tag">&lt;/span&gt;</span>
+  (부가세 포함)
+<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="inline-demo">
+        가격: <span class="pv-span">29,000원</span> (부가세 포함)
+        — span은 텍스트 흐름 안에 배치됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- a -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">&lt;a&gt; — 하이퍼링크</h3>
+    <p class="desc">다른 페이지나 앵커로 이동하는 링크. inline이므로 문장 중간에 삽입 가능합니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>
+  자세한 내용은
+  <span class="tag">&lt;a</span> <span class="prop">href</span>=<span class="str">"#"</span><span class="tag">&gt;</span>공식 문서<span class="tag">&lt;/a&gt;</span>를 참고하세요.
+<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="inline-demo">
+        자세한 내용은 <span class="pv-a">공식 문서</span>를 참고하세요.
+        링크는 텍스트 흐름을 끊지 않습니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- strong / em / code / mark -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">&lt;strong&gt; &lt;em&gt; &lt;code&gt; &lt;mark&gt; — 텍스트 강조</h3>
+    <p class="desc">모두 inline 요소입니다. 텍스트의 의미를 다르게 표현하지만 줄바꿈을 일으키지 않습니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>
+  <span class="tag">&lt;strong&gt;</span>중요 내용<span class="tag">&lt;/strong&gt;</span>은 볼드로,
+  <span class="tag">&lt;em&gt;</span>강조 내용<span class="tag">&lt;/em&gt;</span>은 이탤릭으로,
+  <span class="tag">&lt;code&gt;</span>display:block<span class="tag">&lt;/code&gt;</span>은 코드 스타일로,
+  <span class="tag">&lt;mark&gt;</span>하이라이트<span class="tag">&lt;/mark&gt;</span>는 형광펜 효과.
+<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="inline-demo">
+        <strong class="pv-strong">중요 내용</strong>은 볼드로,
+        <em class="pv-em">강조 내용</em>은 이탤릭으로,
+        <span class="pv-code">display:block</span>은 코드 스타일로,
+        <span class="pv-mark">하이라이트</span>는 형광펜 효과.
+        모두 같은 줄에 배치됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- img / input / button -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">&lt;img&gt; &lt;input&gt; &lt;button&gt; — 대체 인라인 요소</h3>
+    <p class="desc">기본은 inline이지만 width/height가 적용되는 <em>replaced element</em>입니다. 실제로는 <code style="font-family:monospace">inline-block</code>처럼 동작합니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>
+  검색어:
+  <span class="tag">&lt;input</span> <span class="prop">type</span>=<span class="str">"text"</span> <span class="prop">placeholder</span>=<span class="str">"입력..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button&gt;</span>검색<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="inline-demo">
+        검색어:
+        <input type="text" placeholder="입력..."
+          style="background:#0d1117;border:1px solid #30363d;border-radius:5px;padding:4px 10px;color:#e6edf3;font-size:13px;font-family:inherit;">
+        <button style="background:rgba(79,142,247,.2);border:1px solid var(--block-hue);border-radius:5px;padding:4px 14px;color:var(--block-hue);font-size:13px;cursor:default;">검색</button>
+        — 텍스트와 같은 줄에 나란히 위치합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- sub / sup / abbr -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">&lt;sub&gt; &lt;sup&gt; &lt;abbr&gt; — 기타 인라인 요소</h3>
+    <p class="desc">위첨자, 아래첨자, 약어를 표현합니다. 모두 텍스트 흐름 안에 삽입됩니다.</p>
+    <pre><span class="tag">&lt;p&gt;</span>
+  H<span class="tag">&lt;sub&gt;</span>2<span class="tag">&lt;/sub&gt;</span>O 는 물이고,
+  E=mc<span class="tag">&lt;sup&gt;</span>2<span class="tag">&lt;/sup&gt;</span>는 아인슈타인 공식.
+  <span class="tag">&lt;abbr</span> <span class="prop">title</span>=<span class="str">"HyperText Markup Language"</span><span class="tag">&gt;</span>HTML<span class="tag">&lt;/abbr&gt;</span> 참조.
+<span class="tag">&lt;/p&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview">
+      <div class="inline-demo">
+        H<sub class="pv-sub">2</sub>O 는 물이고,
+        E=mc<sup class="pv-sup">2</sup>는 아인슈타인 공식.
+        <abbr class="pv-abbr" title="HyperText Markup Language">HTML</abbr>은 마크업 언어입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- inline 태그 목록 -->
+  <div class="card">
+    <h3 style="color:var(--inline-hue)">주요 Inline 요소 전체 목록</h3>
+    <div class="tag-list">
+      <span class="tag-chip i">span</span><span class="tag-chip i">a</span>
+      <span class="tag-chip i">strong</span><span class="tag-chip i">em</span>
+      <span class="tag-chip i">b</span><span class="tag-chip i">i</span>
+      <span class="tag-chip i">code</span><span class="tag-chip i">mark</span>
+      <span class="tag-chip i">small</span><span class="tag-chip i">sub</span>
+      <span class="tag-chip i">sup</span><span class="tag-chip i">abbr</span>
+      <span class="tag-chip i">label</span><span class="tag-chip i">img</span>
+      <span class="tag-chip i">input</span><span class="tag-chip i">button</span>
+      <span class="tag-chip i">select</span><span class="tag-chip i">textarea</span>
+      <span class="tag-chip i">br</span><span class="tag-chip i">q</span>
+      <span class="tag-chip i">cite</span><span class="tag-chip i">kbd</span>
+      <span class="tag-chip i">var</span><span class="tag-chip i">time</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       5. INLINE-BLOCK
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-ib">INLINE-BLOCK</span>
+    <h2>display: inline-block</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--inline2-hue)">Block + Inline의 장점을 합친 혼합형</h3>
+    <p class="desc">같은 줄에 나란히 배치되면서(inline), width/height/margin/padding을 모두 제어할 수 있습니다(block).</p>
+    <pre><span class="tag">&lt;div</span> <span class="prop">style</span>=<span class="str">"display:inline-block; width:120px; height:60px;
+         background:#4f8ef7; margin:8px; padding:10px;"</span><span class="tag">&gt;</span>
+  박스 1
+<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="prop">style</span>=<span class="str">"display:inline-block; width:180px; height:90px;
+         background:#b47cf7; margin:8px; padding:10px;"</span><span class="tag">&gt;</span>
+  박스 2 (더 크게)
+<span class="tag">&lt;/div&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰 — 크기가 달라도 같은 줄에 배치</div>
+    <div class="preview">
+      <div class="ib-demo">
+        <div class="ib-box">박스 1<br><span style="font-size:10px;color:var(--muted)">120×60</span></div>
+        <div class="ib-box tall">박스 2<br><span style="font-size:10px;color:var(--muted)">180×90</span></div>
+        <div class="ib-box wide">박스 3 (넓게)<br><span style="font-size:10px;color:var(--muted)">240×48</span></div>
+        <div class="ib-box">박스 4</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       6. DISPLAY NONE
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-none">NONE</span>
+    <h2>display: none</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--none-hue)">요소를 완전히 숨김 — 공간도 차지하지 않음</h3>
+    <p class="desc"><code style="font-family:monospace">visibility: hidden</code>이 공간은 유지한 채 숨기는 것과 달리, <code style="font-family:monospace">display: none</code>은 레이아웃에서 완전히 제거됩니다.</p>
+    <pre><span class="tag">&lt;div&gt;</span>이 요소는 보입니다.<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="prop">style</span>=<span class="str">"display: none;"</span><span class="tag">&gt;</span>
+  이 요소는 숨겨져 있습니다. <span class="cm">/* 공간도 없음 */</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div&gt;</span>이 요소는 보입니다 — 위 요소 없이 바로 이어집니다.<span class="tag">&lt;/div&gt;</span></pre>
+    <div class="preview-label">▶ 라이브 프리뷰</div>
+    <div class="preview none-demo">
+      <div class="visible">① 이 요소는 보입니다.</div>
+      <div class="hidden-box">② 이 요소는 display:none — 존재하지 않음</div>
+      <div class="visible" style="margin-bottom:0">③ 이 요소는 보입니다 — ②가 없으므로 ①바로 다음에 이어집니다.</div>
+      <div class="note" style="margin-top:10px;">⚠ ② 요소는 HTML에 있지만 display:none으로 화면과 레이아웃에서 완전히 제거됨</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       7. CSS로 display 변경
+  ══════════════════════════════════════ -->
+  <div class="section-label">
+    <span class="pill pill-block">CSS</span>
+    <h2>CSS로 display 속성 변경하기</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:var(--text)">기본값을 CSS로 재정의할 수 있습니다</h3>
+    <p class="desc">HTML 태그의 기본 display 값은 CSS로 언제든지 바꿀 수 있습니다.</p>
+    <pre><span class="cm">/* 기본이 block인 div를 inline으로 변경 */</span>
+<span class="prop">div</span> {
+  <span class="kw">display</span>: <span class="val">inline</span>;
+}
+
+<span class="cm">/* 기본이 inline인 span을 block으로 변경 */</span>
+<span class="prop">span</span> {
+  <span class="kw">display</span>: <span class="val">block</span>;
+}
+
+<span class="cm">/* a 태그를 버튼처럼 inline-block으로 */</span>
+<span class="prop">a.btn</span> {
+  <span class="kw">display</span>: <span class="val">inline-block</span>;
+  <span class="kw">padding</span>: <span class="val">10px 24px</span>;
+  <span class="kw">width</span>: <span class="val">160px</span>;
+}
+
+<span class="cm">/* Flexbox / Grid — 현대 레이아웃 */</span>
+<span class="prop">.container</span> {
+  <span class="kw">display</span>: <span class="val">flex</span>;   <span class="cm">/* 또는 grid */</span>
+}</pre>
+    <div class="preview-label">▶ &lt;a&gt;를 inline-block 버튼으로 변환한 예</div>
+    <div class="preview">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="#" style="display:inline-block;padding:10px 24px;background:rgba(79,142,247,.2);border:1px solid var(--block-hue);border-radius:8px;color:var(--block-hue);text-decoration:none;font-size:13px;font-family:var(--mono);">시작하기</a>
+        <a href="#" style="display:inline-block;padding:10px 24px;background:rgba(247,147,79,.2);border:1px solid var(--inline-hue);border-radius:8px;color:var(--inline-hue);text-decoration:none;font-size:13px;font-family:var(--mono);">더 보기</a>
+        <a href="#" style="display:inline-block;padding:10px 24px;background:rgba(180,124,247,.2);border:1px solid var(--inline2-hue);border-radius:8px;color:var(--inline2-hue);text-decoration:none;font-size:13px;font-family:var(--mono);">문서 보기</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  CSS Display Property Reference · Block &amp; Inline Elements Guide
+</footer>
+
+</body>
+</html>

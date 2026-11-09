@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 웹 호스팅 | AI 소프트웨어 학과</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0518;
+            --card: #150828;
+            --border: #2a1450;
+            --accent: #7b2fff;
+            --accent2: #ff6b35;
+            --accent3: #c084fc;
+            --text: #f0e8ff;
+            --text-muted: #9b7dc0;
+            --glow: rgba(123, 47, 255, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* ── Header ── */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 36px;
+            background: rgba(13, 5, 24, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent3);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: gap 0.3s;
+        }
+
+        .back-btn:hover {
+            gap: 12px;
+        }
+
+        .header-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+        }
+
+        .header-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            padding: 5px 14px;
+            border-radius: 100px;
+            background: var(--glow);
+            border: 1px solid rgba(123, 47, 255, 0.4);
+            color: var(--accent3);
+            letter-spacing: 2px;
+        }
+
+        /* ── Hero ── */
+        .page-hero {
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 100px 60px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 80% 50%, rgba(123, 47, 255, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 20%, rgba(255, 107, 53, 0.07) 0%, transparent 60%);
+        }
+
+        /* Code rain decoration */
+        .code-deco {
+            position: absolute;
+            top: 80px;
+            right: 60px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(123, 47, 255, 0.3);
+            line-height: 1.8;
+            text-align: right;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--accent3);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            opacity: 0;
+            animation: slideUp 0.6s 0.2s forwards;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(32px, 5vw, 60px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: slideUp 0.6s 0.35s forwards;
+        }
+
+        .page-hero h1 em {
+            font-style: normal;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero p {
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 500px;
+            opacity: 0;
+            animation: slideUp 0.6s 0.5s forwards;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 0 40px;
+        }
+
+        /* ── Main ── */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 40px 80px;
+        }
+
+        /* ── Stack Pills ── */
+        .stack-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent3);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .stack-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .stack-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            transition: all 0.3s;
+            opacity: 0;
+            animation: fadeIn 0.4s forwards;
+        }
+
+        .stack-pill:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stack-pill:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stack-pill:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stack-pill:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .stack-pill:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .stack-pill:hover {
+            border-color: var(--accent);
+            background: var(--glow);
+            transform: scale(1.05);
+        }
+
+        .stack-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-html {
+            background: #ff6b35;
+        }
+
+        .dot-css {
+            background: #00d4ff;
+        }
+
+        .dot-js {
+            background: #ffc800;
+        }
+
+        .dot-ai {
+            background: #7b2fff;
+        }
+
+        .dot-host {
+            background: #00ff88;
+        }
+
+        /* ── Code Cards ── */
+        .code-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent2);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .code-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        .code-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .code-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(123, 47, 255, 0.15);
+        }
+
+        .code-card-top {
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .dot-row span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .d1 {
+            background: #ff5f56;
+        }
+
+        .d2 {
+            background: #ffbd2e;
+        }
+
+        .d3 {
+            background: #27c93f;
+        }
+
+        .file-tab {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .code-body {
+            padding: 20px 18px;
+        }
+
+        .code-body pre {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .kw {
+            color: #c084fc;
+        }
+
+        .str {
+            color: #86efac;
+        }
+
+        .fn {
+            color: #7dd3fc;
+        }
+
+        .cm {
+            color: #4b5563;
+        }
+
+        .num {
+            color: #fbbf24;
+        }
+
+        .tag {
+            color: #f97316;
+        }
+
+        .at {
+            color: #7b2fff;
+        }
+
+        .val {
+            color: #86efac;
+        }
+
+        .card-footer {
+            padding: 14px 18px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--accent3);
+        }
+
+        /* ── Project Cards ── */
+        .proj-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .proj-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 50px;
+        }
+
+        .proj-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .proj-row:hover {
+            border-color: var(--accent);
+            transform: translateX(6px);
+        }
+
+        .proj-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--accent3);
+            width: 36px;
+            flex-shrink: 0;
+        }
+
+        .proj-info {
+            flex: 1;
+        }
+
+        .proj-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .proj-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .proj-status {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            padding: 4px 12px;
+            border-radius: 100px;
+        }
+
+        .s-plan {
+            background: rgba(123, 47, 255, 0.1);
+            color: var(--accent3);
+            border: 1px solid rgba(123, 47, 255, 0.3);
+        }
+
+        .s-done {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .s-wip {
+            background: rgba(255, 107, 53, 0.1);
+            color: #ff6b35;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        /* ── File Table ── */
+        .file-table {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 50px;
+        }
+
+        .ftrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.25s;
+        }
+
+        .ftrow:hover {
+            border-color: var(--accent);
+            background: rgba(123, 47, 255, 0.07);
+            transform: translateX(5px);
+        }
+
+        .ftrow-new {
+            border-color: rgba(123, 47, 255, 0.4);
+        }
+
+        .ftrow-new::after {
+            content: 'NEW';
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(123, 47, 255, 0.15);
+            color: var(--accent3);
+            border: 1px solid rgba(123, 47, 255, 0.3);
+            margin-left: auto;
+            margin-right: 8px;
+        }
+
+        .fticon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .ftname {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+            color: var(--text);
+        }
+
+        .ftext {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .ftdate {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .ftarr {
+            color: var(--accent3);
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: transform 0.25s;
+        }
+
+        .ftrow:hover .ftarr {
+            transform: translateX(4px);
+        }
+
+        /* ── Note ── */
+        .note-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 10px;
+            padding: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--accent3);
+            text-decoration: none;
+        }
+
+        /* ── Animations ── */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media(max-width: 600px) {
+            header {
+                padding: 0 16px;
+            }
+
+            .header-title {
+                display: none;
+            }
+
+            .page-hero {
+                padding: 90px 20px 40px;
+            }
+
+            .code-deco {
+                display: none;
+            }
+
+            main {
+                padding: 40px 16px 60px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="back-btn">← 홈으로</a>
+        <span class="header-title">AI · WEB HOSTING</span>
+        <span class="header-badge">COURSE 02</span>
+    </header>
+
+    <!-- Hero -->
+    <div class="page-hero">
+        <div class="code-deco">
+            &lt;html&gt;<br>
+            &nbsp;&nbsp;&lt;body&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;/* AI Web */<br>
+            &nbsp;&nbsp;&lt;/body&gt;<br>
+            &lt;/html&gt;
+        </div>
+        <div class="hero-tag">Course 02 · AI Web Hosting</div>
+        <h1>AI 웹 <em>호스팅</em></h1>
+        <p>HTML, CSS, JavaScript를 활용하여 웹 서비스를 구축하고<br>AI 기능을 통합하는 실전 웹 개발 수업입니다.</p>
+    </div>
+    <div class="divider"></div>
+
+    <!-- Main -->
+    <main>
+
+        <!-- 기술 스택 -->
+        <div class="stack-label">TECH STACK</div>
+        <div class="stack-row">
+            <div class="stack-pill"><span class="stack-dot dot-html"></span> HTML5</div>
+            <div class="stack-pill"><span class="stack-dot dot-css"></span> CSS3</div>
+            <div class="stack-pill"><span class="stack-dot dot-js"></span> JavaScript</div>
+            <div class="stack-pill"><span class="stack-dot dot-ai"></span> AI API</div>
+            <div class="stack-pill"><span class="stack-dot dot-host"></span> Web Hosting</div>
+        </div>
+
+        <!-- 실습 파일 목록 -->
+        <div class="code-label">PRACTICE FILES — 총 17개</div>
+        <div class="file-table">
+
+            <a href="anseksHtml.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">anseksHtml<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="formTag.html" class="ftrow ftrow-new">
+                <span class="fticon">📄</span>
+                <span class="ftname">formTag<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-05-12</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="frameHtml.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">frameHtml<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-24</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="Html.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">Html<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="htmlTag.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">htmlTag<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-05-19</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="hyperlink.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">hyperlink<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="img.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">img<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="imgH.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">imgH<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-07</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="index.html" class="ftrow">
+                <span class="fticon">🏠</span>
+                <span class="ftname">index<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-05-19</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="metaHtml.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">metaHtml<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="sChar.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">sChar<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-31</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="selectForm.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">selectForm<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-05-12</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="table.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">table<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-31</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="tablespan.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">tablespan<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-31</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="tagHtml.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">tagHtml<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-04-14</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="text.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">text<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-31</span>
+                <span class="ftarr">›</span>
+            </a>
+            <a href="text4주자.html" class="ftrow">
+                <span class="fticon">📄</span>
+                <span class="ftname">text4주자<span class="ftext">.html</span></span>
+                <span class="ftdate">2026-03-31</span>
+                <span class="ftarr">›</span>
+            </a>
+
+        </div>
+
+        <!-- 프로젝트 목록 -->
+        <div class="proj-label">PROJECTS</div>
+        <div class="proj-list">
+
+            <a href="index.html" class="proj-row">
+                <span class="proj-num">01</span>
+                <div class="proj-info">
+                    <div class="proj-name">포트폴리오 홈페이지</div>
+                    <div class="proj-desc">HTML · CSS · JavaScript로 제작한 개인 포트폴리오 사이트</div>
+                </div>
+                <span class="proj-status s-done">완료</span>
+            </a>
+
+            <a href="#" class="proj-row">
+                <span class="proj-num">02</span>
+                <div class="proj-info">
+                    <div class="proj-name">AI 챗봇 웹앱</div>
+                    <div class="proj-desc">OpenAI API를 연동한 질문 응답형 챗봇 서비스</div>
+                </div>
+                <span class="proj-status s-wip">진행 중</span>
+            </a>
+
+            <a href="#" class="proj-row">
+                <span class="proj-num">03</span>
+                <div class="proj-info">
+                    <div class="proj-name">AI 이미지 생성기</div>
+                    <div class="proj-desc">생성형 AI API를 활용한 텍스트→이미지 변환 서비스</div>
+                </div>
+                <span class="proj-status s-plan">계획 중</span>
+            </a>
+
+            <a href="#" class="proj-row">
+                <span class="proj-num">04</span>
+                <div class="proj-info">
+                    <div class="proj-name">반응형 쇼핑몰 UI</div>
+                    <div class="proj-desc">CSS Grid · Flexbox를 활용한 반응형 레이아웃 구현</div>
+                </div>
+                <span class="proj-status s-plan">계획 중</span>
+            </a>
+
+        </div>
+
+        <!-- 메모 -->
+        <div class="note-box">
+            🚀 &nbsp;<strong>학습 메모</strong><br><br>
+            AI 웹 호스팅 수업에서는 프론트엔드 기초부터 AI API 연동까지 단계적으로 학습합니다.
+            HTML 구조 설계 → CSS 스타일링 → JavaScript 동적 기능 → AI 서비스 통합의 흐름으로
+            실제 서비스 가능한 웹 앱을 완성하는 것이 최종 목표입니다.
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <span>AI 웹 호스팅 | 여주대학교 AI 소프트웨어 학과</span>
+        <a href="index.html">← 포트폴리오 홈으로</a>
+    </footer>
+
+</body>
+
+</html>

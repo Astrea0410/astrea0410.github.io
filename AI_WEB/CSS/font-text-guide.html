@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Font & Text 속성 완전 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ RESET & ROOT ═══════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0d0f14;
+  --surface:#13161e;
+  --card:#1a1e2a;
+  --border:#252a3a;
+  --accent:#e8c87a;
+  --accent2:#7ab8e8;
+  --accent3:#e87ab0;
+  --text:#e8e4dc;
+  --muted:#6b7280;
+  --code-bg:#0a0c10;
+  --serif:'Playfair Display',serif;
+  --sans:'Noto Sans KR',sans-serif;
+  --mono:'Source Code Pro',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  font-weight:300;
+  counter-reset:page-counter;
+}
+
+/* ═══ PAGE BREAKS ════════════════════════════════════ */
+.page{
+  min-height:100vh;
+  padding:0;
+  position:relative;
+  border-bottom:1px solid var(--border);
+}
+.page-inner{
+  max-width:900px;
+  margin:0 auto;
+  padding:3.5rem 2rem 4rem;
+}
+
+/* ═══ COVER / PAGE 1 HEADER ═════════════════════════ */
+.cover{
+  background: radial-gradient(ellipse at 30% 40%,#1e2535 0%,#0d0f14 70%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  padding:6rem 2rem 4rem;
+  position:relative;
+  overflow:hidden;
+}
+.cover::before{
+  content:'';
+  position:absolute;
+  top:-120px;right:-120px;
+  width:500px;height:500px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(232,200,122,.07) 0%,transparent 70%);
+}
+.cover::after{
+  content:'';
+  position:absolute;
+  bottom:-60px;left:20%;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(122,184,232,.05) 0%,transparent 70%);
+}
+.cover-inner{max-width:900px;margin:0 auto;width:100%;position:relative;}
+.vol-label{
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.5rem;
+  opacity:.9;
+}
+.cover h1{
+  font-family:var(--serif);
+  font-size:clamp(2.4rem,5vw,3.8rem);
+  font-weight:700;
+  line-height:1.15;
+  color:#f0ece4;
+  margin-bottom:.6rem;
+}
+.cover h1 em{
+  font-style:italic;
+  color:var(--accent);
+}
+.cover-sub{
+  font-size:.95rem;
+  color:var(--muted);
+  margin-top:1rem;
+  max-width:500px;
+}
+.cover-toc{
+  margin-top:2.5rem;
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+.toc-pill{
+  font-family:var(--mono);
+  font-size:.72rem;
+  padding:.3rem .9rem;
+  border:1px solid var(--border);
+  border-radius:99px;
+  color:var(--muted);
+  letter-spacing:.05em;
+}
+.toc-pill.active{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+/* ═══ SECTION HEADER ════════════════════════════════ */
+.section-head{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  margin-bottom:2rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+}
+.section-num{
+  font-family:var(--mono);
+  font-size:.65rem;
+  letter-spacing:.2em;
+  color:var(--accent);
+  background:rgba(232,200,122,.1);
+  border:1px solid rgba(232,200,122,.25);
+  padding:.25rem .7rem;
+  border-radius:3px;
+}
+.section-title{
+  font-family:var(--serif);
+  font-size:1.5rem;
+  font-weight:700;
+  color:#f0ece4;
+}
+
+/* ═══ EXAMPLE BLOCK ══════════════════════════════════ */
+.ex-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+  margin-bottom:1.2rem;
+}
+@media(max-width:640px){.ex-grid{grid-template-columns:1fr}}
+
+.ex-block{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+}
+.ex-block.full{grid-column:1/-1}
+
+.ex-tag{
+  font-family:var(--mono);
+  font-size:.65rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:.55rem 1rem;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--surface);
+}
+.ex-num{
+  font-family:var(--mono);
+  font-size:.6rem;
+  background:var(--accent);
+  color:#0d0f14;
+  padding:.1rem .45rem;
+  border-radius:3px;
+  font-weight:600;
+}
+
+.ex-preview{
+  padding:1.4rem 1.2rem;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+}
+
+.ex-code{
+  background:var(--code-bg);
+  padding:.7rem 1rem;
+  border-top:1px solid var(--border);
+  font-family:var(--mono);
+  font-size:.72rem;
+  color:#a8b8d8;
+  line-height:1.7;
+  white-space:pre-wrap;
+  word-break:break-all;
+}
+.ck{ color:#e87ab0; }   /* key   */
+.cv{ color:#98d4a0; }   /* value */
+.cc{ color:#506060; font-style:italic; }  /* comment */
+
+.ex-desc{
+  padding:.6rem 1rem .8rem;
+  font-size:.78rem;
+  color:var(--muted);
+  line-height:1.6;
+  border-top:1px dashed var(--border);
+}
+.ex-desc strong{color:var(--accent2);}
+
+/* ═══ PAGE LABEL (bottom right) ═════════════════════ */
+.pg-label{
+  position:absolute;
+  bottom:1.5rem;right:2rem;
+  font-family:var(--mono);
+  font-size:.65rem;
+  color:var(--border);
+  letter-spacing:.15em;
+}
+
+/* ═══ COLOR PALETTE STRIP ════════════════════════════ */
+.palette{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:.5rem;
+  margin-top:.8rem;
+}
+@media(max-width:500px){.palette{grid-template-columns:repeat(3,1fr)}}
+.swatch{
+  border-radius:5px;
+  height:56px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:.3rem .5rem;
+  font-family:var(--mono);
+  font-size:.58rem;
+  line-height:1.4;
+}
+.sw-hex{font-weight:600;}
+.sw-name{opacity:.7;}
+
+/* ═══ DIVIDER ════════════════════════════════════════ */
+.divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:2rem 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ╔════════════════════════════════════════════╗ -->
+<!-- ║  PAGE 1 — COVER + FONT / COLOR             ║ -->
+<!-- ╚════════════════════════════════════════════╝ -->
+<section class="page cover">
+  <div class="cover-inner">
+    <p class="vol-label">HTML / CSS3 Typography Reference</p>
+    <h1>Font &amp; <em>Text</em><br>속성 완전 가이드</h1>
+    <p class="cover-sub">font, text-shadow, color, direction, decoration, transform 핵심 예제 10종 — 16진수 색상 포함</p>
+    <div class="cover-toc">
+      <span class="toc-pill active">P.1 Font 속성</span>
+      <span class="toc-pill active">P.1 16진수 색상</span>
+      <span class="toc-pill">P.2 Text 속성</span>
+      <span class="toc-pill">P.2 text-shadow</span>
+      <span class="toc-pill">P.3 direction</span>
+      <span class="toc-pill">P.3 decoration</span>
+      <span class="toc-pill">P.3 transform</span>
+    </div>
+  </div>
+  <span class="pg-label">PAGE 01 / 03</span>
+</section>
+
+<section class="page">
+<div class="page-inner">
+
+  <!-- ── FONT 속성 ─────────────────────────────── -->
+  <div class="section-head">
+    <span class="section-num">SECTION 01</span>
+    <span class="section-title">font 속성</span>
+  </div>
+
+  <div class="ex-grid">
+
+    <!-- EX 01 font-family -->
+    <div class="ex-block">
+      <div class="ex-tag">font-family <span class="ex-num">01</span></div>
+      <div class="ex-preview">
+        <span style="font-family:'Georgia',serif; font-size:1.15rem; color:#e8e4dc;">
+          Typography defines character.
+        </span>
+      </div>
+      <div class="ex-code"><span class="ck">font-family</span>: <span class="cv">'Georgia', serif</span>;</div>
+      <div class="ex-desc"><strong>font-family</strong>는 텍스트의 글꼴을 지정합니다. 쉼표로 대체 폰트를 나열하며 마지막은 serif·sans-serif 등 <strong>일반 계열</strong>로 마무리합니다.</div>
+    </div>
+
+    <!-- EX 02 font-size + font-weight -->
+    <div class="ex-block">
+      <div class="ex-tag">font-size / font-weight <span class="ex-num">02</span></div>
+      <div class="ex-preview" style="flex-direction:column;align-items:flex-start;gap:.4rem;">
+        <span style="font-size:1.6rem;font-weight:700;color:#e8c87a;">크고 굵게 700</span>
+        <span style="font-size:.85rem;font-weight:300;color:#9ca3af;">작고 얇게 300</span>
+      </div>
+      <div class="ex-code"><span class="ck">font-size</span>: <span class="cv">1.6rem</span>;
+<span class="ck">font-weight</span>: <span class="cv">700</span>;  <span class="cc">/* 100–900 */</span></div>
+      <div class="ex-desc"><strong>font-size</strong>는 글자 크기(px·rem·em·%), <strong>font-weight</strong>는 굵기(100~900)를 설정합니다. rem은 루트 기준 상대 단위입니다.</div>
+    </div>
+
+    <!-- EX 03 font-style + font-variant -->
+    <div class="ex-block">
+      <div class="ex-tag">font-style / font-variant <span class="ex-num">03</span></div>
+      <div class="ex-preview" style="flex-direction:column;align-items:flex-start;gap:.4rem;">
+        <span style="font-style:italic;color:#7ab8e8;font-size:1.05rem;">Italic — 기울임 텍스트</span>
+        <span style="font-variant:small-caps;color:#e8e4dc;font-size:1rem;letter-spacing:.05em;">small-caps variant</span>
+      </div>
+      <div class="ex-code"><span class="ck">font-style</span>: <span class="cv">italic</span>;
+<span class="ck">font-variant</span>: <span class="cv">small-caps</span>;</div>
+      <div class="ex-desc"><strong>font-style</strong>은 normal·italic·oblique를 설정합니다. <strong>font-variant: small-caps</strong>는 소문자를 작은 대문자로 표시합니다.</div>
+    </div>
+
+    <!-- EX 04 font 단축속성 -->
+    <div class="ex-block">
+      <div class="ex-tag">font 단축속성 <span class="ex-num">04</span></div>
+      <div class="ex-preview">
+        <span style="font:italic 700 1.2rem/1.9 'Georgia',serif;color:#e87ab0;">
+          font 단축으로 한 번에 설정
+        </span>
+      </div>
+      <div class="ex-code"><span class="ck">font</span>: <span class="cv">italic 700 1.2rem/1.9</span>
+       <span class="cv">'Georgia', serif</span>;
+<span class="cc">/* style weight size/line-height family */</span></div>
+      <div class="ex-desc"><strong>font 단축속성</strong>은 style·variant·weight·size/line-height·family를 한 줄에 표기합니다. size와 family는 필수입니다.</div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 16진수 색상 ─────────────────────────── -->
+  <div class="section-head" style="margin-top:0">
+    <span class="section-num">SECTION 02</span>
+    <span class="section-title">color — 16진수 색상 10가지</span>
+  </div>
+
+  <div class="palette">
+    <div class="swatch" style="background:#e8c87a;">
+      <span class="sw-hex" style="color:#3a2e00;">#e8c87a</span>
+      <span class="sw-name" style="color:#3a2e00;">골드</span>
+    </div>
+    <div class="swatch" style="background:#7ab8e8;">
+      <span class="sw-hex" style="color:#00213a;">#7ab8e8</span>
+      <span class="sw-name" style="color:#00213a;">스카이블루</span>
+    </div>
+    <div class="swatch" style="background:#e87ab0;">
+      <span class="sw-hex" style="color:#3a0022;">#e87ab0</span>
+      <span class="sw-name" style="color:#3a0022;">핑크</span>
+    </div>
+    <div class="swatch" style="background:#98d4a0;">
+      <span class="sw-hex" style="color:#003a10;">#98d4a0</span>
+      <span class="sw-name" style="color:#003a10;">민트그린</span>
+    </div>
+    <div class="swatch" style="background:#c084fc;">
+      <span class="sw-hex" style="color:#1e003a;">#c084fc</span>
+      <span class="sw-name" style="color:#1e003a;">라벤더</span>
+    </div>
+    <div class="swatch" style="background:#f97316;">
+      <span class="sw-hex" style="color:#3a0e00;">#f97316</span>
+      <span class="sw-name" style="color:#3a0e00;">오렌지</span>
+    </div>
+    <div class="swatch" style="background:#f43f5e;">
+      <span class="sw-hex" style="color:#3a0010;">#f43f5e</span>
+      <span class="sw-name" style="color:#3a0010;">로즈레드</span>
+    </div>
+    <div class="swatch" style="background:#0ea5e9;">
+      <span class="sw-hex" style="color:#002a3a;">#0ea5e9</span>
+      <span class="sw-name" style="color:#002a3a;">사이안블루</span>
+    </div>
+    <div class="swatch" style="background:#a3e635;">
+      <span class="sw-hex" style="color:#1e3a00;">#a3e635</span>
+      <span class="sw-name" style="color:#1e3a00;">라임</span>
+    </div>
+    <div class="swatch" style="background:#e2e8f0;">
+      <span class="sw-hex" style="color:#1e2a3a;">#e2e8f0</span>
+      <span class="sw-name" style="color:#1e2a3a;">슬레이트화이트</span>
+    </div>
+  </div>
+
+  <div class="ex-block" style="margin-top:1rem;">
+    <div class="ex-tag">color — 16진수 사용법 <span class="ex-num">05</span></div>
+    <div class="ex-preview" style="flex-wrap:wrap;gap:.5rem;flex-direction:row;align-items:center;">
+      <span style="color:#e8c87a;font-size:1rem;font-weight:500;">#e8c87a 골드</span>
+      <span style="color:#7ab8e8;font-size:1rem;font-weight:500;">#7ab8e8 블루</span>
+      <span style="color:#e87ab0;font-size:1rem;font-weight:500;">#e87ab0 핑크</span>
+      <span style="color:#98d4a0;font-size:1rem;font-weight:500;">#98d4a0 민트</span>
+    </div>
+    <div class="ex-code"><span class="ck">color</span>: <span class="cv">#e8c87a</span>;  <span class="cc">/* R=e8 G=c8 B=7a (각 16진수 2자리) */</span>
+<span class="ck">color</span>: <span class="cv">#fff</span>;    <span class="cc">/* 3자리 축약형: #ffffff와 동일 */</span>
+<span class="ck">background-color</span>: <span class="cv">#0d0f14</span>;</div>
+    <div class="ex-desc"><strong>16진수 색상</strong>은 #RRGGBB 형식으로 각 채널을 00~ff(0~255)로 표현합니다. #fff처럼 3자리 축약도 가능합니다. <strong>불투명도</strong>를 추가하면 #RRGGBBAA 8자리가 됩니다.</div>
+  </div>
+
+</div>
+<span class="pg-label">PAGE 01 / 03</span>
+</section>
+
+
+<!-- ╔════════════════════════════════════════════╗ -->
+<!-- ║  PAGE 2 — TEXT 속성 + TEXT-SHADOW          ║ -->
+<!-- ╚════════════════════════════════════════════╝ -->
+<section class="page">
+<div class="page-inner">
+
+  <div class="section-head">
+    <span class="section-num">SECTION 03</span>
+    <span class="section-title">text 속성</span>
+  </div>
+
+  <div class="ex-grid">
+
+    <!-- EX 06 text-align + line-height -->
+    <div class="ex-block">
+      <div class="ex-tag">text-align / line-height <span class="ex-num">06</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.6rem;width:100%;">
+        <p style="text-align:left;line-height:1.3;font-size:.9rem;color:#e8e4dc;background:rgba(255,255,255,.04);padding:.4rem .7rem;border-radius:3px;">left 정렬 · line-height 1.3</p>
+        <p style="text-align:center;line-height:1.8;font-size:.9rem;color:#e8c87a;background:rgba(232,200,122,.06);padding:.4rem .7rem;border-radius:3px;">center 정렬 · line-height 1.8</p>
+        <p style="text-align:right;line-height:2.2;font-size:.9rem;color:#7ab8e8;background:rgba(122,184,232,.06);padding:.4rem .7rem;border-radius:3px;">right 정렬 · line-height 2.2</p>
+      </div>
+      <div class="ex-code"><span class="ck">text-align</span>: <span class="cv">center</span>;   <span class="cc">/* left|right|justify */</span>
+<span class="ck">line-height</span>: <span class="cv">1.8</span>;    <span class="cc">/* 배수·px·% */</span></div>
+      <div class="ex-desc"><strong>text-align</strong>은 텍스트 수평 정렬, <strong>line-height</strong>는 행간을 설정합니다. 가독성에는 1.5~1.8이 권장됩니다.</div>
+    </div>
+
+    <!-- EX 07 letter-spacing + word-spacing -->
+    <div class="ex-block">
+      <div class="ex-tag">letter/word-spacing <span class="ex-num">07</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.5rem;align-items:flex-start;">
+        <span style="letter-spacing:.25em;color:#c084fc;font-size:.9rem;text-transform:uppercase;">letter spacing .25em</span>
+        <span style="word-spacing:1.2rem;color:#e87ab0;font-size:.9rem;">단어 사이 word spacing</span>
+      </div>
+      <div class="ex-code"><span class="ck">letter-spacing</span>: <span class="cv">.25em</span>;  <span class="cc">/* 자간 */</span>
+<span class="ck">word-spacing</span>: <span class="cv">1.2rem</span>;  <span class="cc">/* 단어 간격 */</span></div>
+      <div class="ex-desc"><strong>letter-spacing</strong>은 글자 사이 간격(자간), <strong>word-spacing</strong>은 단어 간격을 조절합니다. em 단위는 현재 font-size에 비례합니다.</div>
+    </div>
+
+    <!-- EX 08 text-indent + white-space -->
+    <div class="ex-block">
+      <div class="ex-tag">text-indent / white-space <span class="ex-num">08</span></div>
+      <div class="ex-preview" style="flex-direction:column;align-items:flex-start;gap:.5rem;width:100%;">
+        <p style="text-indent:2em;font-size:.88rem;color:#e8e4dc;width:100%;">　들여쓰기 2em — 단락의 첫 줄이 두 글자만큼 안으로 들어갑니다.</p>
+        <p style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.88rem;color:#9ca3af;width:100%;max-width:260px;">nowrap + ellipsis: 긴 텍스트가 넘치면 생략 부호로 잘립니다.</p>
+      </div>
+      <div class="ex-code"><span class="ck">text-indent</span>: <span class="cv">2em</span>;
+<span class="ck">white-space</span>: <span class="cv">nowrap</span>;
+<span class="ck">text-overflow</span>: <span class="cv">ellipsis</span>;</div>
+      <div class="ex-desc"><strong>text-indent</strong>는 첫 줄 들여쓰기, <strong>white-space: nowrap</strong>은 줄바꿈 방지, <strong>text-overflow: ellipsis</strong>는 넘침 텍스트를 '…'으로 처리합니다.</div>
+    </div>
+
+    <!-- EX 09 text-shadow -->
+    <div class="ex-block">
+      <div class="ex-tag">text-shadow <span class="ex-num">09</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.8rem;align-items:flex-start;background:#08090d;border-radius:4px;padding:1rem;">
+        <span style="font-size:1.3rem;font-weight:700;color:#f0ece4;text-shadow:2px 2px 4px #000000;">기본 그림자</span>
+        <span style="font-size:1.3rem;font-weight:700;color:#e8c87a;text-shadow:0 0 12px #e8c87a, 0 0 30px #c0940050;">글로우 효과</span>
+        <span style="font-size:1.3rem;font-weight:700;color:#0d0f14;text-shadow:1px 1px 0 #7ab8e8,-1px -1px 0 #7ab8e8,1px -1px 0 #7ab8e8,-1px 1px 0 #7ab8e8;">아웃라인 효과</span>
+        <span style="font-size:1.3rem;font-weight:700;color:#e87ab0;text-shadow:3px 3px 0 #7a2040,6px 6px 0 #3a1020;">레이어 그림자</span>
+      </div>
+      <div class="ex-code"><span class="cc">/* x y blur color */</span>
+<span class="ck">text-shadow</span>: <span class="cv">2px 2px 4px #000000</span>;
+<span class="cc">/* 글로우: blur만 크게, 색=텍스트색 */</span>
+<span class="ck">text-shadow</span>: <span class="cv">0 0 12px #e8c87a</span>,
+              <span class="cv">0 0 30px #c0940050</span>;
+<span class="cc">/* 아웃라인: 4방향 그림자 합산 */</span>
+<span class="ck">text-shadow</span>: <span class="cv">1px 1px 0 #7ab8e8</span>,
+             <span class="cv">-1px -1px 0 #7ab8e8</span>;</div>
+      <div class="ex-desc"><strong>text-shadow</strong>는 <em>x-offset y-offset blur-radius color</em> 순서입니다. 쉼표로 여러 그림자를 중첩해 글로우·아웃라인·레이어 효과를 만들 수 있습니다.</div>
+    </div>
+
+  </div>
+
+</div>
+<span class="pg-label">PAGE 02 / 03</span>
+</section>
+
+
+<!-- ╔════════════════════════════════════════════╗ -->
+<!-- ║  PAGE 3 — DIRECTION / DECORATION / TRANSFORM║ -->
+<!-- ╚════════════════════════════════════════════╝ -->
+<section class="page">
+<div class="page-inner">
+
+  <div class="section-head">
+    <span class="section-num">SECTION 04</span>
+    <span class="section-title">direction · decoration · transform</span>
+  </div>
+
+  <div class="ex-grid">
+
+    <!-- EX 10 direction + unicode-bidi -->
+    <div class="ex-block full">
+      <div class="ex-tag">direction / unicode-bidi <span class="ex-num">10</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.8rem;align-items:stretch;width:100%;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;">
+          <div>
+            <p style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:#506060;margin-bottom:.35rem;font-family:monospace;">direction: ltr (기본)</p>
+            <p style="direction:ltr;font-size:.95rem;color:#e8e4dc;background:rgba(255,255,255,.04);padding:.5rem .8rem;border-radius:4px;text-align:left;">왼쪽 → 오른쪽 읽기 방향</p>
+          </div>
+          <div>
+            <p style="font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:#506060;margin-bottom:.35rem;font-family:monospace;">direction: rtl (아랍어 등)</p>
+            <p style="direction:rtl;font-size:.95rem;color:#e8c87a;background:rgba(232,200,122,.06);padding:.5rem .8rem;border-radius:4px;text-align:right;">오른쪽 ← 왼쪽 읽기 방향</p>
+          </div>
+        </div>
+        <p style="direction:rtl;unicode-bidi:bidi-override;font-size:.9rem;color:#7ab8e8;background:rgba(122,184,232,.06);padding:.5rem .8rem;border-radius:4px;">unicode-bidi: bidi-override — 글자 순서 강제 반전</p>
+      </div>
+      <div class="ex-code"><span class="ck">direction</span>: <span class="cv">ltr</span>;  <span class="cc">/* left-to-right (기본) */</span>
+<span class="ck">direction</span>: <span class="cv">rtl</span>;  <span class="cc">/* right-to-left (아랍·히브리어) */</span>
+<span class="ck">unicode-bidi</span>: <span class="cv">bidi-override</span>; <span class="cc">/* 방향 강제 적용 */</span></div>
+      <div class="ex-desc"><strong>direction</strong>은 텍스트 쓰기 방향을 지정합니다. <strong>ltr</strong>(기본)은 왼→오, <strong>rtl</strong>은 오→왼 방향으로 아랍어·히브리어 등 다국어 레이아웃에 사용합니다. <strong>unicode-bidi</strong>와 함께 쓰면 방향을 강제할 수 있습니다.</div>
+    </div>
+
+  </div>
+
+  <hr class="divider" style="margin:1.2rem 0">
+
+  <!-- decoration + transform 나란히 -->
+  <div class="ex-grid">
+
+    <!-- text-decoration -->
+    <div class="ex-block">
+      <div class="ex-tag">text-decoration <span class="ex-num">—</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.6rem;align-items:flex-start;">
+        <span style="text-decoration:underline;text-decoration-color:#e8c87a;text-decoration-style:solid;font-size:.95rem;color:#e8e4dc;">underline solid — 골드</span>
+        <span style="text-decoration:underline;text-decoration-color:#7ab8e8;text-decoration-style:wavy;font-size:.95rem;color:#e8e4dc;">underline wavy — 블루</span>
+        <span style="text-decoration:overline;text-decoration-color:#e87ab0;text-decoration-style:dashed;font-size:.95rem;color:#e8e4dc;">overline dashed — 핑크</span>
+        <span style="text-decoration:line-through;text-decoration-color:#f97316;text-decoration-thickness:3px;font-size:.95rem;color:#e8e4dc;">line-through 3px — 오렌지</span>
+        <span style="text-decoration:none;font-size:.95rem;color:#98d4a0;">none — 장식 없음 (링크 초기화)</span>
+      </div>
+      <div class="ex-code"><span class="ck">text-decoration</span>: <span class="cv">underline</span>;
+<span class="ck">text-decoration-color</span>: <span class="cv">#e8c87a</span>;
+<span class="ck">text-decoration-style</span>: <span class="cv">wavy</span>;
+  <span class="cc">/* solid|dashed|dotted|wavy|double */</span>
+<span class="ck">text-decoration-thickness</span>: <span class="cv">3px</span>;
+<span class="cc">/* 단축형: */</span>
+<span class="ck">text-decoration</span>: <span class="cv">underline wavy #7ab8e8 2px</span>;</div>
+      <div class="ex-desc"><strong>text-decoration</strong>은 밑줄·윗줄·취소선을 설정합니다. <strong>-color</strong>로 색, <strong>-style</strong>로 선 스타일, <strong>-thickness</strong>로 두께를 세부 제어할 수 있습니다. 단축속성으로 한 번에 작성도 가능합니다.</div>
+    </div>
+
+    <!-- text-transform -->
+    <div class="ex-block">
+      <div class="ex-tag">text-transform <span class="ex-num">—</span></div>
+      <div class="ex-preview" style="flex-direction:column;gap:.6rem;align-items:flex-start;">
+        <span style="text-transform:uppercase;color:#c084fc;font-size:.95rem;letter-spacing:.08em;">uppercase — 모두 대문자</span>
+        <span style="text-transform:lowercase;color:#98d4a0;font-size:.95rem;">LOWERCASE — 모두 소문자</span>
+        <span style="text-transform:capitalize;color:#e8c87a;font-size:.95rem;">capitalize — 첫글자 대문자</span>
+        <span style="text-transform:none;color:#9ca3af;font-size:.95rem;">none — 원본 그대로 유지</span>
+      </div>
+      <div class="ex-code"><span class="ck">text-transform</span>: <span class="cv">uppercase</span>;
+  <span class="cc">/* 모두 대문자로 변환 */</span>
+<span class="ck">text-transform</span>: <span class="cv">lowercase</span>;
+  <span class="cc">/* 모두 소문자로 변환 */</span>
+<span class="ck">text-transform</span>: <span class="cv">capitalize</span>;
+  <span class="cc">/* 각 단어 첫 글자 대문자 */</span>
+<span class="ck">text-transform</span>: <span class="cv">none</span>;
+  <span class="cc">/* 변환 없음 (기본값) */</span></div>
+      <div class="ex-desc"><strong>text-transform</strong>은 HTML 원본을 바꾸지 않고 CSS로만 대소문자를 변환합니다. <strong>uppercase</strong>는 브랜드명·버튼·레이블에, <strong>capitalize</strong>는 제목에 자주 사용합니다.</div>
+    </div>
+
+  </div>
+
+  <!-- 종합 요약 테이블 -->
+  <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+    <div class="ex-tag" style="justify-content:flex-start;gap:.8rem;">
+      <span class="section-num" style="font-size:.6rem;">SUMMARY</span>
+      <span style="font-size:.72rem;color:var(--muted);">핵심 속성 10종 한눈에 보기</span>
+    </div>
+    <div style="padding:.8rem 1rem;">
+      <table style="width:100%;border-collapse:collapse;font-size:.78rem;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="text-align:left;padding:.45rem .6rem;color:var(--accent);font-weight:600;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;">속성</th>
+            <th style="text-align:left;padding:.45rem .6rem;color:var(--accent);font-weight:600;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;">주요 값</th>
+            <th style="text-align:left;padding:.45rem .6rem;color:var(--accent);font-weight:600;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;">핵심 용도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#e87ab0;">font-family</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">'Georgia', serif</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">글꼴 지정 (대체 폰트 나열)</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#e87ab0;">font-size/weight</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">1.2rem / 700</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">크기·굵기 조절</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#e87ab0;">font-style/variant</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">italic / small-caps</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">기울임·소문자 대문자화</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#7ab8e8;">color (16진수)</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">#e8c87a / #fff</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">텍스트·배경 색상</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#7ab8e8;">text-align/line-height</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">center / 1.8</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">정렬·행간 설정</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#7ab8e8;">letter/word-spacing</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">.25em / 1.2rem</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">자간·단어 간격</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#7ab8e8;">text-indent/overflow</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">2em / ellipsis</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">들여쓰기·텍스트 넘침 처리</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#98d4a0;">text-shadow</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">2px 2px 4px #000</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">그림자·글로우·아웃라인</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(37,42,58,.6);">
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#98d4a0;">text-decoration</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">underline wavy #7ab8e8</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">밑줄·취소선·색상·스타일</td>
+          </tr>
+          <tr>
+            <td style="padding:.4rem .6rem;font-family:var(--mono);color:#98d4a0;">direction / transform</td>
+            <td style="padding:.4rem .6rem;color:var(--muted);">rtl / uppercase</td>
+            <td style="padding:.4rem .6rem;color:var(--text);">쓰기 방향·대소문자 변환</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<span class="pg-label">PAGE 03 / 03</span>
+</section>
+
+</body>
+</html>

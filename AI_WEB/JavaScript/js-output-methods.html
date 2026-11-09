@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>예제8-6 자바스크립트 출력문 정리</title>
+<style>
+  :root {
+    --bg: #f5f7f9; --panel: #ffffff; --text: #1c2530; --muted: #5d6b7a;
+    --line: #dbe1e7; --accent: #0b7f78; --accent-soft: #e0f3f1;
+    --code-bg: #10161d; --code-text: #d7e0ea;
+    --k: #ff8f7a; --s: #8fd694; --c: #74869a; --f: #7fc3ff; --t: #e9c46a;
+    --warn-bg: #fff4e0; --warn-line: #e8b35c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f141a; --panel: #171e26; --text: #e4eaf0; --muted: #93a1b0;
+      --line: #28323d; --accent: #4fd1c5; --accent-soft: #14312f;
+      --code-bg: #0a0e13; --warn-bg: #2b2313; --warn-line: #8a6a2a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f141a; --panel: #171e26; --text: #e4eaf0; --muted: #93a1b0;
+    --line: #28323d; --accent: #4fd1c5; --accent-soft: #14312f;
+    --code-bg: #0a0e13; --warn-bg: #2b2313; --warn-line: #8a6a2a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.75 "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  h1 { font-size: 2rem; line-height: 1.3; margin: 0 0 8px; }
+  h2 { font-size: 1.35rem; margin: 48px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 1.05rem; margin: 24px 0 8px; }
+  p { margin: 8px 0; }
+  .lead { color: var(--muted); margin: 0; }
+  #themeBtn { flex: none; }
+  button {
+    font: inherit; font-size: .9rem; cursor: pointer; color: var(--text);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px;
+  }
+  button:hover { border-color: var(--accent); }
+  button.run { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); font-size: .95rem; }
+  th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  code { font: .9em/1.5 "D2Coding", "Consolas", "Menlo", monospace; background: var(--accent-soft); padding: 1px 6px; border-radius: 4px; }
+  pre {
+    margin: 12px 0; padding: 16px 18px; overflow-x: auto; background: var(--code-bg); color: var(--code-text);
+    border-radius: 8px; font: .88rem/1.7 "D2Coding", "Consolas", "Menlo", monospace;
+  }
+  pre code { background: none; padding: 0; font: inherit; }
+  .k { color: var(--k); } .s { color: var(--s); } .c { color: var(--c); font-style: italic; } .f { color: var(--f); } .t { color: var(--t); }
+  .demo { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 12px 0; }
+  .demo-title { font-weight: 700; margin: 0 0 10px; }
+  .demo .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .result { min-height: 44px; padding: 10px 12px; border: 1px dashed var(--line); border-radius: 6px; }
+  iframe { width: 100%; height: 130px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  .fake-console { background: var(--code-bg); color: var(--code-text); font: .85rem/1.6 "D2Coding", "Consolas", monospace; padding: 10px 12px; border-radius: 6px; min-height: 44px; }
+  .note { background: var(--warn-bg); border-left: 4px solid var(--warn-line); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 16px 0; }
+  ol.order li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>자바스크립트 출력 방법 4가지</h1>
+      <p class="lead">예제 8-6 · <code>document.write()</code>, <code>innerHTML</code>, <code>alert()</code>, <code>console.log()</code></p>
+    </div>
+    <button id="themeBtn" type="button" aria-label="테마 전환">테마 전환</button>
+  </header>
+
+  <h2>한눈에 보기</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>방법</th><th>출력 위치</th><th>주로 쓰는 경우</th></tr></thead>
+      <tbody>
+        <tr><td><code>document.write()</code></td><td>HTML 문서 본문에 직접</td><td>간단한 테스트 (실제 개발에서는 거의 사용 안 함)</td></tr>
+        <tr><td><code>innerHTML</code></td><td>선택한 요소 안쪽</td><td>화면의 특정 부분을 바꿀 때 (가장 많이 사용)</td></tr>
+        <tr><td><code>window.alert()</code></td><td>팝업 경고창</td><td>사용자에게 바로 알리고 싶을 때</td></tr>
+        <tr><td><code>console.log()</code></td><td>개발자 도구 콘솔</td><td>값 확인, 오류 찾기(디버깅)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>예제 코드</h2>
+  <p>4가지 출력 방법을 한 파일에서 차례로 실행하는 코드입니다. 주석에 각 줄이 하는 일을 적었습니다.</p>
+<pre><code><span class="c">&lt;!-- 문서 형식을 HTML5로 선언 --&gt;</span>
+<span class="t">&lt;!DOCTYPE html&gt;</span>
+<span class="t">&lt;html&gt;</span>
+<span class="t">&lt;head&gt;</span>
+    <span class="t">&lt;title&gt;</span>예제8-6 출력문<span class="t">&lt;/title&gt;</span>
+<span class="t">&lt;/head&gt;</span>
+<span class="t">&lt;body&gt;</span>
+<span class="t">&lt;h1&gt;</span>JavaScript Output<span class="t">&lt;/h1&gt;</span>
+<span class="c">&lt;!-- innerHTML로 내용을 채울 빈 단락. id로 찾아서 사용 --&gt;</span>
+<span class="t">&lt;p</span> id=<span class="s">"output"</span><span class="t">&gt;&lt;/p&gt;</span>
+    <span class="t">&lt;script&gt;</span>
+        <span class="c">// 1. 문서(body)에 문자열을 그대로 써 넣는다</span>
+        document.<span class="f">write</span>(<span class="s">"outPut1:write"</span>);
+
+        <span class="c">// 2. id="output"인 요소를 찾아 그 안의 내용을 바꾼다</span>
+        document.<span class="f">getElementById</span>(<span class="s">"output"</span>).innerHTML = <span class="s">"outPut2:innerHTML"</span>;
+
+        <span class="c">// 3. 팝업 창으로 메시지를 띄운다 (확인을 누를 때까지 멈춤)</span>
+        window.<span class="f">alert</span>(<span class="s">"outPut3:alert"</span>);
+
+        <span class="c">// 4. 개발자 도구(F12)의 Console 탭에 기록한다</span>
+        console.<span class="f">log</span>(<span class="s">"outPut4:console"</span>);
+    <span class="t">&lt;/script&gt;</span>
+<span class="t">&lt;/body&gt;</span>
+<span class="t">&lt;/html&gt;</span></code></pre>
+
+  <h3>실행 결과와 실행 순서</h3>
+  <ol class="order">
+    <li><code>document.write</code>가 먼저 실행되어 화면에 <code>outPut1:write</code>가 찍힙니다.</li>
+    <li><code>innerHTML</code>이 <code>&lt;p id="output"&gt;</code> 안에 <code>outPut2:innerHTML</code>을 넣습니다.</li>
+    <li><code>alert</code> 창이 뜨고, [확인]을 누를 때까지 다음 코드로 넘어가지 않습니다.</li>
+    <li>[확인] 후 <code>console.log</code>가 콘솔에 <code>outPut4:console</code>을 기록합니다. 화면에는 보이지 않으니 F12를 눌러 확인하세요.</li>
+  </ol>
+
+  <h2>방법별 설명과 직접 실행</h2>
+
+  <h3>1. document.write()</h3>
+  <p>HTML 문서에 문자열을 그대로 써 넣습니다. HTML 태그도 함께 쓸 수 있습니다. 배우기 쉽지만, 실제 개발에서는 잘 쓰지 않습니다.</p>
+  <div class="note"><strong>주의:</strong> 페이지 로딩이 끝난 뒤에 <code>document.write()</code>를 실행하면 기존 문서 전체가 지워지고 그 내용만 남습니다. 아래에서 두 경우를 비교해 보세요.</div>
+  <div class="demo">
+    <p class="demo-title">직접 실행해 보기</p>
+    <div class="row">
+      <button class="run" type="button" onclick="runWrite(false)">로딩 중에 실행</button>
+      <button type="button" onclick="runWrite(true)">로딩 후에 실행</button>
+    </div>
+    <iframe id="f1" title="document.write 실행 결과" srcdoc="<p style='font-family:sans-serif;color:#555'>버튼을 눌러 결과를 확인하세요.</p>"></iframe>
+  </div>
+
+  <h3>2. innerHTML</h3>
+  <p><code>getElementById("output")</code>으로 요소를 찾고, <code>innerHTML</code>에 값을 넣으면 그 요소의 내용만 바뀝니다. 문서의 다른 부분은 그대로 유지되므로 화면 출력에 가장 많이 쓰입니다. 태그가 포함된 문자열을 넣으면 태그로 해석됩니다. 단순한 글자만 넣을 때는 <code>textContent</code>도 사용할 수 있습니다.</p>
+  <div class="demo">
+    <p class="demo-title">직접 실행해 보기</p>
+    <div class="row">
+      <button class="run" type="button" onclick="document.getElementById('res2').innerHTML = 'outPut2:innerHTML'">내용 넣기</button>
+      <button type="button" onclick="document.getElementById('res2').innerHTML = '&lt;b&gt;굵은 글씨&lt;/b&gt;도 태그로 적용됩니다'">태그 넣기</button>
+      <button type="button" onclick="document.getElementById('res2').innerHTML = ''">지우기</button>
+    </div>
+    <div class="result" id="res2"></div>
+  </div>
+
+  <h3>3. window.alert()</h3>
+  <p>화면 위에 팝업 경고창을 띄웁니다. 사용자가 [확인]을 누를 때까지 페이지의 다른 동작이 멈추기 때문에, 꼭 필요한 알림에만 사용합니다. <code>window.</code>는 생략하고 <code>alert()</code>만 써도 됩니다.</p>
+  <div class="demo">
+    <p class="demo-title">직접 실행해 보기</p>
+    <div class="row">
+      <button class="run" type="button" onclick="window.alert('outPut3:alert')">alert 띄우기</button>
+    </div>
+  </div>
+
+  <h3>4. console.log()</h3>
+  <p>브라우저 개발자 도구(F12)의 Console 탭에 값을 출력합니다. 사용자 화면에는 나타나지 않아서, 변수 값이 맞는지 확인하는 디버깅용으로 씁니다.</p>
+  <div class="demo">
+    <p class="demo-title">직접 실행해 보기</p>
+    <div class="row">
+      <button class="run" type="button" onclick="runLog()">console.log 실행</button>
+      <button type="button" onclick="document.getElementById('res4').textContent = ''">지우기</button>
+    </div>
+    <div class="fake-console" id="res4" aria-live="polite"></div>
+    <p style="color:var(--muted);font-size:.9rem">위 검은 상자는 이해를 돕기 위한 모형입니다. 실제 출력은 F12 → Console 탭에서 볼 수 있습니다.</p>
+  </div>
+</main>
+
+<script>
+  // 라이트/다크 테마 전환
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var root = document.documentElement;
+    var isDark = root.dataset.theme === 'dark' ||
+      (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.dataset.theme = isDark ? 'light' : 'dark';
+  });
+
+  // 1. document.write 데모: iframe 안에서 실행해 이 페이지가 지워지지 않게 한다
+  function runWrite(afterLoad) {
+    var html = afterLoad
+      ? '<h1 style="font-size:1.1rem">JavaScript Output</h1><p>이 내용은 로딩이 끝나면 지워집니다.</p>' +
+        '<script>window.onload = function () { document.write("outPut1:write (로딩 후 실행 - 기존 내용이 사라짐)"); };<\/script>'
+      : '<h1 style="font-size:1.1rem">JavaScript Output</h1>' +
+        '<script>document.write("outPut1:write");<\/script>';
+    document.getElementById('f1').srcdoc = html;
+  }
+
+  // 4. console.log 데모
+  function runLog() {
+    console.log('outPut4:console');
+    var box = document.getElementById('res4');
+    box.textContent += '> outPut4:console\n';
+    box.style.whiteSpace = 'pre-wrap';
+  }
+</script>
+</body>
+</html>

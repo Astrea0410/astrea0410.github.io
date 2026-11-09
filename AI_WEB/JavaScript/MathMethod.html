@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JavaScript Math 객체의 상수</title>
+    <style>
+        :root {
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            color: #233044;
+            background: #f3f6fb;
+            line-height: 1.65;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 32px 20px 56px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: #173b70;
+        }
+
+        .intro {
+            margin-top: 0;
+            color: #53647b;
+        }
+
+        .constants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 18px;
+            margin-top: 26px;
+        }
+
+        .constant {
+            padding: 20px;
+            border: 1px solid #dfe7f1;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 4px 14px rgb(34 56 85 / 6%);
+        }
+
+        .constant h2 {
+            margin: 0;
+            color: #24599a;
+            font-size: 1.2rem;
+        }
+
+        .value {
+            margin: 6px 0 0;
+            color: #b14619;
+            font-family: Consolas, monospace;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .constant p {
+            margin: 8px 0;
+        }
+
+        figure {
+            margin: 16px 0 0;
+            padding: 10px;
+            border-radius: 10px;
+            background: #f5f8fc;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 190px;
+        }
+
+        figcaption {
+            margin-top: 8px;
+            color: #53647b;
+            font-size: 0.9rem;
+        }
+
+        .axis {
+            stroke: #718198;
+            stroke-width: 1.5;
+        }
+
+        .guide {
+            stroke: #a9b8cb;
+            stroke-dasharray: 4 4;
+            stroke-width: 1.5;
+        }
+
+        .curve {
+            fill: none;
+            stroke: #3178c6;
+            stroke-linecap: round;
+            stroke-width: 3;
+        }
+
+        .highlight {
+            fill: #f6a04d;
+            fill-opacity: 0.4;
+            stroke: #e18331;
+            stroke-width: 2;
+        }
+
+        .label {
+            fill: #34445a;
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 24px 14px 40px;
+            }
+
+            .constant {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JavaScript Math 객체의 상수</h1>
+        <p class="intro">자주 쓰이는 수학 상수를 숫자와 그림으로 살펴봅니다. 그림은 각 상수가 뜻하는 관계를 쉽게 이해하도록 단순화한 것입니다.</p>
+    </header>
+
+    <main class="constants">
+        <article class="constant">
+            <h2>Math.E — 오일러 수</h2>
+            <p class="value" id="ca"></p>
+            <p>약 2.718인 수입니다. 자연로그의 밑이며, 계속해서 증가하는 현상을 설명할 때 자주 등장합니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="e-title e-desc">
+                    <title id="e-title">지수 함수 e의 그래프</title>
+                    <desc id="e-desc">y=e의 x승 곡선에서 x가 1일 때 값이 e임을 표시합니다.</desc>
+                    <path class="axis" d="M35 125 H280 M55 135 V18"/>
+                    <path class="curve" d="M55 118 C105 112 145 99 180 72 C215 45 245 25 270 18"/>
+                    <path class="guide" d="M180 72 V125 M55 72 H180"/>
+                    <circle cx="180" cy="72" r="5" fill="#e18331"/>
+                    <text class="label" x="170" y="143">x = 1</text>
+                    <text class="label" x="60" y="67">y = e</text>
+                    <text class="label" x="217" y="112">y = eˣ</text>
+                </svg>
+                <figcaption>파란 곡선은 y = eˣ입니다. x가 1일 때 y = e¹ = e가 됩니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.LN2 — 자연로그 2</h2>
+            <p class="value" id="cca"></p>
+            <p>e를 몇 제곱해야 2가 되는지를 나타냅니다. 즉, e<sup>LN2</sup> = 2입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="ln2-title ln2-desc">
+                    <title id="ln2-title">자연로그 2를 나타내는 그래프</title>
+                    <desc id="ln2-desc">1부터 2까지 1 나누기 x 곡선 아래의 색칠된 넓이가 자연로그 2입니다.</desc>
+                    <path class="axis" d="M35 125 H280 M55 135 V18"/>
+                    <path class="highlight" d="M105 125 L105 35 C125 46 145 62 165 75 L165 125 Z"/>
+                    <path class="curve" d="M75 26 C105 35 135 54 165 75 C195 91 225 103 255 111"/>
+                    <path class="guide" d="M105 125 V35 M165 125 V75"/>
+                    <text class="label" x="100" y="143">1</text>
+                    <text class="label" x="160" y="143">2</text>
+                    <text class="label" x="183" y="54">y = 1/x</text>
+                    <text class="label" x="112" y="108">넓이 = ln 2</text>
+                </svg>
+                <figcaption>1/x 곡선 아래에서 x = 1부터 x = 2까지의 넓이가 ln 2입니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.LN10 — 자연로그 10</h2>
+            <p class="value" id="cnct"></p>
+            <p>e를 몇 제곱해야 10이 되는지를 나타냅니다. 즉, e<sup>LN10</sup> = 10입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="ln10-title ln10-desc">
+                    <title id="ln10-title">자연로그 10을 나타내는 그래프</title>
+                    <desc id="ln10-desc">1부터 10까지 1 나누기 x 곡선 아래의 색칠된 넓이가 자연로그 10입니다.</desc>
+                    <path class="axis" d="M35 125 H280 M55 135 V18"/>
+                    <path class="highlight" d="M75 125 L75 26 C125 42 180 68 225 91 L225 125 Z"/>
+                    <path class="curve" d="M75 26 C125 42 180 68 225 91 C245 100 260 107 275 112"/>
+                    <path class="guide" d="M75 125 V26 M225 125 V91"/>
+                    <text class="label" x="71" y="143">1</text>
+                    <text class="label" x="219" y="143">10</text>
+                    <text class="label" x="232" y="75">y = 1/x</text>
+                    <text class="label" x="124" y="111">넓이 = ln 10</text>
+                </svg>
+                <figcaption>1/x 곡선 아래에서 x = 1부터 x = 10까지의 넓이가 ln 10입니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.LOG2E — 밑이 2인 E의 로그</h2>
+            <p class="value" id="ido"></p>
+            <p>2를 몇 제곱해야 e가 되는지를 나타냅니다. log₂e ≈ 1.443이므로 2<sup>1.443</sup> ≈ e입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="log2e-title log2e-desc">
+                    <title id="log2e-title">밑이 2인 로그 E</title>
+                    <desc id="log2e-desc">y=2의 x승 곡선과 y=e 선이 만나는 x좌표가 log 2의 e입니다.</desc>
+                    <path class="axis" d="M35 125 H280 M55 135 V18"/>
+                    <path class="curve" d="M55 107 C82 103 106 88 127 72 C157 49 181 29 205 18"/>
+                    <path class="guide" d="M55 72 H127 V125"/>
+                    <circle cx="127" cy="72" r="5" fill="#e18331"/>
+                    <text class="label" x="62" y="67">y = e</text>
+                    <text class="label" x="111" y="143">log₂e</text>
+                    <text class="label" x="187" y="39">y = 2ˣ</text>
+                </svg>
+                <figcaption>y = 2ˣ가 e에 도달하는 x값, 즉 그래프가 만나는 지점의 가로 좌표입니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.LOG10E — 밑이 10인 E의 로그</h2>
+            <p class="value" id="fxd"></p>
+            <p>10을 몇 제곱해야 e가 되는지를 나타냅니다. log₁₀e ≈ 0.434이므로 10<sup>0.434</sup> ≈ e입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="log10e-title log10e-desc">
+                    <title id="log10e-title">밑이 10인 로그 E</title>
+                    <desc id="log10e-desc">y=10의 x승 곡선과 y=e 선이 만나는 x좌표가 log 10의 e입니다.</desc>
+                    <path class="axis" d="M35 125 H280 M55 135 V18"/>
+                    <path class="curve" d="M55 112 C64 108 70 91 77 72 C84 50 91 30 101 18"/>
+                    <path class="guide" d="M55 72 H77 V125"/>
+                    <circle cx="77" cy="72" r="5" fill="#e18331"/>
+                    <text class="label" x="62" y="67">y = e</text>
+                    <text class="label" x="61" y="143">log₁₀e</text>
+                    <text class="label" x="108" y="39">y = 10ˣ</text>
+                </svg>
+                <figcaption>y = 10ˣ가 e에 도달하는 x값, 즉 그래프가 만나는 지점의 가로 좌표입니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.PI — 원주율</h2>
+            <p class="value" id="prc"></p>
+            <p>원의 둘레를 지름으로 나눈 값입니다. 어떤 크기의 원에서도 둘레 ÷ 지름은 항상 π입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="pi-title pi-desc">
+                    <title id="pi-title">원주율과 원의 둘레</title>
+                    <desc id="pi-desc">원의 지름과 둘레를 비교해 둘레를 지름으로 나누면 파이가 됨을 보여줍니다.</desc>
+                    <circle cx="94" cy="75" r="50" fill="#dcecff" stroke="#3178c6" stroke-width="3"/>
+                    <path d="M44 75 H144" stroke="#e18331" stroke-width="3"/>
+                    <circle cx="94" cy="75" r="3" fill="#e18331"/>
+                    <text class="label" x="76" y="68">지름 d</text>
+                    <text class="label" x="174" y="57">둘레 ÷ 지름</text>
+                    <text class="label" x="194" y="84">= π</text>
+                    <text class="label" x="178" y="109">≈ 3.14159</text>
+                </svg>
+                <figcaption>원의 테두리 길이를 지름으로 나누면 언제나 약 3.14159, 즉 π가 됩니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.SQRT1_2 — 1/√2</h2>
+            <p class="value" id="str"></p>
+            <p>√(1/2)와 같은 값이며, 1/√2로도 나타냅니다. 한 변이 1인 정사각형의 중심에서 꼭짓점까지의 거리입니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="sqrt-half-title sqrt-half-desc">
+                    <title id="sqrt-half-title">정사각형 중심에서 꼭짓점까지의 거리</title>
+                    <desc id="sqrt-half-desc">한 변이 1인 정사각형에서 중심과 꼭짓점 사이의 거리는 1 나누기 루트 2입니다.</desc>
+                    <rect x="48" y="20" width="110" height="110" fill="#e8f2ff" stroke="#3178c6" stroke-width="2"/>
+                    <path d="M48 20 L103 75" stroke="#e18331" stroke-width="3"/>
+                    <circle cx="103" cy="75" r="4" fill="#b14619"/>
+                    <text class="label" x="94" y="17">1</text>
+                    <text class="label" x="105" y="53">1/√2</text>
+                    <text class="label" x="174" y="58">중심에서</text>
+                    <text class="label" x="174" y="78">꼭짓점까지</text>
+                    <text class="label" x="174" y="101">거리 = 1/√2</text>
+                </svg>
+                <figcaption>한 변이 1인 정사각형의 중심에서 꼭짓점까지의 대각선 일부 길이입니다.</figcaption>
+            </figure>
+        </article>
+
+        <article class="constant">
+            <h2>Math.SQRT2 — √2</h2>
+            <p class="value" id="vlf"></p>
+            <p>2의 제곱근입니다. 한 변의 길이가 1인 정사각형의 대각선 길이이기도 합니다.</p>
+            <figure>
+                <svg viewBox="0 0 300 150" role="img" aria-labelledby="sqrt2-title sqrt2-desc">
+                    <title id="sqrt2-title">한 변이 1인 정사각형의 대각선</title>
+                    <desc id="sqrt2-desc">가로와 세로가 각각 1인 정사각형에서 대각선의 길이는 루트 2입니다.</desc>
+                    <rect x="48" y="20" width="110" height="110" fill="#e8f2ff" stroke="#3178c6" stroke-width="2"/>
+                    <path d="M48 130 L158 20" stroke="#e18331" stroke-width="3"/>
+                    <text class="label" x="94" y="145">1</text>
+                    <text class="label" x="35" y="80">1</text>
+                    <text class="label" x="87" y="62">√2</text>
+                    <text class="label" x="178" y="57">대각선 길이</text>
+                    <text class="label" x="178" y="82">= √(1² + 1²)</text>
+                    <text class="label" x="178" y="106">= √2</text>
+                </svg>
+                <figcaption>피타고라스 정리에 따라 대각선은 √(1² + 1²) = √2입니다.</figcaption>
+            </figure>
+        </article>
+    </main>
+
+    <script>
+        const values = [
+            ["ca", Math.E],
+            ["cca", Math.LN2],
+            ["cnct", Math.LN10],
+            ["ido", Math.LOG2E],
+            ["fxd", Math.LOG10E],
+            ["prc", Math.PI],
+            ["str", Math.SQRT1_2],
+            ["vlf", Math.SQRT2]
+        ];
+
+        for (const [id, value] of values) {
+            document.getElementById(id).textContent = value.toFixed(8);
+        }
+    </script>
+</body>
+</html>

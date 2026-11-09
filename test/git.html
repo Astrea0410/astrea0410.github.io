@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Git의 기본 개념과 자주 사용하는 Git 명령어를 설명합니다.">
+  <title>Git 설명과 명령어</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #202124;
+      background: #f5f7fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    header {
+      padding: 3rem 1.25rem;
+      color: #fff;
+      background: linear-gradient(135deg, #d94f26, #a83218);
+    }
+
+    header div,
+    main {
+      width: min(100% - 2rem, 850px);
+      margin: 0 auto;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.3;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    header p {
+      margin: 0;
+      color: #ffebe5;
+    }
+
+    main {
+      padding: 1.5rem 0 3rem;
+    }
+
+    section {
+      margin: 1rem 0;
+      padding: clamp(1.1rem, 4vw, 1.75rem);
+      border: 1px solid #e3e7ed;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 3px 12px rgb(32 33 36 / 5%);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #a83218;
+    }
+
+    h3 {
+      margin-bottom: 0.35rem;
+      font-size: 1.05rem;
+    }
+
+    p,
+    ul {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      padding: 0.12rem 0.35rem;
+      border-radius: 4px;
+      background: #f0f2f5;
+      font-family: Consolas, "Courier New", monospace;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 0.6rem 0 0.9rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      color: #f8f8f2;
+      background: #24292f;
+      line-height: 1.55;
+    }
+
+    pre code {
+      padding: 0;
+      color: inherit;
+      background: transparent;
+    }
+
+    .note {
+      padding: 0.75rem 1rem;
+      border-left: 4px solid #d94f26;
+      background: #fff4ef;
+    }
+
+    footer {
+      padding: 1.5rem 1rem;
+      color: #5f6368;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Git 설명과 명령어</h1>
+      <p>코드의 변경 내역을 기록하고 협업을 돕는 버전 관리 도구, Git을 알아봅니다.</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Git이란?</h2>
+      <p>Git은 파일의 변경 사항을 시간에 따라 기록하는 <strong>분산 버전 관리 시스템</strong>입니다. 이전 상태를 확인하거나 특정 시점으로 되돌릴 수 있고, 여러 사람이 각자 작업한 내용을 하나의 프로젝트에 합칠 수 있습니다.</p>
+      <p>Git은 내 컴퓨터에 저장되는 버전 기록을 관리합니다. GitHub 같은 서비스는 Git 저장소를 온라인에 보관하고 다른 사람과 공유할 수 있도록 도와줍니다.</p>
+    </section>
+
+    <section>
+      <h2>기본 개념</h2>
+      <ul>
+        <li><strong>저장소(repository):</strong> 프로젝트 파일과 변경 기록을 보관하는 공간입니다.</li>
+        <li><strong>작업 디렉터리(working directory):</strong> 실제 파일을 열고 수정하는 공간입니다.</li>
+        <li><strong>스테이징 영역(staging area):</strong> 다음 커밋에 포함할 변경 사항을 골라 담는 공간입니다.</li>
+        <li><strong>커밋(commit):</strong> 선택한 변경 사항을 메시지와 함께 저장한 기록입니다.</li>
+        <li><strong>브랜치(branch):</strong> 기존 작업을 유지하면서 기능을 독립적으로 개발하는 작업 흐름입니다.</li>
+        <li><strong>원격 저장소(remote):</strong> GitHub 등 네트워크상의 저장소입니다.</li>
+      </ul>
+      <p>일반적인 작업 흐름은 <code>작업 디렉터리 → 스테이징 영역 → 로컬 저장소 → 원격 저장소</code>입니다.</p>
+    </section>
+
+    <section>
+      <h2>처음 설정하기</h2>
+      <p>Git을 설치한 다음 이름과 이메일을 설정하면 커밋 작성자 정보로 사용됩니다.</p>
+      <pre><code>git config --global user.name "이름"
+git config --global user.email "이메일 주소"
+git config --list</code></pre>
+    </section>
+
+    <section>
+      <h2>자주 사용하는 명령어</h2>
+
+      <h3>저장소 시작 및 복제</h3>
+      <pre><code>git init
+git clone 저장소_URL</code></pre>
+      <p><code>git init</code>은 현재 폴더에서 새 저장소를 시작합니다. <code>git clone</code>은 원격 저장소를 내 컴퓨터에 복사합니다.</p>
+
+      <h3>상태 확인 및 변경 내용 살펴보기</h3>
+      <pre><code>git status
+git diff
+git log --oneline</code></pre>
+      <p><code>git status</code>는 파일의 변경 상태를, <code>git diff</code>는 아직 스테이징하지 않은 변경 내용을, <code>git log</code>는 커밋 기록을 보여줍니다.</p>
+
+      <h3>변경 사항 커밋하기</h3>
+      <pre><code>git add 파일명
+git add .
+git commit -m "변경 내용 설명"</code></pre>
+      <p><code>git add</code>로 커밋할 변경 사항을 스테이징 영역에 추가하고, <code>git commit</code>으로 기록합니다. <code>git add .</code>은 현재 폴더의 변경 사항을 추가하므로 커밋 전에 포함될 파일을 확인하세요.</p>
+
+      <h3>브랜치 작업</h3>
+      <pre><code>git branch
+git switch -c 새-브랜치
+git switch 브랜치명
+git merge 브랜치명</code></pre>
+      <p>브랜치 목록을 확인하고, 새 브랜치를 만들거나 이동하며, 다른 브랜치의 변경 내용을 현재 브랜치에 병합합니다.</p>
+
+      <h3>원격 저장소와 동기화</h3>
+      <pre><code>git remote -v
+git pull
+git push
+git push -u origin 브랜치명</code></pre>
+      <p><code>git pull</code>은 원격 변경 내용을 가져와 현재 브랜치에 반영하고, <code>git push</code>는 내 커밋을 원격 저장소에 올립니다. 처음 올리는 브랜치에는 <code>-u</code> 옵션을 사용할 수 있습니다.</p>
+
+      <h3>변경 취소하기</h3>
+      <pre><code>git restore 파일명
+git restore --staged 파일명
+git revert 커밋ID</code></pre>
+      <p><code>git restore 파일명</code>은 커밋하지 않은 파일 변경을 취소하고, <code>git restore --staged 파일명</code>은 스테이징만 해제합니다. <code>git revert</code>는 기존 기록을 보존하면서 특정 커밋의 변경을 되돌리는 새 커밋을 만듭니다.</p>
+      <p class="note"><strong>주의:</strong> <code>git reset --hard</code>는 작업 내용을 삭제할 수 있습니다. 내용을 확인하고 백업하기 전에는 사용하지 마세요.</p>
+    </section>
+
+    <section>
+      <h2>간단한 사용 예시</h2>
+      <p>저장소를 복제하고 파일을 수정한 뒤 변경 내용을 기록하고 공유하는 흐름입니다.</p>
+      <pre><code>git clone 저장소_URL
+cd 저장소_폴더
+# 파일 수정
+git status
+git add 수정한_파일
+git commit -m "문서 업데이트"
+git push</code></pre>
+      <p>다른 사람의 변경 사항을 먼저 반영해야 할 때는 작업 전에 <code>git pull</code>을 실행하세요.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Git 명령어를 실행하기 전에 <code>git status</code>로 현재 상태를 확인하는 습관을 들여 보세요.</p>
+  </footer>
+</body>
+</html>
