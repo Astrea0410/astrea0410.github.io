@@ -496,71 +496,6 @@
             transform: translateX(4px);
         }
 
-        .doc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-        }
-
-        .doc-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .doc-item:hover {
-            border-color: var(--accent2);
-            background: var(--glow2);
-        }
-
-        .doc-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent2);
-            flex-shrink: 0;
-        }
-
-        .doc-item span {
-            font-size: 13px;
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .img-frame {
-            position: relative;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .img-frame img {
-            width: 100%;
-            display: block;
-            transition: transform 0.5s;
-        }
-
-        .img-frame:hover img {
-            transform: scale(1.03);
-        }
-
-        .img-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px 24px;
-            background: linear-gradient(transparent, rgba(5, 13, 26, 0.9));
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
         footer {
             position: relative;
             z-index: 1;
@@ -687,8 +622,6 @@
             <a href="#intro">소개</a>
             <a href="#plan">프로젝트</a>
             <a href="#code">코드</a>
-            <a href="#it">IT개론</a>
-            <a href="#image">이미지</a>
         </nav>
     </header>
 
@@ -790,42 +723,22 @@
                     </div>
                     <span class="file-arrow">›</span>
                 </a>
-            </div>
-        </div>
-
-        <div class="section" id="it">
-            <div class="section-header">
-                <span class="section-num">04</span>
-                <h2>IT개론 문서 자료</h2>
-            </div>
-            <div class="doc-grid">
-                <a href="#" class="doc-item">
-                    <div class="doc-dot"></div>
-                    <span>컴퓨터 시스템 구조 정리</span>
+                <a href="Python/PythonIndex.html" class="file-item">
+                    <div class="file-icon file-icon-js">Py</div>
+                    <div class="file-info">
+                        <div class="file-name">Python Programming</div>
+                        <div class="file-desc">PythonIndex.html · Python 프로그래밍 학습 자료</div>
+                    </div>
+                    <span class="file-arrow">›</span>
                 </a>
-                <a href="#" class="doc-item">
-                    <div class="doc-dot"></div>
-                    <span>운영체제 개요 학습 자료</span>
+                <a href="JAVA/JavaIndex.html" class="file-item">
+                    <div class="file-icon file-icon-js">J</div>
+                    <div class="file-info">
+                        <div class="file-name">Java Programming</div>
+                        <div class="file-desc">JavaIndex.html · Java 프로그래밍 학습 자료</div>
+                    </div>
+                    <span class="file-arrow">›</span>
                 </a>
-                <a href="#" class="doc-item">
-                    <div class="doc-dot"></div>
-                    <span>네트워크와 인터넷 기술</span>
-                </a>
-                <a href="#" class="doc-item">
-                    <div class="doc-dot"></div>
-                    <span>데이터베이스 기초 정리</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="section" id="image">
-            <div class="section-header">
-                <span class="section-num">05</span>
-                <h2>AI 이미지 생성 영역</h2>
-            </div>
-            <div class="img-frame">
-                <img src="https://picsum.photos/1000/420?random=42" alt="AI 이미지">
-                <div class="img-overlay">AI와 프로그래밍을 주제로 생성된 대표 이미지</div>
             </div>
         </div>
 
