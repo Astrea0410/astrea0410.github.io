@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 리스트, 튜플, 딕셔너리의 생성과 수정, 반복, 중첩 자료 구조를 학습합니다.">
+    <title>Python 리스트·튜플·딕셔너리 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 06</div>
+        <h1>컬렉션 <span lang="en">(List · Tuple · Dict)</span></h1>
+        <p class="lead">여러 데이터를 함께 저장하는 리스트, 튜플, 딕셔너리의 구조와 사용법을 익힙니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="Methods.html">다음: 메소드</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / COLLECTIONS</div>
+            <h2>컬렉션이란?</h2>
+            <p>컬렉션은 여러 값을 하나의 변수에 저장하고 함께 다루는 자료형입니다. 저장 순서와 수정 가능 여부에 따라 알맞은 자료형을 선택합니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>자료형</th><th>순서</th><th>수정</th><th>주요 특징</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>list</code></td><td>있음</td><td>가능</td><td>중복을 허용하는 값의 목록</td></tr>
+                        <tr><td><code>tuple</code></td><td>있음</td><td>불가</td><td>변경하지 않을 값의 묶음</td></tr>
+                        <tr><td><code>dict</code></td><td>삽입 순서 유지</td><td>가능</td><td>키와 값의 쌍</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section>
+            <div class="section-number">02 / LIST</div>
+            <h2>리스트: 순서가 있고 수정 가능한 목록</h2>
+            <p>인덱스는 0부터 시작합니다. 슬라이싱의 끝 인덱스는 포함되지 않으며, 리스트는 추가·수정·삭제할 수 있습니다.</p>
+            <pre><code>scores = [90, 80, 100, 95]
+print(scores[0])
+print(scores[-1])
+print(scores[1:3])
+
+scores[1] = 85
+scores.append(88)
+scores.insert(1, 70)
+scores.remove(70)
+print(scores)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / TUPLE</div>
+            <h2>튜플: 생성 후 수정할 수 없는 묶음</h2>
+            <p>튜플은 순서를 유지하고 인덱스로 접근할 수 있지만 항목을 바꿀 수 없습니다. 변경되지 않아야 하는 좌표나 날짜 같은 값을 표현할 때 유용합니다.</p>
+            <pre><code>birthday = (2006, 5, 18)
+print(birthday[0])
+print(len(birthday))
+
+# birthday[0] = 2007  # TypeError: 튜플은 수정할 수 없습니다.</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / DICTIONARY</div>
+            <h2>딕셔너리: 키와 값의 쌍</h2>
+            <p>딕셔너리는 키를 이용해 값을 찾습니다. 키는 중복될 수 없고, 값을 추가하거나 변경할 수 있습니다.</p>
+            <pre><code>student = {
+    "name": "민지",
+    "major": "AI소프트웨어과",
+    "grade": 1
+}
+
+print(student["name"])
+student["grade"] = 2
+student["gpa"] = 4.2
+
+for key, value in student.items():
+    print(f"{key}: {value}")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / NESTED DATA</div>
+            <h2>리스트와 딕셔너리 함께 사용하기</h2>
+            <p>여러 학생처럼 같은 구조의 레코드를 다룰 때 리스트 안에 딕셔너리를 저장하면 편리합니다.</p>
+            <pre><code>students = [
+    {"name": "민지", "python": 95, "ai": 90},
+    {"name": "준호", "python": 88, "ai": 84},
+]
+
+for student in students:
+    average = (student["python"] + student["ai"]) / 2
+    print(student["name"], average)</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>과목 목록에 과목을 추가하고 특정 과목을 삭제해 보세요.</li>
+                <li>튜플에 저장한 생년월일에서 년·월·일을 각각 출력하세요.</li>
+                <li>학생 정보를 딕셔너리로 저장하고 학년과 전공을 수정하세요.</li>
+                <li>학생 여러 명의 점수를 리스트 안의 딕셔너리로 저장하고 평균을 계산하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 6주차 컬렉션</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/6w_LTD.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 6주차</a></p>
+    </footer>
+</body>
+</html>

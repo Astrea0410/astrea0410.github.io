@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="비트와 바이트, 진법, 문자와 이미지의 디지털 표현, 데이터 인코딩과 디지털 데이터 처리 방법을 알아보는 IT개론 4장 학습 자료입니다.">
+    <title>제4장. 데이터와 정보의 표현 | IT개론</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --surface-raised: #1b2b3d;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --accent-warm: #f0bf74;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+            --code: #101a27;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 90% 30%, rgba(86, 133, 214, 0.08), transparent 36rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label,
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .label {
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 720px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow span {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .flow b {
+            color: var(--accent);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        :not(pre) > code {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: var(--code);
+            color: #f0d7a4;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin: 14px 0;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--code);
+            color: var(--text);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .callout {
+            border-color: rgba(240, 191, 116, 0.45);
+            background: rgba(240, 191, 116, 0.06);
+        }
+
+        .callout h2 {
+            color: var(--accent-warm);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 04</div>
+        <h1>데이터와 정보의 표현</h1>
+        <p class="lead">컴퓨터가 숫자와 문자를 비롯한 다양한 데이터를 디지털 형태로 표현하고 처리하는 방법을 알아봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="bits-bytes">
+            <div class="section-number">4.1 / BITS &amp; BYTES</div>
+            <h2>비트(Bit)와 바이트(Byte)</h2>
+            <p>컴퓨터는 내부의 데이터를 전기 신호의 두 가지 상태로 구분해 표현하며, 이를 흔히 <code>0</code>과 <code>1</code>로 나타냅니다. 이진수 한 자리를 표현하는 정보의 기본 단위를 <strong>비트(bit)</strong>라고 합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>비트 (bit)</h3>
+                    <p>정보를 표현하는 가장 작은 기본 단위입니다. 한 비트는 <code>0</code> 또는 <code>1</code>의 두 상태 중 하나를 가집니다.</p>
+                </article>
+                <article class="card">
+                    <h3>바이트 (byte)</h3>
+                    <p>일반적으로 8비트를 묶은 단위입니다. 저장장치 용량이나 파일 크기를 나타낼 때 자주 사용합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>더 큰 단위</h3>
+                    <p>KB, MB, GB, TB 등은 바이트의 크기를 나타내는 단위입니다. 저장장치 표기와 운영체제의 표시 방식에 따라 환산 기준이 다를 수 있습니다.</p>
+                </article>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">단위</th>
+                            <th scope="col">일반적인 십진 표기</th>
+                            <th scope="col">설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1 Byte (B)</td><td>8 bits</td><td>바이트 하나는 8비트입니다.</td></tr>
+                        <tr><td>1 Kilobyte (kB)</td><td>1,000 Bytes</td><td>십진 단위 기준입니다.</td></tr>
+                        <tr><td>1 Megabyte (MB)</td><td>1,000 kB</td><td>사진이나 문서 파일 크기 등에 사용합니다.</td></tr>
+                        <tr><td>1 Gigabyte (GB)</td><td>1,000 MB</td><td>저장장치와 메모리 용량 표기에 사용합니다.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>컴퓨터 메모리 용량을 설명할 때는 1 KiB = 1,024 Bytes처럼 2의 거듭제곱을 기준으로 하는 이진 단위도 사용합니다. 따라서 kB와 KiB는 서로 다른 단위입니다.</p>
+        </section>
+
+        <section id="number-systems">
+            <div class="section-number">4.2 / NUMBER SYSTEMS</div>
+            <h2>2진수, 10진수, 16진수</h2>
+            <p>진법은 수를 표현할 때 사용하는 숫자와 자릿값의 규칙입니다. 10진수는 0~9, 2진수는 0과 1을 사용합니다. 16진수는 0~9와 A~F를 사용하며, 긴 이진수를 짧게 표시할 때 편리합니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">진법</th>
+                            <th scope="col">기수</th>
+                            <th scope="col">사용 기호</th>
+                            <th scope="col">예</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2진수</td><td>2</td><td>0, 1</td><td><code>101101₂</code></td></tr>
+                        <tr><td>10진수</td><td>10</td><td>0~9</td><td><code>45₁₀</code></td></tr>
+                        <tr><td>16진수</td><td>16</td><td>0~9, A~F</td><td><code>2D₁₆</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 style="margin-top: 22px;">2진수를 10진수로 바꾸기</h3>
+            <p>각 자릿수에 오른쪽부터 <code>2⁰</code>, <code>2¹</code>, <code>2²</code>처럼 2의 거듭제곱을 곱해 더합니다.</p>
+            <pre><code>101101₂
+= 1×2⁵ + 0×2⁴ + 1×2³ + 1×2² + 0×2¹ + 1×2⁰
+= 32 + 8 + 4 + 1
+= 45₁₀</code></pre>
+            <h3>16진수와 2진수</h3>
+            <p>16진수 한 자리는 2진수 네 자리(4비트)와 대응합니다. 예를 들어 <code>2D₁₆</code>에서 <code>2</code>는 <code>0010₂</code>, <code>D</code>는 <code>1101₂</code>이므로 <code>00101101₂</code>이며 10진수로는 45입니다.</p>
+            <p>숫자만 보면 진법을 혼동할 수 있으므로 표기할 때 아래 첨자나 <code>0b</code>, <code>0x</code> 같은 접두 표기를 활용합니다.</p>
+        </section>
+
+        <section id="text-images">
+            <div class="section-number">4.3 / TEXT &amp; IMAGES</div>
+            <h2>문자와 이미지의 디지털 표현</h2>
+            <h3>문자 표현</h3>
+            <p>컴퓨터는 문자에 정해진 숫자 코드를 대응시켜 저장하고 처리합니다. 문자 인코딩은 문자와 숫자 바이트 사이의 대응 규칙을 정합니다. 같은 바이트라도 어떤 인코딩으로 해석하는지에 따라 다른 문자로 보일 수 있습니다.</p>
+            <h3>이미지 표현</h3>
+            <p>일반적인 래스터 이미지는 작은 점인 픽셀의 모음으로 표현합니다. 각 픽셀의 색상 정보를 저장하므로 해상도와 색상 깊이가 커질수록 표현할 수 있는 정보와 파일 크기도 커지는 경향이 있습니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>해상도</h3>
+                    <p>이미지를 구성하는 가로·세로 픽셀 수입니다. 픽셀이 많으면 세밀하게 표현할 수 있지만 저장할 데이터도 늘어납니다.</p>
+                </article>
+                <article class="card">
+                    <h3>색상 깊이</h3>
+                    <p>픽셀 하나의 색을 표현하는 데 사용하는 비트 수입니다. 비트 수가 커지면 표현할 수 있는 색의 조합이 많아집니다.</p>
+                </article>
+                <article class="card">
+                    <h3>벡터 이미지</h3>
+                    <p>픽셀을 하나씩 저장하는 대신 선과 도형을 수학적 정보로 표현합니다. 크기를 바꾸어도 선명함을 유지하기 좋아 로고와 도형에 적합합니다.</p>
+                </article>
+            </div>
+            <p>예를 들어 픽셀마다 빨강·초록·파랑 성분을 각각 8비트로 저장하는 RGB 표현은 픽셀당 총 24비트를 사용합니다. 실제 파일 크기는 압축, 색상 형식, 파일 구조 등에 따라 달라집니다.</p>
+        </section>
+
+        <section id="encoding">
+            <div class="section-number">4.4 / ENCODING</div>
+            <h2>데이터 인코딩</h2>
+            <p>인코딩(encoding)은 데이터를 저장·전송·처리하기 위해 정해진 규칙에 따라 다른 형태로 표현하는 과정입니다. 디코딩(decoding)은 그 표현을 규칙에 따라 다시 해석하는 과정입니다.</p>
+            <div class="flow" aria-label="인코딩과 디코딩 과정">
+                <span>원본 데이터</span><b aria-hidden="true">→</b>
+                <span>인코딩 규칙 적용</span><b aria-hidden="true">→</b>
+                <span>저장 또는 전송</span><b aria-hidden="true">→</b>
+                <span>디코딩</span>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>ASCII</h3>
+                    <p>영문 알파벳과 숫자, 기본 기호 등을 표현하기 위해 만들어진 문자 코드입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>유니코드</h3>
+                    <p>세계 여러 문자에 코드 값을 부여하는 표준입니다. UTF-8은 유니코드 문자를 바이트로 표현하는 가변 길이 인코딩입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>이미지·소리·영상 형식</h3>
+                    <p>각 매체는 데이터의 구조와 압축 방법을 정한 다양한 인코딩과 파일 형식으로 저장될 수 있습니다.</p>
+                </article>
+            </div>
+            <p>인코딩은 암호화와 목적이 다릅니다. 인코딩은 호환되는 규칙을 아는 누구나 데이터를 원래 형태로 해석할 수 있도록 표현하는 것이며, 비밀을 보호하려면 별도의 암호화가 필요합니다.</p>
+        </section>
+
+        <section id="digital-processing">
+            <div class="section-number">4.5 / DIGITAL PROCESSING</div>
+            <h2>디지털 데이터 처리</h2>
+            <p>디지털 데이터는 숫자 형태로 표현되어 컴퓨터가 저장·복제·검색·전송·분석할 수 있습니다. 텍스트 검색, 이미지 보정, 음성 인식처럼 처리 목적에 따라 적절한 표현과 알고리즘을 사용합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>저장과 복제</h3>
+                    <p>파일과 기록을 저장장치나 네트워크 서비스에 보관하고 필요한 곳에 복사합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>전송과 변환</h3>
+                    <p>데이터를 정해진 형식으로 인코딩해 전달하고, 받는 쪽에서 호환되는 규칙으로 해석합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>분석과 활용</h3>
+                    <p>데이터를 정렬·검색·요약하거나 알고리즘으로 분석해 정보와 결과를 얻습니다.</p>
+                </article>
+            </div>
+            <h3 style="margin-top: 22px;">압축과 데이터 품질</h3>
+            <p>압축은 저장 공간을 줄이거나 전송을 빠르게 하기 위해 데이터를 더 작은 형태로 표현합니다. 무손실 압축은 원본을 복원할 수 있고, 손실 압축은 일부 정보를 줄이는 대신 파일을 더 작게 만들 수 있습니다. 손실 압축은 이미지·소리·영상에서 널리 쓰이지만 반복 저장하거나 강하게 압축하면 품질이 낮아질 수 있습니다.</p>
+            <p>데이터를 처리할 때는 표현 형식뿐 아니라 정확성, 출처, 개인정보 보호와 접근 권한도 함께 고려해야 합니다.</p>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">4.6 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>비트는 0과 1로 표현하는 정보의 기본 단위이고, 바이트는 일반적으로 8비트입니다.</li>
+                <li>2진수·10진수·16진수는 같은 값을 서로 다른 자릿값 규칙으로 표현합니다.</li>
+                <li>문자와 이미지는 코드와 픽셀 등의 규칙을 이용해 디지털 데이터로 표현합니다.</li>
+                <li>인코딩은 데이터를 정해진 규칙으로 표현하는 과정이며, 디코딩은 이를 해석하는 과정입니다.</li>
+                <li>디지털 데이터는 저장·전송·분석할 수 있고, 처리 과정에서는 압축과 데이터 품질도 고려해야 합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>2진수 <code>110010₂</code>를 10진수로 바꿔 보세요.</li>
+                <li>이미지의 해상도와 색상 깊이가 커지면 파일 크기가 어떻게 달라질지 설명해 보세요.</li>
+                <li>문자가 깨져 보이는 문제와 데이터 인코딩은 어떤 관계가 있을까요?</li>
+                <li>사진을 공유할 때 무손실 압축과 손실 압축 중 어떤 방식을 선택할지, 품질과 파일 크기를 기준으로 생각해 보세요.</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>IT개론 · 제4장 데이터와 정보의 표현</p>
+        <p><a href="Software.html">이전: 제3장 컴퓨터 소프트웨어</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+
+</html>

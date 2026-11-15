@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Windows, Linux, macOS의 특징과 프로세스·스레드, 메모리·파일 관리, 운영체제의 작동 원리를 살펴보는 IT개론 5장 학습 자료입니다.">
+    <title>제5장. 운영체제와 컴퓨터 관리 | IT개론</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --surface-raised: #1b2b3d;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --accent-warm: #f0bf74;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+            --code: #101a27;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 90% 30%, rgba(86, 133, 214, 0.08), transparent 36rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label,
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .label {
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 720px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow span {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .flow b {
+            color: var(--accent);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        :not(pre) > code {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: var(--code);
+            color: #f0d7a4;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin: 14px 0;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--code);
+            color: var(--text);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .callout {
+            border-color: rgba(240, 191, 116, 0.45);
+            background: rgba(240, 191, 116, 0.06);
+        }
+
+        .callout h2 {
+            color: var(--accent-warm);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 05</div>
+        <h1>운영체제와 컴퓨터 관리</h1>
+        <p class="lead">운영체제의 종류와 작동 방식을 알아보고, 프로세스·메모리·파일을 관리하는 방법을 살펴봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="operating-systems">
+            <div class="section-number">5.1 / WINDOWS · LINUX · macOS</div>
+            <h2>운영체제의 종류</h2>
+            <p>운영체제(Operating System, OS)는 응용 프로그램과 하드웨어 사이에서 컴퓨터 자원을 관리하고, 사용자가 컴퓨터를 사용할 수 있도록 돕는 시스템 소프트웨어입니다. 컴퓨터와 모바일 기기에는 목적과 하드웨어에 맞는 여러 운영체제가 사용됩니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>Windows</h3>
+                    <p>Microsoft가 개발하는 운영체제입니다. 개인용 컴퓨터에서 널리 사용되며 다양한 상용 소프트웨어와 주변 기기를 지원합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>Linux</h3>
+                    <p>Linux 커널을 중심으로 구성된 운영체제 계열입니다. 여러 배포판이 있으며 서버, 임베디드 장치, 개인용 컴퓨터 등 다양한 환경에서 사용됩니다.</p>
+                </article>
+                <article class="card">
+                    <h3>macOS</h3>
+                    <p>Apple의 Mac 컴퓨터를 위한 운영체제입니다. Apple 하드웨어와 긴밀히 통합되어 있고 Unix 계열 기술을 기반으로 합니다.</p>
+                </article>
+            </div>
+            <p>운영체제를 비교할 때는 사용 목적, 지원하는 프로그램과 장치, 보안 업데이트, 관리 방식, 사용자의 익숙함을 함께 고려합니다. 운영체제마다 파일 경로와 명령어, 설정 방법이 다를 수 있습니다.</p>
+        </section>
+
+        <section id="process-threads">
+            <div class="section-number">5.2 / PROCESSES &amp; THREADS</div>
+            <h2>프로세스와 스레드</h2>
+            <p><strong>프로세스(Process)</strong>는 실행 중인 프로그램과 그 실행 상태를 운영체제가 관리하는 단위입니다. 프로세스마다 실행에 필요한 자원과 메모리 공간이 배정됩니다.</p>
+            <p><strong>스레드(Thread)</strong>는 프로세스 안에서 실제 명령을 실행하는 흐름입니다. 하나의 프로세스에는 하나 이상의 스레드가 있을 수 있으며, 같은 프로세스의 스레드는 코드와 데이터 등 일부 자원을 공유합니다.</p>
+            <div class="flow" aria-label="프로세스와 스레드의 관계">
+                <span>프로세스</span><b aria-hidden="true">→</b>
+                <span>자원과 주소 공간</span><b aria-hidden="true">→</b>
+                <span>하나 이상의 스레드</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">구분</th>
+                            <th scope="col">프로세스</th>
+                            <th scope="col">스레드</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>의미</td>
+                            <td>실행 중인 프로그램과 그에 필요한 자원·상태</td>
+                            <td>프로세스 안에서 명령을 실행하는 흐름</td>
+                        </tr>
+                        <tr>
+                            <td>자원 관계</td>
+                            <td>각 프로세스는 일반적으로 독립된 주소 공간을 가짐</td>
+                            <td>같은 프로세스의 스레드는 일부 메모리와 자원을 공유</td>
+                        </tr>
+                        <tr>
+                            <td>주의점</td>
+                            <td>프로세스 간 통신에는 운영체제가 제공하는 방법이 필요</td>
+                            <td>공유 데이터에 동시에 접근할 때 동기화가 필요할 수 있음</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>운영체제는 CPU 시간을 여러 작업에 배분해 동시에 실행되는 것처럼 보이게 하거나, 여러 처리 코어를 활용해 실제로 병렬 실행할 수 있도록 관리합니다. 동시성과 병렬성은 서로 관련 있지만 같은 개념은 아닙니다.</p>
+        </section>
+
+        <section id="memory-management">
+            <div class="section-number">5.3 / MEMORY MANAGEMENT</div>
+            <h2>메모리 관리</h2>
+            <p>운영체제는 실행 중인 프로그램에 메모리를 배정하고, 프로그램이 끝나면 사용하던 공간을 회수합니다. 여러 프로그램이 메모리를 효율적이고 안전하게 사용할 수 있도록 각 프로그램의 메모리 접근을 관리합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>할당과 회수</h3>
+                    <p>프로그램 실행에 필요한 메모리를 제공하고 더 이상 필요하지 않은 공간을 다시 사용할 수 있게 합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>가상 메모리</h3>
+                    <p>각 프로세스에 독립적인 주소 공간을 제공하고, 실제 메모리 자원을 관리하기 위한 추상화 기법입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>페이징과 보조 저장장치</h3>
+                    <p>운영체제는 메모리를 페이지 단위로 관리할 수 있습니다. 일부 시스템은 메모리 압박 시 저장장치를 활용하지만 RAM보다 느리므로 RAM을 완전히 대체하지는 않습니다.</p>
+                </article>
+            </div>
+            <p>메모리가 부족하면 프로그램이 느려지거나 실행에 실패할 수 있습니다. 사용하지 않는 앱을 닫고, 작업에 맞는 메모리 용량을 확보하면 도움이 됩니다.</p>
+        </section>
+
+        <section id="files-directories">
+            <div class="section-number">5.4 / FILES &amp; DIRECTORIES</div>
+            <h2>파일 및 디렉터리 관리</h2>
+            <p>파일 시스템은 저장장치에 파일과 디렉터리를 구성하고 이름, 위치, 크기, 권한 등의 정보를 관리합니다. 디렉터리(폴더)는 관련 파일과 하위 디렉터리를 계층적으로 정리하는 공간입니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>경로</h3>
+                    <p>파일이나 디렉터리의 위치를 나타냅니다. 절대 경로는 기준 위치에서 전체 주소를, 상대 경로는 현재 위치를 기준으로 표시합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>파일 권한</h3>
+                    <p>사용자나 그룹이 파일을 읽고, 수정하고, 실행할 수 있는 범위를 제어합니다. 권한 설정은 정보 보호에 중요합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>파일 관리 습관</h3>
+                    <p>의미 있는 이름과 폴더 구조를 사용하고, 중요한 파일은 별도 위치에 백업합니다. 확장자만 바꿔서는 파일 형식이 변환되지 않습니다.</p>
+                </article>
+            </div>
+            <p>운영체제에 따라 경로 표기 방식이나 권한 설정 방법이 다를 수 있지만, 파일을 찾고 체계적으로 관리한다는 목적은 같습니다.</p>
+        </section>
+
+        <section id="how-os-works">
+            <div class="section-number">5.5 / HOW AN OS WORKS</div>
+            <h2>운영체제의 작동 원리</h2>
+            <p>컴퓨터를 켜면 펌웨어가 기본 하드웨어를 확인하고 운영체제를 시작하는 과정을 진행합니다. 운영체제의 핵심 부분인 커널이 메모리에 올라가 하드웨어와 시스템 자원을 관리하고, 필요한 시스템 서비스와 사용자 환경이 준비됩니다.</p>
+            <div class="flow" aria-label="운영체제 시작 과정">
+                <span>전원 켜기</span><b aria-hidden="true">→</b>
+                <span>펌웨어 초기화</span><b aria-hidden="true">→</b>
+                <span>부트로더</span><b aria-hidden="true">→</b>
+                <span>커널 시작</span><b aria-hidden="true">→</b>
+                <span>서비스·사용자 환경</span>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>시스템 호출</h3>
+                    <p>응용 프로그램은 시스템 호출을 통해 파일 열기, 메모리 사용, 장치 접근 등 운영체제의 기능을 요청합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>인터럽트와 이벤트</h3>
+                    <p>하드웨어나 프로그램에서 발생한 이벤트를 운영체제가 처리하고 필요한 작업으로 제어를 넘깁니다.</p>
+                </article>
+                <article class="card">
+                    <h3>자원 배분</h3>
+                    <p>커널은 프로세스, 메모리, 저장장치와 입출력 장치를 조정해 여러 프로그램이 시스템을 사용할 수 있게 합니다.</p>
+                </article>
+            </div>
+            <p>운영체제는 실행 중인 작업을 계속 관리합니다. 프로그램이 장치나 파일을 요청하면 운영체제가 권한과 요청을 확인하고 적절한 시스템 기능을 제공합니다.</p>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">5.6 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>Windows, Linux, macOS는 다양한 컴퓨터 환경에서 사용되는 운영체제이며 지원 환경과 관리 방식이 다릅니다.</li>
+                <li>프로세스는 실행 중인 프로그램과 자원·상태이고, 스레드는 프로세스 안에서 실행되는 흐름입니다.</li>
+                <li>운영체제는 메모리를 할당·회수하고 가상 메모리 등으로 프로그램의 메모리 사용을 관리합니다.</li>
+                <li>파일 시스템은 파일과 디렉터리의 위치, 이름, 권한 등 정보를 관리합니다.</li>
+                <li>운영체제는 부팅 후 커널과 시스템 서비스를 실행하고, 시스템 호출을 통해 프로그램의 자원 사용을 중개합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>웹 브라우저에서 음악을 재생하면서 문서를 편집할 때 운영체제는 어떤 자원을 관리할까요?</li>
+                <li>같은 프로세스 안의 스레드가 메모리를 공유하면 어떤 장점과 주의점이 있을까요?</li>
+                <li>파일과 폴더에 읽기·쓰기 권한을 설정하는 것이 왜 중요할까요?</li>
+                <li>운영체제가 시작될 때 펌웨어, 부트로더, 커널이 어떤 순서로 관여하는지 설명해 보세요.</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>IT개론 · 제5장 운영체제와 컴퓨터 관리</p>
+        <p><a href="DataRepresentation.html">이전: 제4장 데이터와 정보의 표현</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+
+</html>

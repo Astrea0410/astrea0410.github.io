@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 파일 입출력 모드와 with open을 이용한 텍스트 파일 읽기·쓰기를 학습합니다.">
+    <title>Python 파일 입출력 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 09</div>
+        <h1>파일 입출력 <span lang="en">(File I/O)</span></h1>
+        <p class="lead">파일에 데이터를 저장하고 다시 읽어 프로그램이 끝난 뒤에도 정보를 보관합니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="DataStructure.html">다음: 자료구조</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / FILES</div>
+            <h2>파일 입출력이란?</h2>
+            <p>변수에 저장한 값은 프로그램이 종료되면 사라지지만, 파일에 기록한 데이터는 저장 장치에 남습니다. 파일 작업은 파일 열기, 읽기 또는 쓰기, 닫기의 순서로 이루어집니다.</p>
+        </section>
+        <section>
+            <div class="section-number">02 / MODES</div>
+            <h2>파일 열기 모드</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>모드</th><th>기능</th><th>주의점</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>"r"</code></td><td>읽기</td><td>파일이 없으면 오류</td></tr>
+                        <tr><td><code>"w"</code></td><td>쓰기</td><td>기존 파일 내용을 덮어씀</td></tr>
+                        <tr><td><code>"a"</code></td><td>뒤에 추가</td><td>기존 내용을 유지하고 끝에 기록</td></tr>
+                        <tr><td><code>"x"</code></td><td>새 파일 생성</td><td>같은 이름의 파일이 있으면 오류</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>텍스트 파일에서는 인코딩을 명시하면 한글을 일관되게 처리하기 쉽습니다. 상대 경로를 사용할 때 파일은 현재 작업 폴더를 기준으로 읽고 씁니다.</p>
+        </section>
+        <section>
+            <div class="section-number">03 / WRITE</div>
+            <h2><code>with open()</code>으로 쓰기</h2>
+            <p><code>with</code> 블록을 사용하면 블록이 끝날 때 파일이 자동으로 닫힙니다. <code>"w"</code> 모드는 기존 파일을 덮어쓰므로 주의하세요.</p>
+            <pre><code>with open("memo.txt", "w", encoding="utf-8") as file:
+    file.write("Python 파일 입출력\n")
+    file.write("첫 번째 메모입니다.\n")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / READ</div>
+            <h2>파일 읽기와 내용 추가</h2>
+            <p><code>read()</code>는 전체 내용을 읽고, <code>readline()</code>은 한 줄, <code>readlines()</code>는 줄 목록을 반환합니다. 반복문으로 파일을 순회하면 큰 파일도 줄 단위로 처리할 수 있습니다.</p>
+            <pre><code>with open("memo.txt", "r", encoding="utf-8") as file:
+    for line in file:
+        print(line.rstrip())
+
+with open("memo.txt", "a", encoding="utf-8") as file:
+    file.write("추가된 메모\n")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / STUDENT RECORD</div>
+            <h2>간단한 점수 기록 예제</h2>
+            <p>데이터를 일정한 형식으로 기록하면 다시 읽어와 계산할 수 있습니다. 아래 예제는 한 줄에 이름과 점수를 저장하고 평균을 계산합니다.</p>
+            <pre><code>with open("scores.txt", "w", encoding="utf-8") as file:
+    file.write("민지,95\n")
+    file.write("준호,88\n")
+
+scores = []
+with open("scores.txt", "r", encoding="utf-8") as file:
+    for line in file:
+        name, score = line.strip().split(",")
+        scores.append(int(score))
+
+print("평균:", sum(scores) / len(scores))</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>자기소개를 텍스트 파일에 저장하고 다시 읽어 출력하세요.</li>
+                <li><code>"a"</code> 모드로 파일에 여러 줄을 추가하고 결과를 확인하세요.</li>
+                <li>이름과 점수를 여러 건 저장한 후 점수의 평균을 계산하세요.</li>
+                <li>존재하지 않는 파일을 읽을 때 발생하는 예외를 <code>try-except</code>로 처리해 보세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 9주차 파일 입출력</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/9w_fileIo.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 파일 입출력</a></p>
+    </footer>
+</body>
+</html>

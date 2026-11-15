@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="정보기술의 개념과 역사, 데이터와 정보의 차이, 정보화 사회와 디지털 기술, IT 산업의 발전과 미래를 살펴보는 IT개론 1장 학습 자료입니다.">
+    <title>제1장. 정보기술(IT)의 이해 | IT개론</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --surface-raised: #1b2b3d;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --accent-warm: #f0bf74;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+            --code: #101a27;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 90% 30%, rgba(86, 133, 214, 0.08), transparent 36rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label,
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .label {
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 720px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 16px;
+            padding: 15px 17px;
+            border-left: 2px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            background: var(--surface-raised);
+        }
+
+        .timeline-item strong {
+            color: var(--accent-warm);
+        }
+
+        .timeline-item p {
+            margin: 0;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow span {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .flow b {
+            color: var(--accent);
+        }
+
+        .callout {
+            border-color: rgba(240, 191, 116, 0.45);
+            background: rgba(240, 191, 116, 0.06);
+        }
+
+        .callout h2 {
+            color: var(--accent-warm);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 01</div>
+        <h1>정보기술(IT)의 이해</h1>
+        <p class="lead">정보기술의 기본 개념에서 출발해 데이터와 정보, 정보화 사회, IT 산업의 변화와 미래까지 살펴봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="it-concept">
+            <div class="section-number">1.1 / CONCEPT &amp; HISTORY</div>
+            <h2>IT의 개념과 역사</h2>
+            <p>정보기술(Information Technology, IT)은 데이터를 수집·저장·처리·전달하고 활용하기 위해 사용하는 기술과 시스템을 뜻합니다. 컴퓨터와 소프트웨어뿐 아니라 네트워크, 데이터, 이를 운영하는 사람과 절차도 IT 시스템을 이루는 중요한 요소입니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>하드웨어</h3>
+                    <p>컴퓨터, 저장 장치, 센서, 네트워크 장비처럼 정보를 처리하거나 전달하는 물리적 장치입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>소프트웨어</h3>
+                    <p>하드웨어가 수행할 작업을 지시하는 운영체제와 응용 프로그램입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>데이터와 네트워크</h3>
+                    <p>처리 대상이 되는 데이터와 장치·사용자 사이에서 정보를 주고받는 연결 기술입니다.</p>
+                </article>
+                <article class="card">
+                    <h3>사람과 절차</h3>
+                    <p>시스템을 설계·운영하고 데이터를 올바르게 활용하기 위한 사용자, 규칙과 업무 과정입니다.</p>
+                </article>
+            </div>
+            <h3 style="margin-top: 24px;">컴퓨터와 정보기술의 발전 흐름</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>기계식 계산</strong>
+                    <p>계산을 돕는 기계와 초기 컴퓨터의 구상이 등장하며 자동 계산의 기반이 마련되었습니다.</p>
+                </div>
+                <div class="timeline-item">
+                    <strong>전자식 컴퓨터</strong>
+                    <p>전자 회로를 활용한 컴퓨터가 복잡한 계산과 대량의 자료 처리를 빠르게 수행하기 시작했습니다.</p>
+                </div>
+                <div class="timeline-item">
+                    <strong>개인용 컴퓨터</strong>
+                    <p>컴퓨터가 연구소와 기관을 넘어 가정과 사무실로 확산되어 더 많은 사람이 직접 활용하게 되었습니다.</p>
+                </div>
+                <div class="timeline-item">
+                    <strong>인터넷·모바일</strong>
+                    <p>네트워크와 스마트폰의 확산으로 장소와 시간의 제약이 줄고 정보 공유가 일상화되었습니다.</p>
+                </div>
+                <div class="timeline-item">
+                    <strong>클라우드·AI</strong>
+                    <p>인터넷을 통한 컴퓨팅 자원 이용과 인공지능 기반 데이터 분석·서비스가 빠르게 확대되고 있습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="data-information">
+            <div class="section-number">1.2 / DATA &amp; INFORMATION</div>
+            <h2>정보와 데이터의 차이</h2>
+            <p><strong>데이터(Data)</strong>는 관찰하거나 측정한 사실과 값입니다. 데이터에 목적과 맥락을 부여해 정리하고 해석하면 의사결정에 활용할 수 있는 <strong>정보(Information)</strong>가 됩니다.</p>
+            <div class="flow" aria-label="데이터를 정보로 만드는 과정">
+                <span>데이터 수집</span><b aria-hidden="true">→</b>
+                <span>정리·처리</span><b aria-hidden="true">→</b>
+                <span>맥락에 맞게 해석</span><b aria-hidden="true">→</b>
+                <span>정보 활용</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">구분</th>
+                            <th scope="col">의미</th>
+                            <th scope="col">예시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>데이터</td>
+                            <td>맥락을 더해 해석할 수 있는 원자료나 기록</td>
+                            <td>월요일 18℃, 화요일 20℃, 수요일 22℃</td>
+                        </tr>
+                        <tr>
+                            <td>정보</td>
+                            <td>데이터를 목적에 맞게 처리해 의미를 얻은 결과</td>
+                            <td>이번 주 기온이 점차 올라가고 있다.</td>
+                        </tr>
+                        <tr>
+                            <td>지식</td>
+                            <td>정보와 경험을 바탕으로 이해하거나 판단하는 것</td>
+                            <td>기온이 오르는 날에는 가벼운 옷차림이 적절할 수 있다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>같은 데이터도 누가 어떤 목적과 맥락에서 해석하는지에 따라 서로 다른 정보가 될 수 있습니다. 따라서 데이터를 수집한 기준과 출처를 함께 살펴보는 것이 중요합니다.</p>
+        </section>
+
+        <section id="digital-society">
+            <div class="section-number">1.3 / DIGITAL SOCIETY</div>
+            <h2>정보화 사회와 디지털 기술</h2>
+            <p>정보화 사회는 정보의 생산·유통·활용이 사회와 경제의 중요한 기반이 되는 사회입니다. 디지털 기술은 정보를 컴퓨터가 처리할 수 있는 형태로 표현하고, 빠르게 저장·복제·검색·전달할 수 있게 합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>모바일과 클라우드</h3>
+                    <p>모바일 기기로 서비스를 이용하고, 클라우드에 저장된 데이터와 컴퓨팅 자원에 네트워크를 통해 접근합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>사물인터넷(IoT)</h3>
+                    <p>센서와 네트워크를 갖춘 기기가 주변 데이터를 수집하고 다른 시스템과 주고받습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>빅데이터와 인공지능</h3>
+                    <p>큰 규모의 데이터를 분석해 패턴을 찾고, 분류·예측·생성 같은 작업을 지원합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>디지털 기술의 과제</h3>
+                    <p>디지털 격차, 개인정보 보호, 정보의 신뢰성, 에너지 사용과 같은 문제도 함께 고려해야 합니다.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="it-industry">
+            <div class="section-number">1.4 / IT INDUSTRY &amp; FUTURE</div>
+            <h2>IT 산업의 발전과 미래</h2>
+            <p>IT 산업은 컴퓨터·통신 장비, 소프트웨어, 인터넷 서비스, 데이터와 인공지능 등 서로 연결된 여러 분야로 이루어집니다. IT는 특정 산업에만 머무르지 않고 의료·교육·금융·제조·문화 등 다양한 분야의 업무와 서비스 방식을 바꾸고 있습니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>산업의 변화</h3>
+                    <p>기업과 기관은 디지털 시스템을 활용해 업무를 자동화하고, 데이터를 바탕으로 서비스를 개선합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>새로운 직무와 역량</h3>
+                    <p>소프트웨어 개발, 네트워크 운영, 데이터 분석, 정보보안 등 다양한 역할이 생겨나고 협업 역량의 중요성도 커지고 있습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>미래 기술을 바라보는 관점</h3>
+                    <p>인공지능, 로봇, 몰입형 기술과 차세대 네트워크는 새로운 가능성과 함께 안전성·책임·공정성에 대한 질문을 제기합니다.</p>
+                </article>
+            </div>
+            <p>기술의 발전 방향을 이해하는 것과 함께, 누구에게 어떤 영향을 주는지 살피고 사회적으로 책임 있게 설계·사용하는 관점이 필요합니다.</p>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">1.5 / SUMMARY &amp; REVIEW</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>IT는 정보를 수집·저장·처리·전달하고 활용하는 기술과 시스템을 아우릅니다.</li>
+                <li>데이터는 원자료이고, 정보는 데이터에 맥락과 의미를 더해 활용할 수 있도록 만든 결과입니다.</li>
+                <li>디지털 기술은 정보화 사회의 기반이며 편리함과 함께 개인정보·격차·신뢰성 같은 과제도 가져옵니다.</li>
+                <li>IT 산업은 계속 확장되고 있으며, 기술을 책임 있게 활용하는 태도도 중요합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>일상에서 수집되는 데이터 한 가지를 고르고, 이를 어떤 정보로 바꿀 수 있을지 설명해 보세요.</li>
+                <li>클라우드나 인공지능이 활용되는 서비스를 하나 찾아 어떤 문제를 해결하는지 살펴보세요.</li>
+                <li>새로운 IT 기술을 사용할 때 편리함 외에 함께 고려해야 할 점은 무엇일까요?</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>IT개론 · 제1장 정보기술(IT)의 이해</p>
+        <p><a href="ItIndex.html">IT개론 목차로 돌아가기</a></p>
+    </footer>
+</body>
+
+</html>

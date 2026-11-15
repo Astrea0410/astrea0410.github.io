@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="컴퓨터의 구조와 동작 원리, 하드웨어와 소프트웨어, CPU·RAM·ROM, 입력·출력장치, HDD와 SSD를 살펴보는 IT개론 2장 학습 자료입니다.">
+    <title>제2장. 컴퓨터 시스템의 이해 | IT개론</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --surface-raised: #1b2b3d;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --accent-warm: #f0bf74;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 90% 30%, rgba(86, 133, 214, 0.08), transparent 36rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label,
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .label {
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 720px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow span {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .flow b {
+            color: var(--accent);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        .callout {
+            border-color: rgba(240, 191, 116, 0.45);
+            background: rgba(240, 191, 116, 0.06);
+        }
+
+        .callout h2 {
+            color: var(--accent-warm);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 02</div>
+        <h1>컴퓨터 시스템의 이해</h1>
+        <p class="lead">컴퓨터를 이루는 구성 요소와 데이터가 처리되는 원리를 알아보고, 주요 장치의 역할을 살펴봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="architecture">
+            <div class="section-number">2.1 / COMPUTER ARCHITECTURE</div>
+            <h2>컴퓨터의 구조와 동작 원리</h2>
+            <p>컴퓨터는 입력된 데이터를 프로그램의 명령에 따라 처리하고, 그 결과를 출력하거나 저장하는 전자 장치입니다. 중앙처리장치(CPU), 주기억장치, 입력·출력 장치가 서로 데이터를 주고받으며 동작합니다.</p>
+            <div class="flow" aria-label="컴퓨터의 기본 처리 과정">
+                <span>입력</span><b aria-hidden="true">→</b>
+                <span>처리</span><b aria-hidden="true">→</b>
+                <span>출력</span><b aria-hidden="true">→</b>
+                <span>저장</span>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>입력 장치</h3>
+                    <p>사용자의 명령이나 외부 데이터를 컴퓨터가 처리할 수 있도록 전달합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>중앙처리장치</h3>
+                    <p>메모리에서 명령과 데이터를 가져와 해석하고 연산·제어를 수행합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>기억 장치</h3>
+                    <p>현재 작업에 필요한 정보와 프로그램을 저장하고 처리 결과를 보관합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>출력 장치</h3>
+                    <p>처리 결과를 화면, 소리, 인쇄물 등의 형태로 사용자에게 전달합니다.</p>
+                </article>
+            </div>
+            <p>예를 들어 계산기에서 <strong>2 + 3</strong>을 입력하면 입력 장치가 값을 전달하고, CPU가 연산한 뒤 결과 <strong>5</strong>를 화면에 출력합니다. 필요하면 이 결과를 저장 장치에 보관할 수도 있습니다.</p>
+        </section>
+
+        <section id="hardware-software">
+            <div class="section-number">2.2 / HARDWARE &amp; SOFTWARE</div>
+            <h2>하드웨어와 소프트웨어</h2>
+            <p>컴퓨터 시스템은 물리적으로 만질 수 있는 <strong>하드웨어</strong>와 하드웨어에 작업을 지시하는 <strong>소프트웨어</strong>가 함께 동작해야 사용할 수 있습니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">구분</th>
+                            <th scope="col">설명</th>
+                            <th scope="col">예시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>하드웨어</td>
+                            <td>컴퓨터를 구성하는 물리적인 장치</td>
+                            <td>CPU, 메모리, 키보드, 모니터, SSD</td>
+                        </tr>
+                        <tr>
+                            <td>시스템 소프트웨어</td>
+                            <td>하드웨어를 관리하고 응용 프로그램 실행을 돕는 소프트웨어</td>
+                            <td>운영체제, 장치 드라이버, 시스템 도구</td>
+                        </tr>
+                        <tr>
+                            <td>응용 소프트웨어</td>
+                            <td>사용자가 특정 작업을 수행하도록 만든 프로그램</td>
+                            <td>웹 브라우저, 문서 편집기, 게임</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>운영체제가 하드웨어 자원을 관리하고, 응용 프로그램은 운영체제를 통해 장치를 이용합니다. 하드웨어 성능이 좋아도 이를 활용할 소프트웨어가 없으면 원하는 작업을 수행하기 어렵습니다.</p>
+        </section>
+
+        <section id="cpu">
+            <div class="section-number">2.3 / CPU</div>
+            <h2>CPU: 명령을 실행하는 중앙처리장치</h2>
+            <p>CPU(Central Processing Unit)는 프로그램의 명령을 처리하는 핵심 부품입니다. 명령을 가져오고(Fetch), 해석하고(Decode), 실행하는(Execute) 과정을 반복합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>제어 장치 (CU)</h3>
+                    <p>명령을 해석하고 컴퓨터 각 부분이 순서에 맞게 동작하도록 제어 신호를 보냅니다.</p>
+                </article>
+                <article class="card">
+                    <h3>산술논리연산장치 (ALU)</h3>
+                    <p>덧셈 같은 산술 연산과 크기 비교 같은 논리 연산을 수행합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>레지스터</h3>
+                    <p>CPU 내부에서 연산에 필요한 값과 명령, 중간 결과를 빠르게 임시 저장합니다.</p>
+                </article>
+            </div>
+            <p>CPU의 성능은 동작 속도뿐 아니라 코어 수, 작업 종류, 메모리와의 연결 등 여러 요소의 영향을 받습니다. 따라서 CPU의 숫자 하나만으로 컴퓨터의 전체 성능을 판단하기는 어렵습니다.</p>
+        </section>
+
+        <section id="memory">
+            <div class="section-number">2.4 / RAM &amp; ROM</div>
+            <h2>주기억장치: RAM과 ROM</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">구분</th>
+                            <th scope="col">RAM</th>
+                            <th scope="col">ROM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>이름</td>
+                            <td>Random Access Memory</td>
+                            <td>Read-Only Memory</td>
+                        </tr>
+                        <tr>
+                            <td>주요 역할</td>
+                            <td>실행 중인 프로그램과 작업 데이터를 임시로 저장</td>
+                            <td>컴퓨터 시작 등에 필요한 펌웨어와 기본 정보를 저장</td>
+                        </tr>
+                        <tr>
+                            <td>전원 차단 시</td>
+                            <td>일반적으로 저장된 내용이 사라지는 휘발성 메모리</td>
+                            <td>내용이 유지되는 비휘발성 메모리</td>
+                        </tr>
+                        <tr>
+                            <td>주요 특징</td>
+                            <td>용량이 클수록 여러 작업을 원활하게 수행하는 데 도움이 됨</td>
+                            <td>일반적인 RAM처럼 작업 중 데이터를 임시 보관하는 용도는 아님</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>컴퓨터를 켜면 저장 장치의 운영체제와 프로그램이 RAM으로 읽혀 실행됩니다. RAM은 작업 공간에, SSD나 HDD는 파일을 보관하는 장기 저장 공간에 비유할 수 있습니다.</p>
+        </section>
+
+        <section id="input-output">
+            <div class="section-number">2.5 / INPUT &amp; OUTPUT</div>
+            <h2>입력장치와 출력장치</h2>
+            <p>입력장치는 사람이 전달하는 명령이나 주변 환경의 데이터를 컴퓨터로 보내고, 출력장치는 처리 결과를 사람이 확인할 수 있는 형태로 표현합니다. 하나의 장치가 입출력 기능을 함께 제공하기도 합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>입력장치</h3>
+                    <p>키보드, 마우스, 터치스크린, 마이크, 카메라, 스캐너, 센서</p>
+                </article>
+                <article class="card">
+                    <h3>출력장치</h3>
+                    <p>모니터, 스피커, 프린터, 프로젝터, 햅틱 장치</p>
+                </article>
+                <article class="card">
+                    <h3>입출력 겸용</h3>
+                    <p>터치스크린은 화면을 보여 주는 동시에 터치 입력도 받습니다. 네트워크 장치는 양방향으로 데이터를 주고받습니다.</p>
+                </article>
+            </div>
+            <p>장치는 연결 방식과 운영체제의 지원에 따라 동작이 달라질 수 있습니다. 운영체제는 장치 드라이버를 이용해 다양한 하드웨어를 제어합니다.</p>
+        </section>
+
+        <section id="storage">
+            <div class="section-number">2.6 / STORAGE</div>
+            <h2>저장장치: HDD와 SSD</h2>
+            <p>저장장치는 컴퓨터의 전원이 꺼져도 프로그램과 파일을 보관하는 비휘발성 장치입니다. 대표적인 저장장치인 HDD와 SSD는 데이터를 저장하는 방식과 특성이 다릅니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">항목</th>
+                            <th scope="col">HDD</th>
+                            <th scope="col">SSD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>저장 방식</td>
+                            <td>회전하는 자기 디스크에 데이터를 기록</td>
+                            <td>플래시 메모리 반도체에 데이터를 저장</td>
+                        </tr>
+                        <tr>
+                            <td>특성</td>
+                            <td>기계적으로 움직이는 부품이 있으며 대용량 저장에 널리 사용</td>
+                            <td>움직이는 부품이 없어 일반적으로 빠르고 충격·소음에 강함</td>
+                        </tr>
+                        <tr>
+                            <td>고려 사항</td>
+                            <td>충격과 소음, 접근 속도 등을 고려해야 함</td>
+                            <td>용량과 가격, 제품의 쓰기 내구성 등을 고려해야 함</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>저장장치를 고를 때는 용량과 속도뿐 아니라 가격, 사용 목적, 백업 방법도 함께 생각해야 합니다. 중요한 파일은 한 곳에만 보관하지 말고 별도의 저장장치나 신뢰할 수 있는 백업 공간에 복사하는 것이 좋습니다.</p>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">2.7 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>컴퓨터는 입력된 데이터를 프로그램의 명령에 따라 처리하고 출력하거나 저장합니다.</li>
+                <li>하드웨어는 물리적 장치이고, 소프트웨어는 장치에 작업을 지시하는 프로그램입니다.</li>
+                <li>CPU는 명령을 해석·실행하고, RAM은 작업 중인 데이터를 임시로 보관하며, ROM은 시작에 필요한 정보를 유지합니다.</li>
+                <li>입력장치는 데이터와 명령을 전달하고, 출력장치는 처리 결과를 사용자에게 보여 줍니다.</li>
+                <li>HDD와 SSD는 데이터를 저장하는 방식과 성능 특성이 다르므로 용도에 맞게 선택합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>키보드로 문장을 입력해 화면에 표시하기까지 컴퓨터 내부에서 어떤 구성 요소들이 관여할까요?</li>
+                <li>컴퓨터를 끄면 RAM의 내용은 사라지지만 SSD의 파일은 남는 이유를 설명해 보세요.</li>
+                <li>HDD와 SSD 중 하나를 선택해야 한다면, 어떤 사용 목적과 조건을 기준으로 선택하겠습니까?</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>IT개론 · 제2장 컴퓨터 시스템의 이해</p>
+        <p><a href="ITFundamentals.html">이전: 제1장 정보기술(IT)의 이해</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+
+</html>

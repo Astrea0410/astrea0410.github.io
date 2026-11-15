@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 리스트와 배열을 살펴보고 스택과 큐 자료구조를 구현하는 방법을 학습합니다.">
+    <title>Python 자료구조 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 10</div>
+        <h1>자료구조 <span lang="en">(Data Structure)</span></h1>
+        <p class="lead">데이터를 목적에 맞게 저장하고 처리하는 구조를 알아보고 리스트·배열·스택·큐를 구현합니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="Modules.html">다음: 모듈</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / ALGORITHM</div>
+            <h2>알고리즘과 자료구조</h2>
+            <p>알고리즘은 문제를 해결하는 단계별 절차이고, 자료구조는 데이터를 저장하고 효율적으로 다루는 방법입니다. 문제의 요구에 맞는 구조를 선택하면 처리 과정을 단순하게 만들 수 있습니다.</p>
+        </section>
+        <section>
+            <div class="section-number">02 / LIST &amp; ARRAY</div>
+            <h2>리스트와 배열</h2>
+            <p>Python 리스트는 여러 값을 순서대로 저장하며 다양한 종류의 값도 담을 수 있습니다. <code>array</code> 모듈의 배열은 지정한 숫자형 값을 저장합니다.</p>
+            <pre><code>numbers = [10, 20, 30]
+numbers.append(40)
+print(numbers[0], numbers[-1])
+print(sum(numbers))
+
+from array import array
+values = array("i", [10, 20, 30])
+values.append(40)
+print(values)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / STACK</div>
+            <h2>스택: 마지막에 넣은 것을 먼저 꺼내기</h2>
+            <p>스택은 LIFO(Last In, First Out) 구조입니다. 리스트의 <code>append()</code>와 <code>pop()</code>으로 간단히 만들 수 있습니다.</p>
+            <pre><code>stack = []
+stack.append("첫 번째")
+stack.append("두 번째")
+
+last_item = stack.pop()
+print(last_item)  # 두 번째
+print(stack)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / QUEUE</div>
+            <h2>큐: 먼저 들어온 것을 먼저 꺼내기</h2>
+            <p>큐는 FIFO(First In, First Out) 구조입니다. 양쪽 끝에서 효율적으로 추가·삭제할 수 있는 <code>collections.deque</code>를 사용할 수 있습니다.</p>
+            <pre><code>from collections import deque
+
+queue = deque(["민지", "준호"])
+queue.append("서연")
+
+next_person = queue.popleft()
+print(next_person)  # 민지
+print(queue)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / WHEN TO USE</div>
+            <h2>어떤 구조를 선택할까?</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>구조</th><th>규칙</th><th>활용 예</th></tr></thead>
+                    <tbody>
+                        <tr><td>리스트</td><td>인덱스로 접근, 순서대로 저장</td><td>점수 목록, 데이터 모음</td></tr>
+                        <tr><td>배열</td><td>같은 숫자형 데이터 저장</td><td>수치 데이터 처리</td></tr>
+                        <tr><td>스택</td><td>LIFO</td><td>실행 취소, 되돌리기</td></tr>
+                        <tr><td>큐</td><td>FIFO</td><td>대기열, 작업 처리 순서</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>리스트에 점수를 저장하고 합계, 평균, 최댓값, 최솟값을 출력하세요.</li>
+                <li>리스트를 사용해 브라우저의 뒤로 가기처럼 동작하는 스택을 만들어 보세요.</li>
+                <li><code>deque</code>로 프린터 대기열을 만들고 작업을 순서대로 처리하세요.</li>
+                <li>스택에 여는 괄호와 닫는 괄호를 넣어 짝이 맞는지 검사해 보세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 10주차 자료구조</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/dataStructure.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 자료구조</a></p>
+    </footer>
+</body>
+</html>

@@ -247,6 +247,18 @@
             background: linear-gradient(135deg, rgba(123, 47, 255, 0.08), rgba(123, 47, 255, 0.02));
         }
 
+        .course-btn-python {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.02));
+        }
+
+        .course-btn-project {
+            background: linear-gradient(135deg, rgba(112, 20, 35, 0.32), rgba(75, 12, 24, 0.12));
+        }
+
+        .course-btn-project::before {
+            background: linear-gradient(135deg, #681522, #c44a58);
+        }
+
         .course-btn:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
@@ -254,6 +266,14 @@
 
         .course-btn-ai:hover {
             box-shadow: 0 20px 60px rgba(123, 47, 255, 0.2);
+        }
+
+        .course-btn-python:hover {
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+        }
+
+        .course-btn-project:hover {
+            box-shadow: 0 20px 60px rgba(140, 25, 45, 0.35);
         }
 
         .btn-label {
@@ -267,6 +287,16 @@
 
         .course-btn-ai .btn-label {
             color: var(--accent2);
+        }
+
+        .course-btn-python .btn-label,
+        .course-btn-python .btn-arrow {
+            color: var(--accent3);
+        }
+
+        .course-btn-project .btn-label,
+        .course-btn-project .btn-arrow {
+            color: #d66a75;
         }
 
         .btn-title {
@@ -644,12 +674,18 @@
             <span class="line2">홈페이지</span>
         </h1>
         <p>
-            AI 웹 프로그래밍과 IT개론 수업에서 학습한 내용을 기반으로<br>
+            AI 웹 프로그래밍, IT개론, Python 수업에서 학습한 내용을 기반으로<br>
             제작된 개인 포트폴리오 사이트입니다.<br>
             아래에서 수업별 파일을 확인하세요.
         </p>
 
         <div class="hero-courses">
+            <a href="NewProject.html" class="course-btn course-btn-project">
+                <div class="btn-label">SECTION 00</div>
+                <div class="btn-title">New Project</div>
+                <div class="btn-sub">프로젝트 기록과 결과물</div>
+                <span class="btn-arrow">→</span>
+            </a>
             <a href="AI_WEB/AI_WEB.html" class="course-btn course-btn-ai">
                 <div class="btn-label">COURSE 01</div>
                 <div class="btn-title">AI_WEB</div>
@@ -660,6 +696,12 @@
                 <div class="btn-label">COURSE 02</div>
                 <div class="btn-title">IT개론</div>
                 <div class="btn-sub">컴퓨터·네트워크·DB 기초</div>
+                <span class="btn-arrow">→</span>
+            </a>
+            <a href="Python/PythonIndex.html" class="course-btn course-btn-python">
+                <div class="btn-label">COURSE 03</div>
+                <div class="btn-title">Python</div>
+                <div class="btn-sub">Python 프로그래밍 학습 자료</div>
                 <span class="btn-arrow">→</span>
             </a>
         </div>

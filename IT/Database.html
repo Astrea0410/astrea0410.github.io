@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="데이터베이스의 개념과 DBMS, 관계형 데이터베이스, SQL 기초, MySQL을 활용한 데이터 관리를 알아보는 IT개론 7장 학습 자료입니다.">
+    <title>제7장. 데이터베이스 | IT개론</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --surface-raised: #1b2b3d;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --accent-warm: #f0bf74;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+            --code: #101a27;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                radial-gradient(ellipse at 90% 30%, rgba(86, 133, 214, 0.08), transparent 36rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label,
+        .section-number {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .label {
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 720px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            font-size: 0.78rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flow span {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--surface-raised);
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .flow b {
+            color: var(--accent);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        :not(pre) > code {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: var(--code);
+            color: #f0d7a4;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin: 14px 0;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--code);
+            color: var(--text);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .callout {
+            border-color: rgba(240, 191, 116, 0.45);
+            background: rgba(240, 191, 116, 0.06);
+        }
+
+        .callout h2 {
+            color: var(--accent-warm);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 07</div>
+        <h1>데이터베이스</h1>
+        <p class="lead">데이터를 체계적으로 저장하고 활용하는 데이터베이스의 구조와 SQL의 기초를 살펴봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="database-concept">
+            <div class="section-number">7.1 / DATABASE CONCEPTS</div>
+            <h2>데이터베이스의 개념</h2>
+            <p>데이터베이스(Database)는 여러 사용 목적에 맞게 데이터를 체계적으로 저장하고, 필요할 때 검색·수정·관리할 수 있도록 구성한 데이터의 모음입니다. 예를 들어 학교에서는 학생, 과목, 수강 내역을 연결해 관리할 수 있습니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>체계적인 저장</h3>
+                    <p>데이터를 정해진 구조와 규칙에 따라 저장해 쉽게 찾고 갱신할 수 있습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>공유와 활용</h3>
+                    <p>권한이 있는 여러 사용자와 응용 프로그램이 필요한 데이터를 활용할 수 있습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>정확성과 보호</h3>
+                    <p>규칙과 권한을 적용해 데이터의 정확성, 일관성, 보안을 관리합니다.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="dbms">
+            <div class="section-number">7.2 / DBMS</div>
+            <h2>DBMS의 역할</h2>
+            <p>DBMS(Database Management System)는 사용자나 응용 프로그램이 데이터베이스를 만들고 이용할 수 있게 해 주는 데이터베이스 관리 시스템입니다. 저장 공간을 관리하는 것뿐 아니라 여러 사용자의 요청과 데이터 보호도 담당합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>데이터 정의와 조회</h3>
+                    <p>테이블과 구조를 정의하고, 필요한 자료를 조건에 따라 찾거나 요약하도록 지원합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>동시성 제어</h3>
+                    <p>여러 사용자가 동시에 데이터를 읽고 변경할 때 작업이 서로 충돌하지 않도록 조정합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>무결성과 보안</h3>
+                    <p>자료가 정해진 규칙을 지키도록 하고, 사용자별 접근 권한을 설정합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>복구와 백업</h3>
+                    <p>오류나 장애에 대비해 데이터 복구와 백업 기능을 제공합니다.</p>
+                </article>
+            </div>
+            <p>데이터베이스는 관리 대상인 데이터와 구조를 뜻하고, DBMS는 그 데이터를 관리하고 이용하도록 돕는 소프트웨어입니다.</p>
+        </section>
+
+        <section id="relational-database">
+            <div class="section-number">7.3 / RELATIONAL DATABASE</div>
+            <h2>관계형 데이터베이스</h2>
+            <p>관계형 데이터베이스는 데이터를 행(row)과 열(column)로 구성된 테이블에 저장하고, 테이블 사이의 관계를 키로 표현합니다. 각 테이블은 보통 한 종류의 대상을 기록하도록 설계합니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">student_id</th>
+                            <th scope="col">name</th>
+                            <th scope="col">major</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1001</td><td>민지</td><td>컴퓨터과학</td></tr>
+                        <tr><td>1002</td><td>준호</td><td>정보보호</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>행과 열</h3>
+                    <p>행은 하나의 레코드, 열은 데이터의 속성이나 항목을 나타냅니다.</p>
+                </article>
+                <article class="card">
+                    <h3>기본 키 (Primary Key)</h3>
+                    <p>테이블의 각 행을 구별하는 값입니다. 중복되거나 비어 있지 않도록 정합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>외래 키 (Foreign Key)</h3>
+                    <p>다른 테이블의 기본 키를 참조해 테이블 사이의 연결을 표현합니다.</p>
+                </article>
+            </div>
+            <p>예를 들어 학생 테이블과 수강 테이블을 나누면 학생 정보를 여러 수강 기록에 반복 저장하지 않아도 됩니다. 관계를 키로 연결하면 중복을 줄이고 자료를 일관되게 관리하는 데 도움이 됩니다.</p>
+        </section>
+
+        <section id="sql-basics">
+            <div class="section-number">7.4 / SQL BASICS</div>
+            <h2>SQL 기초</h2>
+            <p>SQL(Structured Query Language)은 관계형 데이터베이스의 구조와 데이터를 정의하고 다루는 데 사용하는 언어입니다. 다음 예시는 MySQL을 포함한 여러 DBMS에서 널리 쓰이는 기본 문법입니다.</p>
+            <h3>테이블 만들기</h3>
+            <pre><code>CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    major VARCHAR(80)
+);</code></pre>
+            <h3>데이터 추가와 조회</h3>
+            <pre><code>INSERT INTO students (student_id, name, major)
+VALUES (1001, '민지', '컴퓨터과학');
+
+SELECT student_id, name, major
+FROM students
+WHERE student_id = 1001;</code></pre>
+            <h3>데이터 수정과 삭제</h3>
+            <pre><code>UPDATE students
+SET major = '정보기술'
+WHERE student_id = 1001;
+
+DELETE FROM students
+WHERE student_id = 1001;</code></pre>
+            <p><code>UPDATE</code>와 <code>DELETE</code>에서 조건을 생략하면 의도하지 않게 많은 행을 변경하거나 삭제할 수 있습니다. 실행 전 대상 데이터를 확인하고, 중요한 작업은 백업과 권한을 점검해야 합니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">명령</th>
+                            <th scope="col">분류</th>
+                            <th scope="col">기능</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>CREATE</code></td><td>DDL</td><td>데이터베이스 객체의 구조를 생성</td></tr>
+                        <tr><td><code>SELECT</code></td><td>DQL</td><td>조건에 맞는 데이터 조회</td></tr>
+                        <tr><td><code>INSERT</code></td><td>DML</td><td>새 데이터 추가</td></tr>
+                        <tr><td><code>UPDATE</code></td><td>DML</td><td>기존 데이터 수정</td></tr>
+                        <tr><td><code>DELETE</code></td><td>DML</td><td>데이터 행 삭제</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="mysql">
+            <div class="section-number">7.5 / MYSQL &amp; DATA MANAGEMENT</div>
+            <h2>MySQL과 데이터 관리</h2>
+            <p>MySQL은 널리 사용되는 관계형 데이터베이스 관리 시스템입니다. 데이터베이스와 테이블을 만들고 SQL로 자료를 관리하며, 애플리케이션은 데이터베이스 서버에 연결해 필요한 작업을 요청합니다.</p>
+            <div class="flow" aria-label="데이터베이스 활용 흐름">
+                <span>응용 프로그램</span><b aria-hidden="true">→ SQL 요청</b>
+                <span>MySQL DBMS</span><b aria-hidden="true">→ 조회·변경</b>
+                <span>테이블 데이터</span>
+            </div>
+            <ol>
+                <li>데이터베이스에 저장할 대상과 필요한 항목을 정합니다.</li>
+                <li>테이블과 열의 자료형, 기본 키와 외래 키를 설계합니다.</li>
+                <li>필요한 데이터를 입력하고, SQL로 조회·추가·수정합니다.</li>
+                <li>사용자와 프로그램에 필요한 최소한의 권한만 부여합니다.</li>
+                <li>정기적으로 백업하고 복구할 수 있는지 확인합니다.</li>
+            </ol>
+            <p>실제 애플리케이션에서는 사용자 입력을 SQL 문자열에 그대로 이어 붙이지 않습니다. 준비된 문장(prepared statement)과 매개변수 바인딩을 사용하면 입력값을 안전하게 처리하고 SQL 인젝션 위험을 줄이는 데 도움이 됩니다.</p>
+            <div class="card">
+                <h3>데이터 품질과 개인정보</h3>
+                <p>정확하고 최신의 데이터를 유지하고, 중복과 오류를 점검합니다. 개인정보는 목적에 필요한 범위로 수집하고, 접근 권한·보관 기간·삭제 절차를 함께 관리해야 합니다.</p>
+            </div>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">7.6 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>데이터베이스는 데이터를 체계적으로 저장하고 검색·수정·관리할 수 있도록 구성한 모음입니다.</li>
+                <li>DBMS는 데이터베이스의 구조와 접근, 무결성, 동시 사용, 보안과 복구를 관리하는 소프트웨어입니다.</li>
+                <li>관계형 데이터베이스는 테이블을 기본 키와 외래 키로 연결해 데이터를 관리합니다.</li>
+                <li>SQL은 데이터베이스의 구조를 정의하고 데이터를 조회·추가·수정·삭제하는 언어입니다.</li>
+                <li>MySQL로 데이터를 관리할 때 권한, 백업, 데이터 품질, 개인정보 보호와 안전한 SQL 처리를 고려해야 합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>학생 정보를 하나의 표에 모두 저장할 때 생길 수 있는 중복이나 수정 문제를 생각해 보세요.</li>
+                <li>기본 키와 외래 키가 각각 어떤 역할을 하는지 예를 들어 설명해 보세요.</li>
+                <li><code>UPDATE</code>나 <code>DELETE</code> 실행 전에 조건과 백업을 확인해야 하는 이유는 무엇인가요?</li>
+                <li>웹 서비스가 데이터베이스에 접속할 때 사용자 권한을 제한하고 입력값을 안전하게 처리해야 하는 이유는 무엇일까요?</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>IT개론 · 제7장 데이터베이스</p>
+        <p><a href="Networking.html">이전: 제6장 컴퓨터 네트워크와 인터넷</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+
+</html>

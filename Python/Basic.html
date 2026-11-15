@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python의 특징과 활용 분야를 살펴보고 print()와 문자열 포맷을 연습하는 1주차 학습 자료입니다.">
+    <title>Python 기초: 개요와 출력 | Python Programming</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0d0f18;
+            --surface: #181b28;
+            --surface-raised: #202436;
+            --border: #2a2d3e;
+            --accent: #e5c07b;
+            --text: #e8ecf5;
+            --muted: #a4abc0;
+            --code: #111521;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(229, 192, 123, 0.1), transparent 34rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 48px 0 28px;
+        }
+
+        .label {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.3;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2rem, 6vw, 3.2rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 700px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section,
+        .callout {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-number {
+            margin-bottom: 6px;
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            padding: 17px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        :not(pre) > code {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: var(--code);
+            color: #f0d7a4;
+        }
+
+        pre {
+            overflow-x: auto;
+            margin: 14px 0;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--code);
+            color: var(--text);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        .output {
+            margin-top: -7px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .callout {
+            border-color: rgba(229, 192, 123, 0.45);
+            background: rgba(229, 192, 123, 0.07);
+        }
+
+        .callout h2 {
+            color: var(--accent);
+        }
+
+        ol {
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 32px;
+            }
+
+            th,
+            td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 01</div>
+        <h1>Python 기초: 개요와 출력</h1>
+        <p class="lead">Python이 어떤 언어인지 살펴보고, 첫 번째 프로그램을 <code>print()</code>로 작성해 봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="#practice">출력 실습으로 이동</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="overview">
+            <div class="section-number">01 / OVERVIEW</div>
+            <h2>Python이란?</h2>
+            <p>Python은 1991년 귀도 반 로섬이 공개한 고급 프로그래밍 언어입니다. 사람이 읽기 편한 문법과 폭넓은 라이브러리를 갖추고 있어 처음 코딩을 배우거나 빠르게 아이디어를 실험할 때 유용합니다.</p>
+            <p>Python 프로그램은 보통 <code>.py</code> 파일에 저장합니다. 코드를 실행하면 Python 실행 환경이 문장을 해석하고 동작을 수행합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>읽기 쉬운 문법</h3>
+                    <p>들여쓰기와 간결한 표현으로 코드의 구조를 파악하기 쉽습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>다양한 생태계</h3>
+                    <p>표준 라이브러리와 공개 패키지를 활용해 기능을 확장할 수 있습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>여러 운영체제에서 사용</h3>
+                    <p>Windows, macOS, Linux 등에서 같은 언어와 도구를 이용할 수 있습니다.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="uses">
+            <div class="section-number">02 / USE CASES</div>
+            <h2>어디에 활용할까?</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>인공지능과 데이터</h3>
+                    <p>데이터를 정리하고 분석하거나 머신러닝 모델을 실험합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>웹 서비스</h3>
+                    <p>웹 애플리케이션의 서버 기능과 API를 구현합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>자동화</h3>
+                    <p>반복적인 파일 처리나 업무 절차를 스크립트로 간소화합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>교육과 프로토타이핑</h3>
+                    <p>작은 프로그램을 만들며 프로그래밍 개념을 익히고 아이디어를 검증합니다.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="types">
+            <div class="section-number">03 / BASIC TYPES</div>
+            <h2>자주 만나는 기본 자료형</h2>
+            <p>자료형은 값의 종류를 나타냅니다. 아래 값을 입력하고 <code>type()</code>으로 종류를 확인해 보세요.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">자료형</th>
+                            <th scope="col">예시</th>
+                            <th scope="col">용도</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>정수 <code>int</code></td>
+                            <td><code>21</code></td>
+                            <td>소수점이 없는 수</td>
+                        </tr>
+                        <tr>
+                            <td>실수 <code>float</code></td>
+                            <td><code>3.14</code></td>
+                            <td>소수점이 있는 수</td>
+                        </tr>
+                        <tr>
+                            <td>문자열 <code>str</code></td>
+                            <td><code>"Python"</code></td>
+                            <td>문자와 텍스트</td>
+                        </tr>
+                        <tr>
+                            <td>불리언 <code>bool</code></td>
+                            <td><code>True</code>, <code>False</code></td>
+                            <td>참 또는 거짓을 나타내는 값</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="printing">
+            <div class="section-number">04 / FIRST PROGRAM</div>
+            <h2><code>print()</code>로 화면에 출력하기</h2>
+            <p><code>print()</code>는 전달한 값이나 계산 결과를 화면에 보여 줍니다. 문자열은 따옴표로 감싸고, 숫자는 따옴표 없이 쓸 수 있습니다.</p>
+            <pre><code>print("Hello, Python!")
+print("합계:", 10 + 20)
+print(3.14)
+print(type("3.14"))
+print(type(3.14))</code></pre>
+            <p class="output">실행 결과 예시: <code>Hello, Python!</code> · <code>합계: 30</code> · <code>3.14</code></p>
+        </section>
+
+        <section id="practice">
+            <div class="section-number">05 / PRINT PRACTICE</div>
+            <h2>문자열과 출력 형식 연습</h2>
+            <h3>줄바꿈과 탭</h3>
+            <p>문자열 안의 특수 표기인 이스케이프 문자를 이용해 출력 모양을 바꿀 수 있습니다.</p>
+            <pre><code>print("첫째 줄\n둘째 줄")
+print("이름\t점수")
+print("민지\t95")</code></pre>
+
+            <h3>구분자와 줄 끝 제어</h3>
+            <p><code>sep</code>는 여러 값 사이에 들어갈 문자열을, <code>end</code>는 출력 마지막에 붙일 문자열을 지정합니다.</p>
+            <pre><code>print("2026", "11", "15", sep="-")
+print("Python", end=" ")
+print("기초")</code></pre>
+            <p class="output">실행 결과 예시: <code>2026-11-15</code> · <code>Python 기초</code></p>
+
+            <h3>f-string으로 값 끼워 넣기</h3>
+            <p>문자열 앞에 <code>f</code>를 붙이면 중괄호 안에 변수나 계산식을 넣을 수 있습니다.</p>
+            <pre><code>name = "민지"
+score = 95
+
+print(f"{name} 학생의 점수는 {score}점입니다.")
+print(f"다음 시험 목표: {score + 5}점")</code></pre>
+
+            <h3>정렬과 소수점 자리</h3>
+            <p>f-string 형식 지정으로 열 너비나 숫자의 소수점 자릿수를 정할 수 있습니다.</p>
+            <pre><code>item = "Python"
+price = 12.5
+
+print(f"|{item:<10}|")
+print(f"|{item:>10}|")
+print(f"가격: {price:.2f}")</code></pre>
+        </section>
+
+        <aside class="callout" aria-labelledby="challenge-title">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2 id="challenge-title">오늘의 연습</h2>
+            <p>새 파일을 <code>basic01.py</code>로 저장하고, 아래 항목을 각각 출력해 보세요.</p>
+            <ol>
+                <li>이름과 전공을 한 줄씩 출력하기</li>
+                <li>구분선으로 감싼 간단한 자기소개 카드 만들기</li>
+                <li>과목명과 점수를 표처럼 정렬해 출력하기</li>
+                <li>변수 두 개의 합과 평균을 f-string으로 표시하기</li>
+            </ol>
+        </aside>
+    </main>
+
+    <footer>
+        <p>Python Programming · 기초 학습 자료</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/1w_print.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 1주차 Python 개요</a></p>
+    </footer>
+</body>
+
+</html>

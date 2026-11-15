@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="정보보안의 CIA 3요소, 암호화와 복호화, 악성코드, 보안 위협과 개인정보 보호를 학습하는 IT개론 8장 자료입니다.">
+    <title>제8장. 정보보안과 개인정보 보호 | IT개론</title>
+    <link rel="stylesheet" href="Chapter.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 08</div>
+        <h1>정보보안과 개인정보 보호</h1>
+        <p class="lead">정보를 안전하게 지키는 기본 원칙과 보안 위협의 유형, 일상에서 실천할 수 있는 개인정보 보호 방법을 알아봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+    <main>
+        <section id="cia">
+            <div class="section-number">8.1 / CIA TRIAD</div>
+            <h2>정보보안의 3요소(CIA)</h2>
+            <p>정보보안은 정보를 허가되지 않은 접근과 변경, 손실로부터 보호하는 활동입니다. 기본 원칙은 기밀성(Confidentiality), 무결성(Integrity), 가용성(Availability)으로 정리합니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>기밀성 (Confidentiality)</h3>
+                    <p>정보에 접근할 권한이 있는 사람만 내용을 볼 수 있도록 보호합니다. 예: 접근 권한과 암호화.</p>
+                </article>
+                <article class="card">
+                    <h3>무결성 (Integrity)</h3>
+                    <p>정보가 허가 없이 바뀌거나 훼손되지 않고 정확하고 완전하게 유지되도록 합니다. 예: 변경 기록과 무결성 검증.</p>
+                </article>
+                <article class="card">
+                    <h3>가용성 (Availability)</h3>
+                    <p>권한 있는 사용자가 필요한 시점에 시스템과 정보에 접근할 수 있도록 합니다. 예: 백업과 장애 대비.</p>
+                </article>
+            </div>
+            <p>세 요소는 서로 균형을 이루어야 합니다. 보안을 지나치게 제한해 필요한 업무를 할 수 없게 하면 가용성이 떨어질 수 있고, 편의만 우선하면 기밀성과 무결성이 위협받을 수 있습니다.</p>
+        </section>
+
+        <section id="encryption">
+            <div class="section-number">8.2 / ENCRYPTION</div>
+            <h2>암호화와 복호화</h2>
+            <p>암호화는 읽을 수 있는 평문을 정해진 알고리즘과 키를 사용해 암호문으로 바꾸는 과정입니다. 복호화는 권한과 올바른 키를 이용해 암호문을 다시 해석하는 과정입니다.</p>
+            <div class="flow" aria-label="암호화와 복호화 과정">
+                <span>평문</span><b aria-hidden="true">→ 암호화·키</b>
+                <span>암호문</span><b aria-hidden="true">→ 복호화·키</b>
+                <span>평문</span>
+            </div>
+            <div class="grid">
+                <article class="card">
+                    <h3>대칭키 암호화</h3>
+                    <p>암호화와 복호화에 같은 비밀 키를 사용합니다. 키를 안전하게 공유하고 보관하는 것이 중요합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>공개키 암호화</h3>
+                    <p>서로 짝을 이루는 공개 키와 개인 키를 사용합니다. 공개 키는 공개할 수 있지만 개인 키는 안전하게 보호해야 합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>해시와 암호화의 차이</h3>
+                    <p>암호화는 적절한 키로 복호화할 수 있지만, 해시는 일반적으로 원문 복원이 목적이 아닌 단방향 요약값입니다.</p>
+                </article>
+            </div>
+            <p>암호화만으로 모든 위험이 사라지는 것은 아닙니다. 키 관리, 접근 통제, 기기 보안과 안전한 백업을 함께 적용해야 합니다.</p>
+        </section>
+
+        <section id="malware">
+            <div class="section-number">8.3 / MALWARE</div>
+            <h2>바이러스와 악성코드</h2>
+            <p>악성코드(Malware)는 기기나 정보를 손상시키거나, 무단으로 정보를 수집하거나, 공격자의 이익을 위해 시스템을 악용하도록 만들어진 소프트웨어를 말합니다. 컴퓨터 바이러스는 다른 파일이나 프로그램에 붙어 실행·복제되는 악성코드의 한 종류입니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>유형</th><th>특징</th><th>예방 습관</th></tr></thead>
+                    <tbody>
+                        <tr><td>바이러스</td><td>다른 파일이나 프로그램에 붙어 전파될 수 있음</td><td>출처가 불분명한 파일을 열지 않고 보안 도구 사용</td></tr>
+                        <tr><td>웜 (Worm)</td><td>네트워크를 통해 스스로 확산을 시도할 수 있음</td><td>운영체제와 네트워크 장비를 최신 상태로 유지</td></tr>
+                        <tr><td>트로이 목마</td><td>정상 프로그램처럼 보이지만 숨은 악성 동작을 포함할 수 있음</td><td>공식 출처에서 프로그램 설치</td></tr>
+                        <tr><td>랜섬웨어</td><td>파일을 암호화하거나 접근을 막고 금전을 요구할 수 있음</td><td>별도 위치에 백업하고 의심스러운 링크와 첨부 파일 주의</td></tr>
+                        <tr><td>스파이웨어</td><td>사용자 활동이나 정보를 몰래 수집할 수 있음</td><td>앱 권한과 설치 내역을 점검하고 신뢰할 수 있는 보안 도구 사용</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>악성코드 예방에는 운영체제와 앱 업데이트, 신뢰할 수 있는 출처 이용, 최소 권한 사용, 별도 백업, 의심스러운 첨부 파일과 링크 주의가 도움이 됩니다.</p>
+        </section>
+
+        <section id="threats">
+            <div class="section-number">8.4 / SECURITY THREATS</div>
+            <h2>해킹과 보안 위협</h2>
+            <p>보안 위협은 기술적 취약점뿐 아니라 사람을 속이는 수법, 잘못된 설정, 기기 분실과 재해 등 다양한 원인에서 발생합니다. 해킹이라는 말은 넓은 의미로 쓰이지만, 허가 없이 타인의 계정이나 시스템에 접근하거나 피해를 주는 행위는 불법이며 해롭습니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>피싱과 사회공학</h3>
+                    <p>기관이나 지인을 사칭해 비밀번호, 인증번호, 금융 정보를 입력하도록 유도합니다. 발신자와 주소를 별도로 확인하세요.</p>
+                </article>
+                <article class="card">
+                    <h3>계정 탈취</h3>
+                    <p>유출되거나 추측하기 쉬운 비밀번호를 이용해 계정에 접근하려고 시도합니다. 사이트마다 다른 비밀번호와 다중 인증을 사용하세요.</p>
+                </article>
+                <article class="card">
+                    <h3>취약점과 잘못된 설정</h3>
+                    <p>오래된 소프트웨어나 공개된 접근 설정이 악용될 수 있습니다. 업데이트를 적용하고 필요한 권한만 허용하세요.</p>
+                </article>
+                <article class="card">
+                    <h3>서비스 장애와 데이터 손실</h3>
+                    <p>장애, 실수, 공격, 재해로 서비스나 자료를 사용할 수 없게 될 수 있습니다. 복구 계획과 백업을 준비하세요.</p>
+                </article>
+            </div>
+            <p>의심스러운 메시지에 답하거나 링크를 누르기 전에 공식 앱이나 직접 입력한 주소를 통해 사실을 확인하세요. 문제가 발생하면 비밀번호를 안전한 기기에서 변경하고, 서비스 제공자나 담당 기관에 신고합니다.</p>
+        </section>
+
+        <section id="privacy">
+            <div class="section-number">8.5 / PRIVACY</div>
+            <h2>개인정보 보호</h2>
+            <p>개인정보는 단독으로 또는 다른 정보와 결합해 개인을 알아볼 수 있는 정보입니다. 이름이나 연락처뿐 아니라 계정 식별자, 위치와 이용 기록 등도 상황에 따라 개인정보가 될 수 있습니다.</p>
+            <div class="grid">
+                <article class="card">
+                    <h3>수집 최소화</h3>
+                    <p>서비스 이용에 꼭 필요한 정보인지 확인하고, 목적과 관계없는 정보는 제공하지 않습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>계정 보호</h3>
+                    <p>사이트마다 다른 비밀번호를 사용하고 다중 인증을 켭니다. 인증번호와 복구 코드는 다른 사람에게 전달하지 않습니다.</p>
+                </article>
+                <article class="card">
+                    <h3>권한과 공개 범위 확인</h3>
+                    <p>앱의 카메라·위치·연락처 권한과 게시물 공개 범위를 주기적으로 점검합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>안전한 처리와 삭제</h3>
+                    <p>개인정보를 목적에 맞게 사용하고, 보관 기간이 끝났거나 필요하지 않으면 정책과 법령에 따라 안전하게 삭제합니다.</p>
+                </article>
+            </div>
+            <p>개인정보를 다루는 조직은 수집 목적과 이용 범위를 투명하게 안내하고, 접근 통제·보관·파기 절차를 마련해야 합니다. 실제 처리 시에는 적용되는 개인정보 보호 법령과 기관의 정책을 확인해야 합니다.</p>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">8.6 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>정보보안의 CIA 3요소는 기밀성, 무결성, 가용성입니다.</li>
+                <li>암호화는 키를 사용해 정보를 보호하는 과정이며, 해시는 일반적으로 복호화와 목적이 다릅니다.</li>
+                <li>악성코드는 바이러스, 웜, 트로이 목마, 랜섬웨어 등 여러 유형이 있습니다.</li>
+                <li>피싱, 계정 탈취, 취약점, 잘못된 설정과 장애는 주요 보안 위협입니다.</li>
+                <li>개인정보는 필요한 범위에서만 제공하고, 권한·공개 범위·보관과 삭제를 관리해야 합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>학교 온라인 서비스의 성적 정보에서 기밀성·무결성·가용성을 각각 어떻게 지킬 수 있을까요?</li>
+                <li>암호화와 해시가 서로 다른 목적을 갖는 이유를 설명해 보세요.</li>
+                <li>피싱 메시지를 받았을 때 링크를 누르기 전에 확인할 항목은 무엇인가요?</li>
+                <li>앱이 요청하는 개인정보와 기기 권한을 검토할 때 어떤 기준을 적용할 수 있을까요?</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>IT개론 · 제8장 정보보안과 개인정보 보호</p>
+        <p><a href="Database.html">이전: 제7장 데이터베이스</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+</html>

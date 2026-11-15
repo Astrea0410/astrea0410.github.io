@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 문자열, 리스트, 딕셔너리, 집합의 메소드와 가변·불변 자료형을 학습합니다.">
+    <title>Python 자료형 메소드 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 07</div>
+        <h1>자료형 메소드 <span lang="en">(Methods)</span></h1>
+        <p class="lead">자료형에 딸린 메소드를 호출해 문자열을 다듬고 컬렉션을 검색·수정합니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="Class.html">다음: 클래스와 객체</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / METHODS</div>
+            <h2>메소드란?</h2>
+            <p>메소드는 특정 자료형이 제공하는 기능입니다. 객체 뒤에 점을 찍고 메소드 이름과 괄호를 적어 호출합니다. 자료형마다 쓸 수 있는 메소드가 다릅니다.</p>
+            <pre><code>text = "python"
+print(text.upper())
+
+items = [1, 2]
+items.append(3)
+print(items)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">02 / STRING</div>
+            <h2>문자열 메소드</h2>
+            <p>문자열 메소드는 대소문자 변환, 공백 정리, 검색, 치환, 분리와 결합에 활용합니다. 문자열은 불변 자료형이므로 결과가 원본 문자열을 직접 바꾸지는 않습니다.</p>
+            <pre><code>message = "  Hello Python  "
+print(message.strip())
+print(message.lower())
+print(message.replace("Python", "AI"))
+print("red,green,blue".split(","))
+print("-".join(["2026", "11", "15"]))
+print("Python".startswith("Py"))</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / LIST</div>
+            <h2>리스트 메소드</h2>
+            <p><code>append()</code>와 <code>extend()</code>는 항목을 추가하고, <code>remove()</code>와 <code>pop()</code>은 삭제합니다. <code>sort()</code>는 리스트 자체의 순서를 바꾸며, <code>sorted()</code>는 정렬된 새 리스트를 반환합니다.</p>
+            <pre><code>scores = [90, 75, 100]
+scores.append(88)
+scores.extend([82, 95])
+scores.remove(75)
+last_score = scores.pop()
+scores.sort()
+
+print(scores)
+print("삭제된 점수:", last_score)
+print("내림차순 새 목록:", sorted(scores, reverse=True))</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / DICT &amp; SET</div>
+            <h2>딕셔너리와 집합 메소드</h2>
+            <pre><code>student = {"name": "민지", "grade": 1}
+print(student.get("name"))
+student.update({"grade": 2, "major": "AI"})
+removed = student.pop("grade")
+
+tags = {"python", "ai"}
+tags.add("web")
+tags.discard("ai")
+print(tags)</code></pre>
+            <p><code>get()</code>은 키가 없을 때 기본값을 지정할 수 있어 안전한 조회에 유용합니다. 집합은 <code>add()</code>로 추가하고 <code>discard()</code>로 항목을 제거할 수 있습니다.</p>
+        </section>
+        <section>
+            <div class="section-number">05 / MUTABILITY</div>
+            <h2>가변과 불변</h2>
+            <p>리스트·딕셔너리·집합은 내용을 바꿀 수 있는 가변 자료형입니다. 문자열과 튜플은 불변 자료형이며, 값을 바꾸는 것처럼 보이는 연산은 새 값을 만듭니다.</p>
+            <pre><code>numbers = [1, 2]
+alias = numbers
+alias.append(3)
+print(numbers)  # 같은 리스트가 변경됨
+
+word = "cat"
+word = word.upper()  # 새 문자열을 변수에 다시 할당
+print(word)</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>사용자 이름 문자열의 앞뒤 공백을 제거하고 첫 글자를 대문자로 바꿔 보세요.</li>
+                <li>점수 리스트에 값을 추가하고 정렬한 뒤 최댓값과 최솟값을 출력하세요.</li>
+                <li>딕셔너리의 키를 <code>get()</code>으로 조회하고, 값을 추가·수정·삭제하세요.</li>
+                <li>문자열과 리스트에서 메소드 호출 후 원본이 어떻게 달라지는지 비교하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 7주차 메소드</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/5w_method.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 메소드</a></p>
+    </footer>
+</body>
+</html>

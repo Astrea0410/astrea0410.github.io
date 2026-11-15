@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="New Project Journal — 프로젝트의 아이디어, 진행 과정과 결과를 기록하는 공간입니다.">
+    <title>New Project Journal | NPJ</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #120d12;
+            --surface: #1d1219;
+            --surface-raised: #281720;
+            --border: #49232d;
+            --accent: #c44a58;
+            --accent-light: #e18a92;
+            --text: #f5ebed;
+            --muted: #bda9ad;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            line-height: 1.75;
+        }
+
+        a {
+            color: var(--accent-light);
+        }
+
+        .page-header,
+        main,
+        footer {
+            width: min(100% - 40px, 920px);
+            margin-inline: auto;
+        }
+
+        .page-header {
+            padding: 52px 0 30px;
+        }
+
+        .label {
+            color: var(--accent-light);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.35;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(2.2rem, 7vw, 3.8rem);
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: clamp(1.3rem, 4vw, 1.7rem);
+        }
+
+        h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        p {
+            margin: 0 0 12px;
+            color: var(--muted);
+        }
+
+        .lead {
+            max-width: 700px;
+            font-size: 1.05rem;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .header-links a {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .header-links a:hover {
+            border-color: var(--accent);
+        }
+
+        main {
+            display: grid;
+            gap: 18px;
+            padding-bottom: 48px;
+        }
+
+        section {
+            padding: clamp(20px, 4vw, 30px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: var(--surface);
+        }
+
+        .section-label {
+            margin-bottom: 6px;
+            color: var(--accent-light);
+            font-family: "Courier New", monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .card {
+            min-height: 125px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
+        }
+
+        .placeholder {
+            color: #896f76;
+            font-size: 0.92rem;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .timeline li {
+            padding: 16px 18px;
+            border-left: 2px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            background: var(--surface-raised);
+        }
+
+        .timeline strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--accent-light);
+        }
+
+        .timeline p {
+            margin-bottom: 0;
+        }
+
+        footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px 0 36px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 520px) {
+            .page-header {
+                padding-top: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="label">SECTION 00 · NEW PROJECT</div>
+        <h1>New Project Journal</h1>
+        <p class="lead">아이디어를 구체화하고, 만들어 가는 과정과 최종 결과를 기록하는 프로젝트 저널입니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="NewProject.html">New Project 프로젝트 목록</a>
+            <a href="index.html">메인 페이지</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <div class="section-label">PROJECT OVERVIEW</div>
+            <h2>프로젝트 개요</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>프로젝트명</h3>
+                    <p class="placeholder">추후 작성</p>
+                </article>
+                <article class="card">
+                    <h3>목표와 아이디어</h3>
+                    <p class="placeholder">해결하고 싶은 문제와 프로젝트의 목표를 기록합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>사용 기술</h3>
+                    <p class="placeholder">사용한 언어, 도구와 기술을 기록합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>진행 기간</h3>
+                    <p class="placeholder">시작일 — 완료일</p>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-label">PROCESS</div>
+            <h2>프로젝트 과정</h2>
+            <ol class="timeline">
+                <li>
+                    <strong>01 · 기획</strong>
+                    <p class="placeholder">아이디어, 목적과 요구사항을 정리합니다.</p>
+                </li>
+                <li>
+                    <strong>02 · 설계</strong>
+                    <p class="placeholder">화면, 기능, 데이터와 작업 계획을 기록합니다.</p>
+                </li>
+                <li>
+                    <strong>03 · 제작과 테스트</strong>
+                    <p class="placeholder">구현 과정에서의 주요 작업과 수정 사항을 기록합니다.</p>
+                </li>
+                <li>
+                    <strong>04 · 결과와 회고</strong>
+                    <p class="placeholder">완성 결과, 배운 점과 다음 개선 방향을 정리합니다.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section>
+            <div class="section-label">RESULT</div>
+            <h2>결과물</h2>
+            <p class="placeholder">완성된 프로젝트 파일, 실행 화면, 시연 영상 또는 관련 링크를 추가할 예정입니다.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>New Project Journal · NPJ</p>
+        <p><a href="NewProject.html">New Project 프로젝트 목록으로 돌아가기</a></p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="프로그래밍과 알고리즘, 순서도, 변수와 자료형, 조건문과 반복문, 함수와 객체지향 프로그래밍을 학습하는 IT개론 9장 자료입니다.">
+    <title>제9장. 프로그래밍과 알고리즘 | IT개론</title>
+    <link rel="stylesheet" href="Chapter.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Introduction to Information Technology · Chapter 09</div>
+        <h1>프로그래밍과 알고리즘</h1>
+        <p class="lead">문제를 절차적으로 해결하는 알고리즘부터 기본 프로그래밍 구성 요소와 객체지향 개념까지 알아봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="ItIndex.html">IT개론 목차</a>
+            <a href="#summary">핵심 정리와 생각해 보기</a>
+        </nav>
+    </header>
+    <main>
+        <section id="programming">
+            <div class="section-number">9.1 / PROGRAMMING</div>
+            <h2>프로그래밍의 개념</h2>
+            <p>프로그래밍은 해결할 문제를 분석하고, 컴퓨터가 수행할 명령을 프로그래밍 언어로 표현해 실행 가능한 프로그램으로 만드는 과정입니다. 프로그램을 만들 때는 요구사항을 파악하고, 해결 절차를 설계한 뒤, 코드를 작성·실행·검증하고 개선합니다.</p>
+            <div class="flow" aria-label="프로그램 개발의 기본 흐름">
+                <span>문제 이해</span><b aria-hidden="true">→</b>
+                <span>해결 절차 설계</span><b aria-hidden="true">→</b>
+                <span>코드 작성</span><b aria-hidden="true">→</b>
+                <span>실행·검증·개선</span>
+            </div>
+        </section>
+
+        <section id="algorithm">
+            <div class="section-number">9.2 / ALGORITHMS &amp; FLOWCHARTS</div>
+            <h2>알고리즘과 순서도</h2>
+            <p>알고리즘은 문제를 해결하기 위한 명확하고 순서가 있는 절차입니다. 순서도는 시작·처리·입력과 출력·조건 분기 등을 도형과 화살표로 나타내 알고리즘의 흐름을 시각적으로 표현합니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>순서도 기호</th><th>주요 의미</th><th>예</th></tr></thead>
+                    <tbody>
+                        <tr><td>타원형</td><td>시작 또는 끝</td><td>알고리즘 시작</td></tr>
+                        <tr><td>평행사변형</td><td>입력 또는 출력</td><td>숫자 입력, 합계 출력</td></tr>
+                        <tr><td>직사각형</td><td>처리 또는 계산</td><td>두 수의 합 계산</td></tr>
+                        <tr><td>마름모</td><td>조건 판단과 분기</td><td>점수가 기준 이상인가?</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 style="margin-top: 22px;">두 수 중 큰 수 찾기</h3>
+            <ol>
+                <li>두 수 A와 B를 입력받습니다.</li>
+                <li>A가 B보다 크거나 같은지 비교합니다.</li>
+                <li>조건이 참이면 A, 아니면 B를 결과로 출력합니다.</li>
+            </ol>
+        </section>
+
+        <section id="variables">
+            <div class="section-number">9.3 / VARIABLES &amp; TYPES</div>
+            <h2>변수와 자료형</h2>
+            <p>변수는 프로그램이 실행되는 동안 데이터를 이름으로 참조할 수 있게 합니다. 자료형은 데이터의 종류와 가능한 연산을 구분하는 데 도움을 줍니다.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>자료형</th><th>예시</th><th>용도</th></tr></thead>
+                    <tbody>
+                        <tr><td>정수</td><td><code>count = 3</code></td><td>개수, 횟수, 순번</td></tr>
+                        <tr><td>실수</td><td><code>temperature = 21.5</code></td><td>측정값, 소수점이 있는 계산</td></tr>
+                        <tr><td>문자열</td><td><code>name = "민지"</code></td><td>이름이나 문장</td></tr>
+                        <tr><td>논리값</td><td><code>is_open = True</code></td><td>참 또는 거짓을 나타내는 조건</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code>price = 1200
+quantity = 3
+total = price * quantity
+
+print(f"합계: {total}원")</code></pre>
+            <p>사용하는 프로그래밍 언어에 따라 자료형을 선언하는 방법과 형 변환 규칙은 다를 수 있습니다.</p>
+        </section>
+
+        <section id="control-flow">
+            <div class="section-number">9.4 / CONDITIONS &amp; LOOPS</div>
+            <h2>조건문과 반복문</h2>
+            <p>조건문은 조건의 결과에 따라 실행할 코드를 선택하고, 반복문은 같은 종류의 처리를 여러 번 수행합니다. 이 두 구조는 알고리즘의 실행 흐름을 만드는 기본 제어 구조입니다.</p>
+            <pre><code>score = 85
+
+if score &gt;= 60:
+    print("통과")
+else:
+    print("다시 도전해 보세요")
+
+for number in range(1, 4):
+    print(number)</code></pre>
+            <div class="grid">
+                <article class="card">
+                    <h3>조건문</h3>
+                    <p>비교·논리 연산 결과에 따라 서로 다른 경로를 실행합니다. 조건이 겹치는 경우 순서와 범위를 확인합니다.</p>
+                </article>
+                <article class="card">
+                    <h3>반복문</h3>
+                    <p>정해진 횟수나 조건이 만족하는 동안 작업을 반복합니다. 종료 조건을 확인해 원하지 않는 무한 반복을 막습니다.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="functions-oop">
+            <div class="section-number">9.5 / FUNCTIONS &amp; OOP</div>
+            <h2>함수와 객체지향 프로그래밍</h2>
+            <p>함수는 특정 작업을 수행하는 코드를 이름으로 묶어 재사용하도록 합니다. 매개변수로 값을 전달하고 반환값으로 결과를 돌려줄 수 있습니다.</p>
+            <pre><code>def add(a, b):
+    return a + b
+
+print(add(2, 3))</code></pre>
+            <p>객체지향 프로그래밍(Object-Oriented Programming)은 관련 데이터(속성)와 동작(메소드)을 객체 단위로 묶어 표현하는 방식입니다. 클래스는 객체를 만들기 위한 설계도 역할을 합니다.</p>
+            <pre><code>class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def increase(self):
+        self.value += 1
+
+counter = Counter()
+counter.increase()
+print(counter.value)</code></pre>
+        </section>
+
+        <section id="summary">
+            <div class="section-number">9.6 / SUMMARY</div>
+            <h2>핵심 정리</h2>
+            <ol>
+                <li>프로그래밍은 문제를 분석하고 해결 절차를 코드로 표현해 실행·검증하는 과정입니다.</li>
+                <li>알고리즘은 문제 해결 절차이고, 순서도는 이를 기호와 화살표로 나타낸 표현입니다.</li>
+                <li>변수는 데이터를 이름으로 다루게 하고, 자료형은 데이터의 종류와 연산을 구분합니다.</li>
+                <li>조건문은 실행 경로를 선택하고 반복문은 작업을 여러 차례 수행합니다.</li>
+                <li>함수는 동작을 재사용하게 하고, 객체지향은 관련 데이터와 동작을 객체로 구성합니다.</li>
+            </ol>
+        </section>
+
+        <aside class="callout">
+            <div class="section-number">THINK &amp; DISCUSS</div>
+            <h2>생각해 보기</h2>
+            <ol>
+                <li>일상에서 자주 하는 일을 하나 골라 알고리즘의 단계로 표현해 보세요.</li>
+                <li>점수에 따라 등급을 나누는 순서도를 그린다면 어떤 조건을 어떤 순서로 검사해야 할까요?</li>
+                <li>반복문에 종료 조건이 필요한 이유를 설명해 보세요.</li>
+                <li>학생 정보를 변수 여러 개로 관리하는 방식과 학생 객체로 묶는 방식은 어떻게 다를까요?</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>IT개론 · 제9장 프로그래밍과 알고리즘</p>
+        <p><a href="InfoSecurity.html">이전: 제8장 정보보안과 개인정보 보호</a> · <a href="ItIndex.html">IT개론 목차</a></p>
+    </footer>
+</body>
+</html>

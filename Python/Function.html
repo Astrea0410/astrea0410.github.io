@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 함수 정의, 매개변수, 반환값, 변수 범위와 내장 함수를 학습합니다.">
+    <title>Python 함수 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 05</div>
+        <h1>함수 <span lang="en">(Function)</span></h1>
+        <p class="lead">기능을 함수로 묶어 재사용하고, 매개변수와 반환값으로 데이터를 주고받습니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="Collections.html">다음: 컬렉션 자료형</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / INTRODUCTION</div>
+            <h2>함수란?</h2>
+            <p>함수는 특정 작업을 수행하도록 이름을 붙여 둔 코드의 묶음입니다. 반복되는 코드를 재사용하고, 프로그램을 기능별로 나누어 읽고 관리하기 쉽게 합니다.</p>
+            <pre><code>def hello():
+    print("안녕하세요.")
+
+hello()</code></pre>
+        </section>
+        <section>
+            <div class="section-number">02 / PARAMETERS</div>
+            <h2>매개변수와 인수</h2>
+            <p>함수 정의의 매개변수(parameter)는 입력값을 받는 변수이고, 호출할 때 전달하는 값을 인수(argument)라고 합니다. 기본값과 키워드 인수도 사용할 수 있습니다.</p>
+            <pre><code>def greet(name="학생"):
+    print(f"{name}님, 반갑습니다.")
+
+greet()
+greet("민지")
+
+def introduce(name, age):
+    print(f"{name}, {age}세")
+
+introduce(age=20, name="민지")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / RETURN</div>
+            <h2>반환값 <code>return</code></h2>
+            <p><code>return</code>은 함수의 결과를 호출한 곳으로 돌려줍니다. 값을 반환하지 않는 함수는 기본적으로 <code>None</code>을 반환합니다.</p>
+            <pre><code>def add(a, b):
+    return a + b
+
+result = add(10, 20)
+print(result)
+
+def calculate(a, b):
+    return a + b, a - b
+
+total, difference = calculate(20, 10)
+print(total, difference)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / SCOPE</div>
+            <h2>지역 변수와 전역 변수</h2>
+            <p>함수 안에서 만든 변수는 지역 변수이며 함수 바깥에서는 사용할 수 없습니다. 필요한 값은 매개변수로 전달하고 결과는 반환하는 방식이 명확합니다.</p>
+            <pre><code>def square(number):
+    result = number * number
+    return result
+
+print(square(5))
+# result는 함수 내부의 지역 변수입니다.</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / COMPOSITION</div>
+            <h2>함수 조합: 평균과 학점</h2>
+            <p>작은 기능을 각각 함수로 만든 뒤 함께 사용하면 전체 프로그램을 이해하기 쉽습니다.</p>
+            <pre><code>def average(scores):
+    return sum(scores) / len(scores)
+
+def grade(score):
+    if score &gt;= 90:
+        return "A"
+    if score &gt;= 80:
+        return "B"
+    if score &gt;= 70:
+        return "C"
+    if score &gt;= 60:
+        return "D"
+    return "F"
+
+scores = [90, 85, 100]
+avg = average(scores)
+print(f"평균: {avg:.1f}, 학점: {grade(avg)}")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">06 / BUILT-INS</div>
+            <h2>자주 사용하는 내장 함수</h2>
+            <p><code>len()</code>, <code>sum()</code>, <code>min()</code>, <code>max()</code>, <code>round()</code>, <code>sorted()</code> 등은 별도 정의 없이 바로 사용할 수 있습니다.</p>
+            <pre><code>scores = [90, 80, 100]
+print(len(scores))
+print(sum(scores))
+print(min(scores), max(scores))
+print(round(sum(scores) / len(scores), 2))
+print(sorted(scores))</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>두 수를 받아 합계를 반환하는 <code>add()</code> 함수를 작성하세요.</li>
+                <li>숫자를 받아 원의 넓이를 반환하는 <code>circle_area(radius)</code> 함수를 작성하세요.</li>
+                <li>점수 리스트를 받아 평균을 계산하고, 평균에 맞는 학점을 반환하는 함수를 만드세요.</li>
+                <li>세 과목 점수의 최댓값과 최솟값을 반환하는 함수를 작성하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 5주차 함수</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/5w_function.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 5주차</a></p>
+    </footer>
+</body>
+</html>

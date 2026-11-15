@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 모듈과 패키지, import 문과 표준 라이브러리를 학습합니다.">
+    <title>Python 모듈 | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 11</div>
+        <h1>모듈 <span lang="en">(Module)</span></h1>
+        <p class="lead">기능을 파일 단위로 나누고 필요한 모듈을 가져와 코드를 재사용합니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="DataStructure.html">이전: 자료구조</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / MODULE</div>
+            <h2>모듈이란?</h2>
+            <p>모듈은 함수, 클래스, 변수 등을 담은 Python 파일(<code>.py</code>)입니다. 기능을 여러 파일로 나누면 코드를 재사용하고 관리하기 쉬워집니다.</p>
+            <div class="grid">
+                <article class="card"><h3>표준 라이브러리</h3><p>Python 설치에 포함되어 바로 사용할 수 있는 모듈입니다.</p></article>
+                <article class="card"><h3>사용자 모듈</h3><p>직접 작성한 Python 파일을 가져와 사용할 수 있습니다.</p></article>
+                <article class="card"><h3>외부 패키지</h3><p>별도로 설치해 사용하는 제3자 라이브러리입니다.</p></article>
+            </div>
+        </section>
+        <section>
+            <div class="section-number">02 / IMPORT</div>
+            <h2><code>import</code> 사용법</h2>
+            <p>모듈 전체를 가져오거나 필요한 이름만 선택해서 가져올 수 있습니다. 별칭을 지정하면 짧은 이름으로 사용할 수 있습니다.</p>
+            <pre><code>import math
+print(math.sqrt(25))
+
+from math import pi, ceil
+print(pi)
+print(ceil(3.2))
+
+import random as rng
+print(rng.randint(1, 6))</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / STANDARD LIBRARY</div>
+            <h2>자주 쓰는 표준 모듈</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>모듈</th><th>용도</th><th>예시</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>math</code></td><td>수학 함수와 상수</td><td>제곱근, 원주율</td></tr>
+                        <tr><td><code>random</code></td><td>무작위 값 생성</td><td>주사위, 임의 선택</td></tr>
+                        <tr><td><code>datetime</code></td><td>날짜와 시간</td><td>현재 시각, 날짜 계산</td></tr>
+                        <tr><td><code>pathlib</code></td><td>파일 경로 처리</td><td>폴더와 파일 경로</td></tr>
+                        <tr><td><code>csv</code>, <code>json</code></td><td>데이터 파일 읽기·쓰기</td><td>표 형식 및 JSON 데이터</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code>from datetime import datetime
+import random
+
+print(datetime.now().strftime("%Y-%m-%d"))
+print(random.choice(["가위", "바위", "보"]))</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / YOUR MODULE</div>
+            <h2>나만의 모듈 만들기</h2>
+            <p>같은 폴더에 <code>calculator.py</code>와 실행 파일을 만들면 모듈을 가져올 수 있습니다. 실행 파일 이름을 모듈 이름과 똑같이 짓지 마세요.</p>
+            <pre><code># calculator.py
+def add(a, b):
+    return a + b
+
+# main.py
+import calculator
+
+print(calculator.add(10, 20))</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / PACKAGES</div>
+            <h2>패키지와 외부 라이브러리</h2>
+            <p>패키지는 관련 모듈을 폴더 구조로 묶어 관리합니다. 외부 패키지는 프로젝트의 Python 환경에 설치해 사용하며, 설치한 라이브러리 이름과 모듈 import 이름이 다를 수 있습니다.</p>
+            <pre><code># 예: 현재 Python 환경에 외부 패키지 설치
+python -m pip install 패키지이름</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li><code>math</code> 모듈을 이용해 원의 넓이와 둘레를 계산하세요.</li>
+                <li><code>random</code>으로 1부터 6까지 주사위 값을 생성하세요.</li>
+                <li>두 수의 사칙연산 함수를 별도 모듈에 작성하고 다른 파일에서 가져오세요.</li>
+                <li><code>datetime</code>으로 오늘 날짜를 원하는 형식으로 출력하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 11주차 모듈</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/10w_module.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 모듈</a></p>
+    </footer>
+</body>
+</html>

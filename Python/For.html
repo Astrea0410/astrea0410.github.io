@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python for와 while 반복문, range, break, continue, 중첩 반복문을 학습합니다.">
+    <title>Python 반복문 for와 while | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 04</div>
+        <h1>반복문 <span lang="en">(for · while)</span></h1>
+        <p class="lead">같은 작업을 여러 번 실행하는 반복문과 반복 흐름을 제어하는 방법을 연습합니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="Function.html">다음: 함수</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / LOOPS</div>
+            <h2>반복문이란?</h2>
+            <p><code>for</code>는 정해진 범위나 반복 가능한 자료의 항목을 순서대로 처리할 때, <code>while</code>은 조건이 참인 동안 반복할 때 사용합니다.</p>
+            <div class="grid">
+                <article class="card"><h3>for</h3><p>리스트, 문자열, <code>range()</code> 등의 항목을 차례대로 처리합니다.</p></article>
+                <article class="card"><h3>while</h3><p>조건을 검사하고 참인 동안 반복합니다. 반복 중 조건을 바꾸어 종료할 수 있게 해야 합니다.</p></article>
+            </div>
+        </section>
+        <section>
+            <div class="section-number">02 / FOR &amp; RANGE</div>
+            <h2><code>for</code>와 <code>range()</code></h2>
+            <p><code>range(stop)</code>는 0부터 stop 직전까지, <code>range(start, stop, step)</code>은 지정한 간격의 정수를 만듭니다.</p>
+            <pre><code>for number in range(1, 6):
+    print(number)
+
+for even in range(2, 11, 2):
+    print(even)
+
+subjects = ["Python", "AI", "Web"]
+for subject in subjects:
+    print(subject)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / WHILE</div>
+            <h2><code>while</code> 반복과 종료 조건</h2>
+            <p>반복할 때마다 조건에 영향을 주는 값을 갱신하세요. 종료 조건이 바뀌지 않으면 반복이 끝나지 않을 수 있습니다.</p>
+            <pre><code>count = 1
+while count &lt;= 5:
+    print(count)
+    count += 1
+
+answer = ""
+while answer != "q":
+    answer = input("종료하려면 q를 입력하세요: ")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / FLOW CONTROL</div>
+            <h2><code>break</code>, <code>continue</code>, 중첩 반복</h2>
+            <p><code>break</code>는 반복문 전체를 끝내고, <code>continue</code>는 현재 회차의 남은 코드를 건너뜁니다.</p>
+            <pre><code>for number in range(1, 10):
+    if number == 5:
+        continue
+    if number == 8:
+        break
+    print(number)
+
+for dan in range(2, 10):
+    for number in range(1, 10):
+        print(f"{dan} x {number} = {dan * number}")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / USEFUL PATTERNS</div>
+            <h2><code>enumerate()</code>와 합계</h2>
+            <p><code>enumerate()</code>는 반복하면서 인덱스와 값을 함께 제공합니다. 합계와 평균은 내장 함수로 간단히 구할 수 있습니다.</p>
+            <pre><code>subjects = ["Python", "AI", "Web"]
+for index, subject in enumerate(subjects, start=1):
+    print(index, subject)
+
+scores = [90, 85, 100, 95]
+print("합계:", sum(scores))
+print("평균:", sum(scores) / len(scores))</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li><code>for</code>와 <code>range()</code>로 1부터 100까지의 합을 구하세요.</li>
+                <li>1부터 100까지 짝수만 출력하세요.</li>
+                <li>중첩 반복문으로 구구단 7단을 출력하세요.</li>
+                <li>0을 입력할 때까지 숫자를 입력받아 누적 합계를 출력하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 4주차 반복문</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/4w_for.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 4주차</a></p>
+    </footer>
+</body>
+</html>

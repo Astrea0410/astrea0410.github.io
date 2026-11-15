@@ -1,11 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
-<meta charset="utf-8">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IT개론 장별 학습 자료입니다.">
+    <title>IT개론 학습 자료</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0c1420;
+            --surface: #142131;
+            --border: #2a4056;
+            --accent: #56d6c2;
+            --text: #edf4fb;
+            --muted: #a4b5c8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 32px 20px;
+            display: grid;
+            place-items: center;
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(86, 214, 194, 0.1), transparent 34rem),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Noto Sans KR", sans-serif;
+        }
+
+        main {
+            width: min(100%, 680px);
+            padding: clamp(24px, 6vw, 40px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+        }
+
+        .label {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        h1 {
+            margin: 12px 0;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .chapter-link {
+            display: block;
+            margin-top: 22px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .chapter-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .chapter-link strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .chapter-link span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    곧 올릴 예정(IT 개론)
+    <main>
+        <div class="label">INTRODUCTION TO INFORMATION TECHNOLOGY</div>
+        <h1>IT개론 학습 자료</h1>
+        <p>컴퓨터와 정보기술의 기본 개념부터 네트워크, 데이터베이스, 정보보안, 인공지능까지 차례로 학습합니다.</p>
+        <a class="chapter-link" href="ITFundamentals.html">
+            <strong>제1장. 정보기술(IT)의 이해</strong>
+            <span>IT의 개념과 역사 · 정보와 데이터 · 정보화 사회 · IT 산업의 발전과 미래</span>
+        </a>
+        <a class="chapter-link" href="ComputerSystems.html">
+            <strong>제2장. 컴퓨터 시스템의 이해</strong>
+            <span>컴퓨터 구조와 동작 원리 · 하드웨어와 소프트웨어 · CPU, RAM, ROM · 입력·출력장치 · HDD와 SSD</span>
+        </a>
+        <a class="chapter-link" href="Software.html">
+            <strong>제3장. 컴퓨터 소프트웨어</strong>
+            <span>시스템·응용 소프트웨어 · 운영체제 · 프로그래밍 언어 · 컴파일러와 인터프리터</span>
+        </a>
+        <a class="chapter-link" href="DataRepresentation.html">
+            <strong>제4장. 데이터와 정보의 표현</strong>
+            <span>비트와 바이트 · 진법 · 문자·이미지 표현 · 데이터 인코딩 · 디지털 데이터 처리</span>
+        </a>
+        <a class="chapter-link" href="OSManagement.html">
+            <strong>제5장. 운영체제와 컴퓨터 관리</strong>
+            <span>Windows·Linux·macOS · 프로세스와 스레드 · 메모리 · 파일·디렉터리 · 운영체제 작동 원리</span>
+        </a>
+        <a class="chapter-link" href="Networking.html">
+            <strong>제6장. 컴퓨터 네트워크와 인터넷</strong>
+            <span>네트워크 · LAN과 WAN · 인터넷과 웹 · IP 주소와 DNS · HTTP와 HTTPS · 클라이언트와 서버</span>
+        </a>
+        <a class="chapter-link" href="Database.html">
+            <strong>제7장. 데이터베이스</strong>
+            <span>데이터베이스와 DBMS · 관계형 데이터베이스 · SQL 기초 · MySQL과 데이터 관리</span>
+        </a>
+        <a class="chapter-link" href="InfoSecurity.html">
+            <strong>제8장. 정보보안과 개인정보 보호</strong>
+            <span>정보보안의 CIA 3요소 · 암호화 · 악성코드 · 보안 위협 · 개인정보 보호</span>
+        </a>
+        <a class="chapter-link" href="Programming.html">
+            <strong>제9장. 프로그래밍과 알고리즘</strong>
+            <span>프로그래밍 · 알고리즘과 순서도 · 변수와 자료형 · 조건문·반복문 · 함수·객체지향</span>
+        </a>
+        <a class="chapter-link" href="AIandTechnology.html">
+            <strong>제10장. 인공지능과 최신 IT 기술</strong>
+            <span>AI · 머신러닝·딥러닝 · 생성형 AI·LLM · 빅데이터 · 클라우드 · IoT · XR</span>
+        </a>
+        <a class="chapter-link" href="ITIndustry.html">
+            <strong>제11장. IT 산업과 미래 기술</strong>
+            <span>모바일 컴퓨팅 · 블록체인 · 자율주행 · 로봇·자동화 · IT 기술의 사회적 영향</span>
+        </a>
+        <a class="home-link" href="../index.html">← 메인 페이지로 돌아가기</a>
+    </main>
 </body>
 
 </html>

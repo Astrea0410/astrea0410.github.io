@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python 조건식, 비교·논리 연산자, if·elif·else와 실전 예제를 학습합니다.">
+    <title>Python 조건문 if | Python Programming</title>
+    <link rel="stylesheet" href="Lessons.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="label">Python Programming · Week 03</div>
+        <h1>조건문 <span lang="en">(if)</span></h1>
+        <p class="lead">조건의 참과 거짓에 따라 실행 흐름을 선택하고, 비교·논리 연산자로 조건을 만들어 봅니다.</p>
+        <nav class="header-links" aria-label="페이지 링크">
+            <a href="PythonIndex.html">Python 학습 자료</a>
+            <a href="For.html">다음: 반복문</a>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="section-number">01 / CONDITIONS</div>
+            <h2>조건문과 들여쓰기</h2>
+            <p><code>if</code>는 조건식이 참일 때 코드 블록을 실행합니다. Python에서는 콜론 다음 줄을 들여써 블록을 표시합니다. 들여쓰기는 보통 공백 4칸을 사용합니다.</p>
+            <pre><code>score = 95
+
+if score >= 90:
+    print("A학점")
+
+print("프로그램 종료")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">02 / COMPARISON</div>
+            <h2>비교 연산자</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>연산자</th><th>의미</th><th>예</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>==</code></td><td>같다</td><td><code>a == b</code></td></tr>
+                        <tr><td><code>!=</code></td><td>다르다</td><td><code>a != b</code></td></tr>
+                        <tr><td><code>&gt;</code>, <code>&lt;</code></td><td>크다, 작다</td><td><code>a &gt; b</code></td></tr>
+                        <tr><td><code>&gt;=</code>, <code>&lt;=</code></td><td>크거나 같다, 작거나 같다</td><td><code>score &gt;= 60</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code>a = 10
+b = 20
+
+print(a == b)  # False
+print(a != b)  # True
+print(a &lt; b)   # True</code></pre>
+        </section>
+        <section>
+            <div class="section-number">03 / IF ELSE</div>
+            <h2><code>if</code>, <code>else</code>, <code>elif</code></h2>
+            <p>조건이 두 가지라면 <code>if-else</code>, 여러 범위를 차례로 검사하려면 <code>if-elif-else</code>를 사용합니다. 위에서부터 검사하므로 범위 조건의 순서가 중요합니다.</p>
+            <pre><code>score = 87
+
+if score &gt;= 90:
+    grade = "A"
+elif score &gt;= 80:
+    grade = "B"
+elif score &gt;= 70:
+    grade = "C"
+elif score &gt;= 60:
+    grade = "D"
+else:
+    grade = "F"
+
+print(grade)</code></pre>
+        </section>
+        <section>
+            <div class="section-number">04 / LOGIC</div>
+            <h2>논리 연산자와 중첩 조건</h2>
+            <p><code>and</code>는 모든 조건이 참일 때, <code>or</code>는 하나라도 참일 때 참입니다. <code>not</code>은 참과 거짓을 반대로 바꿉니다.</p>
+            <pre><code>age = 22
+member = True
+
+if age &gt;= 20 and member:
+    print("입장 가능합니다.")
+
+subjects = ["Python", "AI", "Web"]
+if "Python" in subjects:
+    print("Python 수강 중입니다.")</code></pre>
+        </section>
+        <section>
+            <div class="section-number">05 / PRACTICE</div>
+            <h2>입력값으로 짝수·홀수 판별</h2>
+            <p><code>input()</code>의 결과는 문자열이므로 숫자 계산 전에 <code>int()</code>로 변환합니다.</p>
+            <pre><code>number = int(input("정수를 입력하세요: "))
+
+if number % 2 == 0:
+    print("짝수")
+else:
+    print("홀수")</code></pre>
+        </section>
+        <aside class="callout">
+            <div class="section-number">TRY IT YOURSELF</div>
+            <h2>연습 문제</h2>
+            <ol>
+                <li>나이를 입력받아 19세 이상이면 성인, 아니면 미성년자로 출력하세요.</li>
+                <li>점수를 입력받아 90·80·70·60점 기준으로 학점을 판정하세요.</li>
+                <li>연도를 입력받아 4의 배수이면서 100의 배수가 아니거나 400의 배수이면 윤년으로 판정하세요.</li>
+                <li>두 수와 연산자를 입력받아 간단한 사칙연산 결과를 출력하세요.</li>
+            </ol>
+        </aside>
+    </main>
+    <footer>
+        <p>Python Programming · 3주차 조건문</p>
+        <p><a href="https://ai.yit.ac.kr/python/pyHtml/3w_if.html" target="_blank" rel="noopener noreferrer">참고 자료: AI소프트웨어과 3주차</a></p>
+    </footer>
+</body>
+</html>
