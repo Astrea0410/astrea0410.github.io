@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DOM 선택과 JavaScript 이벤트 실습 파일 모음">
+    <title>EVENT 학습 인덱스</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nanum+Gothic+Coding&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --card: #20232f;
+            --border: #2e3245;
+            --accent: #61c6ff;
+            --accent-dim: #17384c;
+            --text-main: #e8ecf5;
+            --text-muted: #7a84a3;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 0 0 4rem;
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            padding: 2.5rem 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            text-align: center;
+        }
+
+        header::before {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            width: 500px;
+            height: 200px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse, rgba(97, 198, 255, 0.12) 0%, transparent 70%);
+            content: '';
+            pointer-events: none;
+        }
+
+        .header-tag {
+            margin-bottom: 0.6rem;
+            color: var(--accent);
+            font: 0.78rem 'Nanum Gothic Coding', monospace;
+            letter-spacing: 0.08em;
+        }
+
+        header h1 {
+            color: var(--text-main);
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        header h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .badge-count {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.3rem 0.9rem;
+            border: 1px solid rgba(97, 198, 255, 0.3);
+            border-radius: 99px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.78rem;
+        }
+
+        main {
+            max-width: 860px;
+            margin: 2.5rem auto 0;
+            padding: 0 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            padding: 1.1rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+            color: inherit;
+            text-decoration: none;
+            transition: border-color 0.18s, background 0.18s, transform 0.18s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            background: #23273a;
+        }
+
+        .card:focus-visible,
+        .back-link:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .icon {
+            display: flex;
+            flex: 0 0 40px;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font: 700 0.68rem 'Nanum Gothic Coding', monospace;
+        }
+
+        .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-name {
+            overflow: hidden;
+            color: var(--text-main);
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .card-desc {
+            margin-top: 0.25rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .arrow {
+            align-self: center;
+            color: var(--text-muted);
+            transition: color 0.18s, transform 0.18s;
+        }
+
+        .card:hover .arrow {
+            transform: translateX(3px);
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            text-align: center;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-tag">&lt;!-- DOM &amp; Event 파일 모음 --&gt;</div>
+        <h1>EVENT <span>학습</span> 인덱스</h1>
+        <p class="subtitle">파일을 선택해 DOM과 이벤트 실습을 시작하세요</p>
+        <span class="badge-count">총 1개 파일</span>
+    </header>
+
+    <main>
+        <div class="grid">
+            <a class="card" href="DOM_EVENT_Lab.html">
+                <span class="icon">DOM</span>
+                <span class="card-body">
+                    <span class="card-name">DOM_EVENT_Lab.html</span>
+                    <span class="card-desc">DOM 조작과 JavaScript 이벤트 인터랙티브 실습 16개</span>
+                </span>
+                <span class="arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <a class="back-link" href="../AI_WEB.html">← AI_WEB 학습 자료</a>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DOM 선택과 JavaScript 이벤트 처리를 직접 연습하는 16가지 인터랙티브 예제">
+    <title>DOM &amp; Event Lab | AI_WEB</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0d111b;
+            --surface: #151c2a;
+            --card: #192334;
+            --border: #2a3950;
+            --text: #e8eef8;
+            --muted: #9aabc2;
+            --accent: #61c6ff;
+            --accent-soft: rgba(97, 198, 255, 0.12);
+            --success: #69d6a5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .hero {
+            padding: 48px 20px 36px;
+            text-align: center;
+            background: radial-gradient(ellipse at top, #1d3652 0, var(--bg) 68%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font: 700 12px/1.4 Consolas, monospace;
+            letter-spacing: 0.16em;
+        }
+
+        h1 {
+            margin: 12px 0 8px;
+            font-size: clamp(30px, 5vw, 48px);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 0 auto;
+            color: var(--muted);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+        main {
+            width: min(1120px, calc(100% - 32px));
+            margin: 32px auto 64px;
+        }
+
+        .intro {
+            margin: 0 0 20px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .lab-card {
+            min-width: 0;
+            padding: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .number {
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 32px;
+            border: 1px solid rgba(97, 198, 255, 0.35);
+            border-radius: 8px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font: 700 12px Consolas, monospace;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .concept {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .api {
+            display: inline-block;
+            margin: 0 0 12px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            background: #101927;
+            color: #b6dfff;
+            font: 12px Consolas, monospace;
+        }
+
+        .demo {
+            min-height: 76px;
+            padding: 14px;
+            border: 1px solid rgba(154, 171, 194, 0.16);
+            border-radius: 9px;
+            background: rgba(6, 11, 19, 0.45);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        button,
+        input,
+        select {
+            min-height: 38px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        button {
+            padding: 7px 12px;
+            background: #24354b;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        button:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: #294361;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        a:focus-visible,
+        .hover-target:focus-visible,
+        .coordinate-pad:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+        }
+
+        input,
+        select {
+            max-width: 100%;
+            padding: 7px 10px;
+            background: #101927;
+            color: var(--text);
+        }
+
+        input[type="checkbox"] {
+            min-height: auto;
+            accent-color: var(--accent);
+        }
+
+        .result {
+            min-height: 24px;
+            margin: 10px 0 0;
+            color: var(--success);
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .sample-mark {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .highlight {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #695425;
+            color: #fff0b5;
+        }
+
+        .mini-list {
+            display: grid;
+            gap: 6px;
+            margin: 10px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
+
+        .hover-target,
+        .coordinate-pad {
+            display: grid;
+            place-items: center;
+            min-height: 84px;
+            padding: 10px;
+            border: 1px dashed #496481;
+            border-radius: 8px;
+            background: #15263a;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .hover-target.active {
+            border-color: var(--success);
+            background: rgba(105, 214, 165, 0.12);
+            color: var(--success);
+        }
+
+        .toggle-panel {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--muted);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .tone-calm {
+            background: #18394a;
+            color: #c4f0ff;
+        }
+
+        .tone-focus {
+            background: #453150;
+            color: #f0d7ff;
+        }
+
+        .coordinate-pad {
+            cursor: crosshair;
+            user-select: none;
+        }
+
+        .delegated-list {
+            display: grid;
+            gap: 6px;
+            margin: 10px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .delegated-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background: #101927;
+            color: var(--muted);
+        }
+
+        .delegated-list button {
+            min-height: 30px;
+            padding: 3px 8px;
+            color: #ffb1b1;
+        }
+
+        footer {
+            padding: 24px 16px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="hero">
+        <div class="eyebrow">AI_WEB / JAVASCRIPT</div>
+        <h1>DOM &amp; Event Lab</h1>
+        <p>요소를 찾고 바꾸고, 사용자의 동작에 반응하는 16가지 브라우저 실습</p>
+        <a class="back-link" href="../AI_WEB.html">← AI_WEB 학습 자료로</a>
+    </header>
+
+    <main>
+        <p class="intro">
+            각 실습의 버튼이나 입력을 사용해 결과를 확인해 보세요. 코드는 브라우저 표준 DOM API로 새롭게 작성했습니다.
+        </p>
+
+        <div class="lab-grid">
+            <section class="lab-card" aria-labelledby="title-01">
+                <div class="card-heading">
+                    <span class="number">DOM-01</span>
+                    <div>
+                        <h2 id="title-01">ID로 요소 찾기</h2>
+                        <p class="concept">문서에서 ID가 일치하는 요소를 가져옵니다.</p>
+                    </div>
+                </div>
+                <code class="api">getElementById()</code>
+                <div class="demo">
+                    <p id="lookup-target">이 문단의 내용을 찾아 보세요.</p>
+                    <button id="lookup-button" type="button">요소 읽기</button>
+                    <p class="result" id="lookup-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-02">
+                <div class="card-heading">
+                    <span class="number">DOM-02</span>
+                    <div>
+                        <h2 id="title-02">CSS 선택자로 찾기</h2>
+                        <p class="concept">선택자에 해당하는 첫 요소와 여러 요소를 다룹니다.</p>
+                    </div>
+                </div>
+                <code class="api">querySelector() · querySelectorAll()</code>
+                <div class="demo">
+                    <div class="sample-mark">DOM</div>
+                    <div class="sample-mark">EVENT</div>
+                    <div class="sample-mark">JAVASCRIPT</div>
+                    <button id="selector-button" type="button">선택 결과 보기</button>
+                    <p class="result" id="selector-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-03">
+                <div class="card-heading">
+                    <span class="number">DOM-03</span>
+                    <div>
+                        <h2 id="title-03">텍스트 내용 바꾸기</h2>
+                        <p class="concept">입력한 문자열을 요소의 텍스트로 표시합니다.</p>
+                    </div>
+                </div>
+                <code class="api">textContent</code>
+                <div class="demo">
+                    <div class="controls">
+                        <input id="text-input" type="text" value="새로운 문장" aria-label="바꿀 문장">
+                        <button id="text-button" type="button">적용</button>
+                    </div>
+                    <p class="result" id="text-target" aria-live="polite">여기에 결과가 나타납니다.</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-04">
+                <div class="card-heading">
+                    <span class="number">DOM-04</span>
+                    <div>
+                        <h2 id="title-04">클래스 전환하기</h2>
+                        <p class="concept">버튼을 누를 때마다 강조 스타일을 켜거나 끕니다.</p>
+                    </div>
+                </div>
+                <code class="api">classList.toggle()</code>
+                <div class="demo">
+                    <button id="class-button" type="button">강조 전환</button>
+                    <span id="class-target">이 문구의 스타일이 바뀝니다.</span>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-05">
+                <div class="card-heading">
+                    <span class="number">DOM-05</span>
+                    <div>
+                        <h2 id="title-05">요소 속성 제어하기</h2>
+                        <p class="concept">버튼의 disabled 속성을 켜고 끕니다.</p>
+                    </div>
+                </div>
+                <code class="api">element.disabled</code>
+                <div class="demo">
+                    <div class="controls">
+                        <button id="property-target" type="button">눌러 볼 수 있어요</button>
+                        <button id="property-toggle" type="button">사용 가능 상태 전환</button>
+                    </div>
+                    <p class="result" id="property-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-06">
+                <div class="card-heading">
+                    <span class="number">DOM-06</span>
+                    <div>
+                        <h2 id="title-06">새 항목 추가하기</h2>
+                        <p class="concept">새 노드를 만들어 목록의 마지막에 붙입니다.</p>
+                    </div>
+                </div>
+                <code class="api">createElement() · append()</code>
+                <div class="demo">
+                    <div class="controls">
+                        <input id="append-input" type="text" placeholder="추가할 항목" aria-label="추가할 항목">
+                        <button id="append-button" type="button">목록에 추가</button>
+                    </div>
+                    <ul class="mini-list" id="append-list">
+                        <li>첫 번째 노드</li>
+                    </ul>
+                    <p class="result" id="append-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-07">
+                <div class="card-heading">
+                    <span class="number">DOM-07</span>
+                    <div>
+                        <h2 id="title-07">마지막 항목 제거하기</h2>
+                        <p class="concept">목록에서 마지막 자식 노드를 제거합니다.</p>
+                    </div>
+                </div>
+                <code class="api">lastElementChild · remove()</code>
+                <div class="demo">
+                    <button id="remove-button" type="button">마지막 항목 제거</button>
+                    <ul class="mini-list" id="remove-list">
+                        <li>정리할 항목 A</li>
+                        <li>정리할 항목 B</li>
+                        <li>정리할 항목 C</li>
+                    </ul>
+                    <p class="result" id="remove-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-08">
+                <div class="card-heading">
+                    <span class="number">EVT-08</span>
+                    <div>
+                        <h2 id="title-08">클릭 횟수 세기</h2>
+                        <p class="concept">클릭 이벤트를 등록하고 상태를 갱신합니다.</p>
+                    </div>
+                </div>
+                <code class="api">addEventListener("click", ...)</code>
+                <div class="demo">
+                    <div class="controls">
+                        <button id="count-button" type="button">클릭!</button>
+                        <button id="count-reset" type="button">초기화</button>
+                    </div>
+                    <p class="result" id="count-result" aria-live="polite">클릭 수: 0</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-09">
+                <div class="card-heading">
+                    <span class="number">EVT-09</span>
+                    <div>
+                        <h2 id="title-09">포인터 진입과 이탈</h2>
+                        <p class="concept">포인터가 영역에 들어오거나 나갈 때 반응합니다.</p>
+                    </div>
+                </div>
+                <code class="api">pointerenter · pointerleave</code>
+                <div class="demo">
+                    <div class="hover-target" id="hover-target" tabindex="0">
+                        이 영역 안으로 마우스를 이동해 보세요.
+                    </div>
+                    <p class="result" id="hover-result" aria-live="polite">대기 중</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-10">
+                <div class="card-heading">
+                    <span class="number">EVT-10</span>
+                    <div>
+                        <h2 id="title-10">입력 즉시 미리보기</h2>
+                        <p class="concept">입력값이 바뀔 때마다 미리보기를 업데이트합니다.</p>
+                    </div>
+                </div>
+                <code class="api">addEventListener("input", ...)</code>
+                <div class="demo">
+                    <input id="live-input" type="text" placeholder="여기에 입력하세요" aria-label="미리보기 입력">
+                    <p class="result" id="live-result" aria-live="polite">입력한 내용이 여기에 표시됩니다.</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-11">
+                <div class="card-heading">
+                    <span class="number">EVT-11</span>
+                    <div>
+                        <h2 id="title-11">키보드 입력 확인하기</h2>
+                        <p class="concept">입력 필드에서 눌린 키의 이름을 확인합니다.</p>
+                    </div>
+                </div>
+                <code class="api">KeyboardEvent · keydown</code>
+                <div class="demo">
+                    <input id="key-input" type="text" placeholder="키를 눌러 보세요" aria-label="키보드 이벤트 입력">
+                    <p class="result" id="key-result" aria-live="polite">아직 입력된 키가 없습니다.</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-12">
+                <div class="card-heading">
+                    <span class="number">EVT-12</span>
+                    <div>
+                        <h2 id="title-12">폼 제출 처리하기</h2>
+                        <p class="concept">페이지 이동 대신 입력값을 화면에 출력합니다.</p>
+                    </div>
+                </div>
+                <code class="api">submit · preventDefault()</code>
+                <div class="demo">
+                    <form id="message-form">
+                        <div class="controls">
+                            <label for="message-input">메시지</label>
+                            <input id="message-input" type="text" required placeholder="짧은 메시지를 입력">
+                            <button type="submit">보내기</button>
+                        </div>
+                    </form>
+                    <p class="result" id="form-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-13">
+                <div class="card-heading">
+                    <span class="number">EVT-13</span>
+                    <div>
+                        <h2 id="title-13">체크 상태 반영하기</h2>
+                        <p class="concept">체크박스 상태가 바뀔 때 안내 문구를 변경합니다.</p>
+                    </div>
+                </div>
+                <code class="api">change · checked</code>
+                <div class="demo">
+                    <label>
+                        <input id="agree-check" type="checkbox">
+                        안내 내용을 확인했습니다.
+                    </label>
+                    <p class="result" id="check-result" aria-live="polite">아직 확인 전입니다.</p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-14">
+                <div class="card-heading">
+                    <span class="number">EVT-14</span>
+                    <div>
+                        <h2 id="title-14">선택 메뉴에 반응하기</h2>
+                        <p class="concept">선택한 옵션에 따라 미리보기 테마를 바꿉니다.</p>
+                    </div>
+                </div>
+                <code class="api">HTMLSelectElement · change</code>
+                <div class="demo">
+                    <label for="theme-select">미리보기 색상</label>
+                    <select id="theme-select">
+                        <option value="calm">바다</option>
+                        <option value="focus">저녁 하늘</option>
+                    </select>
+                    <div class="toggle-panel" id="theme-preview">선택한 테마가 적용됩니다.</div>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-15">
+                <div class="card-heading">
+                    <span class="number">EVT-15</span>
+                    <div>
+                        <h2 id="title-15">이벤트 좌표 읽기</h2>
+                        <p class="concept">이벤트 객체에서 영역 안의 포인터 위치를 읽습니다.</p>
+                    </div>
+                </div>
+                <code class="api">PointerEvent · offsetX · offsetY</code>
+                <div class="demo">
+                    <div class="coordinate-pad" id="coordinate-pad" tabindex="0">
+                        이 영역을 클릭하면 좌표가 표시됩니다.
+                    </div>
+                    <p class="result" id="coordinate-result" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <section class="lab-card" aria-labelledby="title-16">
+                <div class="card-heading">
+                    <span class="number">EVT-16</span>
+                    <div>
+                        <h2 id="title-16">이벤트 위임으로 삭제하기</h2>
+                        <p class="concept">목록 하나에 이벤트를 등록해 각 삭제 버튼을 처리합니다.</p>
+                    </div>
+                </div>
+                <code class="api">event.target · closest()</code>
+                <div class="demo">
+                    <div class="controls">
+                        <input id="delegation-input" type="text" placeholder="새 항목 이름" aria-label="새 항목 이름">
+                        <button id="delegation-add" type="button">추가</button>
+                    </div>
+                    <ul class="delegated-list" id="delegated-list">
+                        <li><span>이벤트 위임 연습</span><button type="button" aria-label="이벤트 위임 연습 삭제">삭제</button></li>
+                        <li><span>DOM 조작 연습</span><button type="button" aria-label="DOM 조작 연습 삭제">삭제</button></li>
+                    </ul>
+                    <p class="result" id="delegation-result" aria-live="polite"></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>DOM의 상태를 바꾸고 이벤트 흐름을 관찰하며 직접 연습해 보세요.</footer>
+
+    <script>
+        const byId = id => document.getElementById(id);
+
+        byId('lookup-button').addEventListener('click', () => {
+            byId('lookup-result').textContent = `찾은 내용: ${byId('lookup-target').textContent}`;
+        });
+
+        byId('selector-button').addEventListener('click', () => {
+            const first = document.querySelector('.sample-mark');
+            const all = document.querySelectorAll('.sample-mark');
+            byId('selector-result').textContent =
+                `첫 항목: ${first.textContent} · 전체 ${all.length}개`;
+        });
+
+        byId('text-button').addEventListener('click', () => {
+            byId('text-target').textContent = byId('text-input').value || '내용을 입력해 주세요.';
+        });
+
+        byId('class-button').addEventListener('click', () => {
+            byId('class-target').classList.toggle('highlight');
+        });
+
+        byId('property-toggle').addEventListener('click', () => {
+            const target = byId('property-target');
+            target.disabled = !target.disabled;
+            byId('property-result').textContent = target.disabled ? '버튼을 사용할 수 없습니다.' : '버튼이 다시 활성화됐습니다.';
+        });
+
+        byId('append-button').addEventListener('click', () => {
+            const input = byId('append-input');
+            const value = input.value.trim();
+            if (!value) {
+                byId('append-result').textContent = '추가할 내용을 입력해 주세요.';
+                input.focus();
+                return;
+            }
+
+            const item = document.createElement('li');
+            item.textContent = value;
+            byId('append-list').append(item);
+            byId('append-result').textContent = '새 항목을 추가했습니다.';
+            input.value = '';
+            input.focus();
+        });
+
+        byId('remove-button').addEventListener('click', () => {
+            const list = byId('remove-list');
+            if (!list.lastElementChild) {
+                byId('remove-result').textContent = '목록이 비어 있습니다.';
+                return;
+            }
+
+            list.lastElementChild.remove();
+            byId('remove-result').textContent = '마지막 항목을 제거했습니다.';
+        });
+
+        let clickCount = 0;
+        byId('count-button').addEventListener('click', () => {
+            clickCount += 1;
+            byId('count-result').textContent = `클릭 수: ${clickCount}`;
+        });
+        byId('count-reset').addEventListener('click', () => {
+            clickCount = 0;
+            byId('count-result').textContent = '클릭 수: 0';
+        });
+
+        const hoverTarget = byId('hover-target');
+        hoverTarget.addEventListener('pointerenter', () => {
+            hoverTarget.classList.add('active');
+            byId('hover-result').textContent = '포인터가 영역 안에 있습니다.';
+        });
+        hoverTarget.addEventListener('pointerleave', () => {
+            hoverTarget.classList.remove('active');
+            byId('hover-result').textContent = '포인터가 영역을 벗어났습니다.';
+        });
+
+        byId('live-input').addEventListener('input', event => {
+            byId('live-result').textContent = event.currentTarget.value || '입력한 내용이 여기에 표시됩니다.';
+        });
+
+        byId('key-input').addEventListener('keydown', event => {
+            byId('key-result').textContent = `눌린 키: ${event.key}`;
+        });
+
+        byId('message-form').addEventListener('submit', event => {
+            event.preventDefault();
+            byId('form-result').textContent = `전송한 메시지: ${byId('message-input').value.trim()}`;
+        });
+
+        byId('agree-check').addEventListener('change', event => {
+            byId('check-result').textContent =
+                event.currentTarget.checked ? '확인 완료!' : '아직 확인 전입니다.';
+        });
+
+        byId('theme-select').addEventListener('change', event => {
+            const preview = byId('theme-preview');
+            preview.classList.toggle('tone-calm', event.currentTarget.value === 'calm');
+            preview.classList.toggle('tone-focus', event.currentTarget.value === 'focus');
+        });
+        byId('theme-select').dispatchEvent(new Event('change'));
+
+        byId('coordinate-pad').addEventListener('click', event => {
+            byId('coordinate-result').textContent =
+                `영역 안의 좌표: x ${Math.round(event.offsetX)}px, y ${Math.round(event.offsetY)}px`;
+        });
+
+        const delegatedList = byId('delegated-list');
+        delegatedList.addEventListener('click', event => {
+            const removeButton = event.target.closest('button');
+            if (!removeButton || !delegatedList.contains(removeButton)) return;
+
+            removeButton.closest('li').remove();
+            byId('delegation-result').textContent = '항목을 삭제했습니다.';
+        });
+
+        byId('delegation-add').addEventListener('click', () => {
+            const input = byId('delegation-input');
+            const value = input.value.trim();
+            if (!value) {
+                byId('delegation-result').textContent = '추가할 항목 이름을 입력해 주세요.';
+                input.focus();
+                return;
+            }
+
+            const item = document.createElement('li');
+            const label = document.createElement('span');
+            label.textContent = value;
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = '삭제';
+            removeButton.setAttribute('aria-label', `${value} 삭제`);
+
+            item.append(label, removeButton);
+            delegatedList.append(item);
+            byId('delegation-result').textContent = '새 항목을 추가했습니다.';
+            input.value = '';
+            input.focus();
+        });
+    </script>
+</body>
+
+</html>

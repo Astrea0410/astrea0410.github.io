@@ -392,6 +392,72 @@
             gap: 16px;
         }
 
+        .github-overview {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .github-stats {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .github-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .github-stat-label {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .github-stat-value {
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .github-profile-link {
+            color: var(--accent1);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .github-profile-link:hover {
+            text-decoration: underline;
+        }
+
+        .repo-card {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .repo-card:focus-visible,
+        .github-profile-link:focus-visible {
+            outline: 2px solid var(--accent1);
+            outline-offset: 4px;
+        }
+
+        .repo-card .proj-tag {
+            margin-right: 6px;
+        }
+
+        .github-status {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
         .proj-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -663,6 +729,7 @@
         <nav>
             <a href="#intro">소개</a>
             <a href="#plan">프로젝트</a>
+            <a href="#github">GitHub</a>
             <a href="#code">코드</a>
         </nav>
     </header>
@@ -755,9 +822,38 @@
             </div>
         </div>
 
-        <div class="section" id="code">
+        <div class="section" id="github">
             <div class="section-header">
                 <span class="section-num">03</span>
+                <h2>GitHub 공개 저장소</h2>
+            </div>
+            <div class="glass github-overview">
+                <div class="github-stats" aria-live="polite">
+                    <div class="github-stat">
+                        <span class="github-stat-label">공개 저장소</span>
+                        <span class="github-stat-value" id="githubRepoCount">-</span>
+                    </div>
+                    <div class="github-stat">
+                        <span class="github-stat-label">Stars</span>
+                        <span class="github-stat-value" id="githubStarCount">-</span>
+                    </div>
+                    <div class="github-stat">
+                        <span class="github-stat-label">Followers</span>
+                        <span class="github-stat-value" id="githubFollowerCount">-</span>
+                    </div>
+                </div>
+                <a class="github-profile-link" href="https://github.com/Astrea0410" target="_blank"
+                    rel="noopener noreferrer">GitHub 프로필 보기 ↗</a>
+            </div>
+            <div class="project-grid" id="githubRepos" aria-live="polite">
+                <p class="github-status">GitHub 데이터를 불러오는 중입니다...</p>
+            </div>
+            <p class="github-status" id="githubStatus" role="status"></p>
+        </div>
+
+        <div class="section" id="code">
+            <div class="section-header">
+                <span class="section-num">04</span>
                 <h2>수업 실습 파일</h2>
             </div>
             <div class="file-list">
@@ -883,6 +979,88 @@
         window.addEventListener('scroll', () => {
             btn.classList.toggle('show', window.scrollY > 300);
         });
+
+        async function loadGitHubData() {
+            const username = 'Astrea0410';
+            const reposContainer = document.getElementById('githubRepos');
+            const status = document.getElementById('githubStatus');
+
+            try {
+                const [userResponse, reposResponse] = await Promise.all([
+                    fetch(`https://api.github.com/users/${username}`),
+                    fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`)
+                ]);
+
+                if (!userResponse.ok || !reposResponse.ok) {
+                    throw new Error('GitHub API 응답 오류');
+                }
+
+                const [user, repos] = await Promise.all([
+                    userResponse.json(),
+                    reposResponse.json()
+                ]);
+                const publicRepos = repos
+                    .filter(repo => !repo.private && !repo.fork)
+                    .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+                document.getElementById('githubRepoCount').textContent = user.public_repos;
+                document.getElementById('githubStarCount').textContent =
+                    publicRepos.reduce((total, repo) => total + repo.stargazers_count, 0);
+                document.getElementById('githubFollowerCount').textContent = user.followers;
+                reposContainer.replaceChildren();
+
+                if (publicRepos.length === 0) {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.className = 'github-status';
+                    emptyMessage.textContent = '표시할 공개 저장소가 없습니다.';
+                    reposContainer.appendChild(emptyMessage);
+                    return;
+                }
+
+                publicRepos.slice(0, 6).forEach(repo => {
+                    const card = document.createElement('a');
+                    card.className = 'proj-card repo-card';
+                    card.href = repo.html_url;
+                    card.target = '_blank';
+                    card.rel = 'noopener noreferrer';
+
+                    const title = document.createElement('h3');
+                    title.textContent = repo.name;
+                    card.appendChild(title);
+
+                    const description = document.createElement('p');
+                    description.textContent = repo.description || '저장소 설명이 없습니다.';
+                    card.appendChild(description);
+
+                    const details = document.createElement('div');
+                    details.className = 'repo-details';
+                    if (repo.language) {
+                        const language = document.createElement('span');
+                        language.className = 'proj-tag';
+                        language.textContent = repo.language;
+                        details.appendChild(language);
+                    }
+
+                    const stars = document.createElement('span');
+                    stars.className = 'proj-tag';
+                    stars.textContent = `★ ${repo.stargazers_count}`;
+                    details.appendChild(stars);
+
+                    const updated = document.createElement('span');
+                    updated.className = 'proj-tag';
+                    updated.textContent = `업데이트 ${new Date(repo.pushed_at).toLocaleDateString('ko-KR')}`;
+                    details.appendChild(updated);
+                    card.appendChild(details);
+                    reposContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error('GitHub 데이터 로드 실패:', error);
+                reposContainer.replaceChildren();
+                status.textContent = 'GitHub 데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 프로필에서 확인해 주세요.';
+            }
+        }
+
+        loadGitHubData();
     </script>
 </body>
 
