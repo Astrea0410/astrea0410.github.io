@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>three.js 메탈릭 3D 모델 - 토론토 배경</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0b1018; font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+    canvas { display: block; }
+    #help {
+      position: fixed; left: 16px; top: 16px; padding: 12px 16px;
+      background: rgba(14, 18, 26, 0.72); color: #e8ecf2; border-radius: 8px;
+      font-size: 14px; line-height: 1.7; pointer-events: none;
+    }
+    #help b { color: #ffd479; }
+    #timebox {
+      position: fixed; left: 16px; bottom: 16px; width: 280px; padding: 12px 16px;
+      background: rgba(14, 18, 26, 0.72); color: #e8ecf2; border-radius: 8px; font-size: 14px;
+    }
+    #timebox .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    #clock { font-size: 20px; font-variant-numeric: tabular-nums; }
+    #timebox input[type=range] { width: 100%; }
+    #timebox button {
+      margin-top: 8px; width: 100%; padding: 6px 0; border: 0; border-radius: 6px;
+      background: #3a4a63; color: #fff; font-size: 13px; cursor: pointer;
+    }
+    #timebox button:hover { background: #4b5f7f; }
+    #timebox button:focus-visible, #timebox input:focus-visible { outline: 2px solid #ffd479; outline-offset: 2px; }
+    #label-layer { position: fixed; inset: 0; pointer-events: none; }
+    .tag {
+      position: absolute; transform: translate(-50%, -50%);
+      color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 4px;
+      background: rgba(0, 0, 0, 0.5); white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="help">
+    <b>왼쪽 드래그</b> 회전(관찰) · <b>휠</b> 확대/축소<br />
+    <b>오른쪽 드래그</b> 화면 이동 · <b>R 키</b> 시점 초기화<br />
+    <b>G 키</b> 좌표축/격자 표시 (X 빨강 · Y 초록 · Z 파랑)
+  </div>
+
+  <div id="timebox">
+    <div class="row"><span>토론토 시각</span><span id="clock">--:--</span></div>
+    <input id="time" type="range" min="0" max="24" step="0.05" value="12" aria-label="토론토 시각" />
+    <button id="now" type="button">지금 토론토 시각으로</button>
+  </div>
+  <div id="label-layer"></div>
+
+  <!-- three.js를 CDN에서 불러오기 (인터넷 연결 필요) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { Sky } from "three/addons/objects/Sky.js";
+
+    // 항상 같은 도시 모양이 나오도록 시드가 있는 난수 함수
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        let t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    const rand = mulberry32(2026);
+    const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+    // =========================================================
+    // 1. 장면 / 카메라 / 렌더러
+    // =========================================================
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.3, 4000);
+    const HOME_POSITION = new THREE.Vector3(9, 5.5, 17);   // 호수 쪽에서 도시(-Z 방향)를 바라보는 시점
+    camera.position.copy(HOME_POSITION);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;    // 영화처럼 자연스러운 명암 표현
+    document.body.appendChild(renderer.domElement);
+
+    // =========================================================
+    // 2. 마우스 조작
+    // =========================================================
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.target.set(0, 1.5, 0);
+    controls.minDistance = 4;
+    controls.maxDistance = 70;
+    controls.maxPolarAngle = Math.PI * 0.495;              // 땅 아래로 내려가지 않게 제한
+    controls.update();
+
+    // =========================================================
+    // 3. 하늘 + 환경맵 (금속은 "주변을 비추는" 재질이라 환경맵이 핵심)
+    // =========================================================
+    function makeSky() {
+      const sky = new Sky();
+      sky.scale.setScalar(2000);
+      const u = sky.material.uniforms;
+      u.turbidity.value = 5;
+      u.rayleigh.value = 1.5;
+      u.mieCoefficient.value = 0.005;
+      u.mieDirectionalG.value = 0.85;
+      return sky;
+    }
+    const skyMain = makeSky();
+    scene.add(skyMain);
+
+    // 반사용 환경맵을 만들기 위한 별도의 장면 (하늘 + 바닥색)
+    const envScene = new THREE.Scene();
+    const skyEnv = makeSky();
+    envScene.add(skyEnv);
+    const envGroundMat = new THREE.MeshBasicMaterial({ color: 0x555555 });
+    const envGround = new THREE.Mesh(new THREE.CircleGeometry(900, 32), envGroundMat);
+    envGround.rotation.x = -Math.PI / 2;
+    envGround.position.y = -2;
+    envScene.add(envGround);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    let envTarget = null;
+
+    // 밤하늘 별
+    const starPos = [];
+    while (starPos.length < 1800 * 3) {
+      const x = rand() * 2 - 1, y = rand(), z = rand() * 2 - 1;
+      const len = Math.hypot(x, y, z);
+      if (len < 0.2 || y < 0.03) continue;
+      starPos.push((x / len) * 900, (y / len) * 900, (z / len) * 900);
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.Float32BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.6, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false, fog: false });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    // =========================================================
+    // 4. 조명 (해/달 + 하늘빛 보조광)
+    // =========================================================
+    const hemi = new THREE.HemisphereLight(0xbfd8ff, 0x555555, 0.5);
+    scene.add(hemi);
+
+    const sun = new THREE.DirectionalLight(0xffffff, 2);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -14; sun.shadow.camera.right = 14;
+    sun.shadow.camera.top = 14;   sun.shadow.camera.bottom = -14;
+    sun.shadow.camera.near = 1;   sun.shadow.camera.far = 80;
+    sun.shadow.bias = -0.0004;
+    scene.add(sun);
+
+    scene.fog = new THREE.FogExp2(0xaec6d8, 0.0022);
+
+    // =========================================================
+    // 5. 바닥, 호수, 광장
+    // =========================================================
+    // 5-1. 광장 바닥 (콘크리트 타일 질감을 canvas로 직접 그림)
+    function makeTileTexture() {
+      const c = document.createElement("canvas");
+      c.width = c.height = 256;
+      const g = c.getContext("2d");
+      g.fillStyle = "#8b8e94"; g.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 2500; i++) {
+        const v = 120 + Math.floor(rand() * 40);
+        g.fillStyle = `rgba(${v},${v},${v + 4},0.35)`;
+        g.fillRect(rand() * 256, rand() * 256, 2, 2);
+      }
+      g.strokeStyle = "rgba(40,42,48,0.7)"; g.lineWidth = 3;
+      g.strokeRect(0, 0, 256, 256);
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = 8;
+      return t;
+    }
+    const GROUND_W = 900, Z_MIN = -450, Z_MAX = 55;       // Z_MAX 이후는 호수
+    const tileTex = makeTileTexture();
+    tileTex.repeat.set(GROUND_W / 8, (Z_MAX - Z_MIN) / 8);
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(GROUND_W, Z_MAX - Z_MIN),
+      new THREE.MeshStandardMaterial({ map: tileTex, roughness: 0.9, metalness: 0 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.z = (Z_MIN + Z_MAX) / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // 5-2. 온타리오 호수 (하늘을 비추는 매끈한 물)
+    const water = new THREE.Mesh(
+      new THREE.PlaneGeometry(3000, 3000),
+      new THREE.MeshStandardMaterial({ color: 0x0c3048, roughness: 0.06, metalness: 0.9 })
+    );
+    water.rotation.x = -Math.PI / 2;
+    water.position.y = -0.6;
+    scene.add(water);
+
+    const seawall = new THREE.Mesh(
+      new THREE.BoxGeometry(GROUND_W, 0.6, 0.6),
+      new THREE.MeshStandardMaterial({ color: 0x6d7077, roughness: 0.85 })
+    );
+    seawall.position.set(0, -0.3, Z_MAX + 0.3);
+    scene.add(seawall);
+
+    // 5-3. 도형을 올려둘 검은 화강암 전시대
+    const plinth = new THREE.Mesh(
+      new THREE.CylinderGeometry(9, 9, 0.3, 64),
+      new THREE.MeshStandardMaterial({ color: 0x1c1e23, roughness: 0.12, metalness: 0.2 })
+    );
+    plinth.position.y = -0.14;
+    plinth.receiveShadow = true;
+    scene.add(plinth);
+
+    // =========================================================
+    // 6. 토론토 스카이라인 (건물 + CN 타워)
+    // =========================================================
+    // 창문 질감: 낮에는 어두운 유리, 밤에는 불 켜진 창
+    function makeWindowTextures() {
+      const N = 8, S = 128, cell = S / N;
+      const base = document.createElement("canvas"); base.width = base.height = S;
+      const glow = document.createElement("canvas"); glow.width = glow.height = S;
+      const b = base.getContext("2d"), g = glow.getContext("2d");
+      b.fillStyle = "#aab4c2"; b.fillRect(0, 0, S, S);
+      g.fillStyle = "#000"; g.fillRect(0, 0, S, S);
+      for (let y = 0; y < N; y++) {
+        for (let x = 0; x < N; x++) {
+          b.fillStyle = "#2c3a4d";
+          b.fillRect(x * cell + 2, y * cell + 3, cell - 4, cell - 6);
+          if (rand() < 0.4) {
+            g.fillStyle = rand() < 0.8 ? "#ffd99a" : "#bfe0ff";
+            g.fillRect(x * cell + 2, y * cell + 3, cell - 4, cell - 6);
+          }
+        }
+      }
+      const mk = (c, srgb) => {
+        const t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.anisotropy = 4;
+        if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      };
+      return { map: mk(base, true), emissive: mk(glow, true) };
+    }
+    const winTex = makeWindowTextures();
+    const buildingMats = [0xb9c4d2, 0x8fb0c4, 0x9aa0aa].map((color) =>
+      new THREE.MeshStandardMaterial({
+        color, map: winTex.map, emissiveMap: winTex.emissive,
+        emissive: 0xffffff, emissiveIntensity: 0,
+        roughness: 0.35, metalness: 0.55, envMapIntensity: 0.9,
+      })
+    );
+
+    // 박스 한 면의 크기에 맞춰 UV를 늘려서 창문 크기가 일정하게 보이게 함
+    function makeBuildingGeometry(w, h, d) {
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const uv = geo.attributes.uv;
+      const faceSize = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]]; // +x -x +y -y +z -z
+      for (let f = 0; f < 6; f++) {
+        for (let i = 0; i < 4; i++) {
+          const idx = f * 4 + i;
+          uv.setXY(idx, uv.getX(idx) * faceSize[f][0] / 10, uv.getY(idx) * faceSize[f][1] / 10);
+        }
+      }
+      return geo;
+    }
+
+    const skyline = new THREE.Group();
+    for (let i = 0; i < 170; i++) {
+      const theta = (rand() + rand() - 1) * THREE.MathUtils.degToRad(75);   // 중앙에 더 몰리게
+      const r = 140 + rand() * 120;
+      const center = 1 - Math.abs(theta) / THREE.MathUtils.degToRad(110);   // 가운데일수록 높은 건물
+      const h = 18 + Math.pow(rand(), 2.2) * 90 * center + (rand() < 0.06 ? 40 * center : 0);
+      const w = 10 + rand() * 14, d = 10 + rand() * 14;
+      const m = new THREE.Mesh(makeBuildingGeometry(w, h, d), buildingMats[Math.floor(rand() * 3)]);
+      m.position.set(r * Math.sin(theta), h / 2, -r * Math.cos(theta));
+      m.rotation.y = -theta;
+      skyline.add(m);
+    }
+    scene.add(skyline);
+
+    // CN 타워
+    const TOWER_POS = new THREE.Vector3(40, 0, -175);
+    const concrete = new THREE.MeshStandardMaterial({ color: 0xbdb9b2, roughness: 0.8, metalness: 0.05 });
+    const podMat = new THREE.MeshStandardMaterial({ color: 0xc9c6c0, roughness: 0.6, metalness: 0.1, emissive: 0xffd99a, emissiveIntensity: 0 });
+    const tower = new THREE.Group();
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 6, 200, 24), concrete);
+    shaft.position.y = 100;
+    const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 1.2, 80, 12), concrete);
+    antenna.position.y = 240;
+    const pod = new THREE.Mesh(new THREE.SphereGeometry(9, 32, 16), podMat);
+    pod.scale.y = 0.4;
+    pod.position.y = 168;
+    const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.8, 12, 12), new THREE.MeshBasicMaterial({ color: 0xff3b30 }));
+    beacon.position.y = 280;
+    tower.add(shaft, antenna, pod, beacon);
+    tower.position.copy(TOWER_POS);
+    scene.add(tower);
+
+    // =========================================================
+    // 7. 메탈릭 도형 만들기 (Geometry + 금속 Material = Mesh)
+    //    metalness: 1 = 완전한 금속 / roughness: 낮을수록 거울처럼 매끈
+    // =========================================================
+    const RADIUS = 5;
+    const shapes = [
+      { name: "박스 · 브러시드 스틸", geometry: new THREE.BoxGeometry(2, 2, 2),
+        material: new THREE.MeshStandardMaterial({ color: 0xc9ced6, metalness: 1, roughness: 0.32 }),
+        position: [RADIUS, 1, 0], height: 2 },
+      { name: "구 · 크롬", geometry: new THREE.SphereGeometry(1.2, 64, 48),
+        material: new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.03 }),
+        position: [0, 1.2, RADIUS], height: 2.4 },
+      { name: "실린더 · 골드", geometry: new THREE.CylinderGeometry(1, 1, 2.4, 64),
+        material: new THREE.MeshStandardMaterial({ color: 0xffcc66, metalness: 1, roughness: 0.18 }),
+        position: [-RADIUS, 1.2, 0], height: 2.4 },
+      { name: "콘 · 구리", geometry: new THREE.ConeGeometry(1.2, 2.6, 64),
+        material: new THREE.MeshStandardMaterial({ color: 0xd0764a, metalness: 1, roughness: 0.22 }),
+        position: [0, 1.3, -RADIUS], height: 2.6 },
+    ];
+
+    const labelLayer = document.getElementById("label-layer");
+    const labelItems = [];
+    function addLabel(text, position) {
+      const tag = document.createElement("div");
+      tag.className = "tag";
+      tag.textContent = text;
+      labelLayer.appendChild(tag);
+      labelItems.push({ tag, position });
+    }
+
+    const meshes = [];
+    for (const s of shapes) {
+      const mesh = new THREE.Mesh(s.geometry, s.material);
+      mesh.position.set(...s.position);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+      meshes.push(mesh);
+      addLabel(s.name, new THREE.Vector3(s.position[0], s.position[1] + s.height / 2 + 0.7, s.position[2]));
+    }
+    addLabel("CN 타워", new THREE.Vector3(TOWER_POS.x, 292, TOWER_POS.z));
+
+    // 학습용 보조 도구 (G 키로 켜고 끄기)
+    const helpers = new THREE.Group();
+    helpers.add(new THREE.GridHelper(24, 24, 0xffffff, 0x888888), new THREE.AxesHelper(4));
+    helpers.visible = false;
+    scene.add(helpers);
+
+    // =========================================================
+    // 8. 토론토 시각 -> 해/달 위치, 하늘색, 조명 변경
+    // =========================================================
+    const FOG_NIGHT = new THREE.Color(0x070b16);
+    const FOG_DAY = new THREE.Color(0xaec6d8);
+    const FOG_DUSK = new THREE.Color(0xe0a679);
+    const fogColor = new THREE.Color();
+    const sunDir = new THREE.Vector3();
+
+    function applyTime(hour) {
+      // 11월 토론토의 대략적인 일출/일몰과 낮은 태양 고도
+      const sr = 7.2, ss = 16.8, dayLen = ss - sr;
+      let el, a;
+      if (hour >= sr && hour <= ss) {
+        const f = (hour - sr) / dayLen;
+        el = 24 * Math.sin(Math.PI * f);
+        a = Math.PI * f;
+      } else {
+        const nh = hour > ss ? hour - ss : hour + 24 - ss;
+        const nf = nh / (24 - dayLen);
+        el = -30 * Math.sin(Math.PI * nf);
+        a = Math.PI + Math.PI * nf;
+      }
+      const elRad = THREE.MathUtils.degToRad(el);
+      // 호수(남쪽, +Z)에서 북쪽을 볼 때 해는 오른쪽(동쪽, +X)에서 떠서 +Z 쪽을 지나 왼쪽으로 짐
+      sunDir.set(Math.cos(a) * Math.cos(elRad), Math.sin(elRad), Math.sin(a) * Math.cos(elRad)).normalize();
+
+      const dayF = smooth(-4, 10, el);
+      const nightF = 1 - smooth(-6, 4, el);
+      const duskF = smooth(-6, 0, el) * (1 - smooth(4, 14, el));
+
+      for (const sky of [skyMain, skyEnv]) sky.material.uniforms.sunPosition.value.copy(sunDir);
+
+      // 낮에는 태양, 밤에는 달빛
+      if (el > 0) {
+        sun.color.setHex(0xffffff).lerp(new THREE.Color(0xffb878), 1 - smooth(0, 14, el));
+        sun.intensity = 0.4 + 2.2 * smooth(0, 12, el);
+        sun.position.copy(sunDir).multiplyScalar(40);
+      } else {
+        const moon = new THREE.Vector3(-sunDir.x, 0, -sunDir.z).normalize().multiplyScalar(Math.cos(0.7)).setY(Math.sin(0.7)).multiplyScalar(40);
+        sun.color.setHex(0x9db8ff);
+        sun.intensity = 0.55 * nightF + 0.4 * (1 - nightF);
+        sun.position.copy(moon);
+      }
+      hemi.intensity = 0.12 + 0.45 * dayF;
+
+      fogColor.copy(FOG_NIGHT).lerp(FOG_DAY, dayF).lerp(FOG_DUSK, duskF * 0.75);
+      scene.fog.color.copy(fogColor);
+      scene.fog.density = 0.0016 + 0.0008 * dayF;
+      scene.background = fogColor;
+      envGroundMat.color.copy(fogColor).multiplyScalar(0.55);
+
+      renderer.toneMappingExposure = 0.95 - 0.45 * dayF;
+      starMat.opacity = nightF;
+      const lights = nightF * 1.5;
+      for (const m of buildingMats) m.emissiveIntensity = lights;
+      podMat.emissiveIntensity = nightF * 0.9;
+
+      // 금속이 비출 환경맵을 현재 하늘로 다시 만들기
+      const old = envTarget;
+      envTarget = pmrem.fromScene(envScene, 0, 0.1, 3000);
+      scene.environment = envTarget.texture;
+      if (old) old.dispose();
+
+      const hh = Math.floor(hour), mm = Math.floor((hour - hh) * 60);
+      clockEl.textContent = String(hh % 24).padStart(2, "0") + ":" + String(mm).padStart(2, "0");
+    }
+
+    // 토론토 현지 시각 가져오기
+    function torontoHour() {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Toronto", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+      }).formatToParts(new Date());
+      const h = Number(parts.find((p) => p.type === "hour").value);
+      const m = Number(parts.find((p) => p.type === "minute").value);
+      return h + m / 60;
+    }
+
+    const clockEl = document.getElementById("clock");
+    const slider = document.getElementById("time");
+    function setNow() { slider.value = torontoHour(); applyTime(Number(slider.value)); }
+    slider.addEventListener("input", () => applyTime(Number(slider.value)));
+    document.getElementById("now").addEventListener("click", setNow);
+    setNow();
+
+    // =========================================================
+    // 9. 매 프레임 그리기
+    // =========================================================
+    const tmp = new THREE.Vector3();
+    function updateLabels() {
+      for (const item of labelItems) {
+        tmp.copy(item.position).project(camera);           // 3D 좌표 -> 화면 좌표
+        const visible = tmp.z < 1 && Math.abs(tmp.x) < 1.2 && Math.abs(tmp.y) < 1.2;
+        item.tag.style.display = visible ? "block" : "none";
+        item.tag.style.left = ((tmp.x * 0.5 + 0.5) * window.innerWidth) + "px";
+        item.tag.style.top = ((-tmp.y * 0.5 + 0.5) * window.innerHeight) + "px";
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      for (const m of meshes) m.rotation.y += 0.004;
+      controls.update();
+      updateLabels();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // =========================================================
+    // 10. 창 크기 변경 / 키보드
+    // =========================================================
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    window.addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      if (k === "r") {
+        camera.position.copy(HOME_POSITION);
+        controls.target.set(0, 1.5, 0);
+        controls.update();
+      } else if (k === "g") {
+        helpers.visible = !helpers.visible;
+      }
+    });
+  </script>
+</body>
+</html>

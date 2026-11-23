@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 크기</title>
+    <style>
+        canvas {
+            border: 10px dotted black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+<p id="canvasSize"></p>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+document.getElementById("canvasSize").textContent =
+    `캔버스 크기: ${canvas.width} × ${canvas.height} px`;
+//삼각형 그리기
+ctx.beginPath();
+ctx.moveTo(180, 25);
+ctx.lineTo(90, 155);
+ctx.lineTo(270, 155);
+ctx.closePath();
+ctx.fillStyle = "gold";
+ctx.fill();
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(180, 285);
+ctx.lineTo(90, 155);
+ctx.lineTo(270, 155);
+ctx.closePath();
+ctx.fillStyle = "lightgreen";
+ctx.fill();
+ctx.stroke();
+</script>
+
+</body>
+</html>

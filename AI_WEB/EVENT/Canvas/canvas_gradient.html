@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 크기</title>
+    <style>
+        canvas {
+            border: 10px dotted black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+<p id="canvasSize"></p>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+document.getElementById("canvasSize").textContent =
+    `캔버스 크기: ${canvas.width} × ${canvas.height} px`;
+//색상과 그라데이션
+const gradient = ctx.createLinearGradient(40, 0, 500, 0);
+gradient.addColorStop(0, "red");
+gradient.addColorStop(0.2, "cyan");
+gradient.addColorStop(0.4, "green");
+gradient.addColorStop(0.6, "yellow");
+gradient.addColorStop(0.8, "blue");
+gradient.addColorStop(1, "magenta");
+
+ctx.fillStyle = gradient;
+ctx.fillRect(40, 40, 500, 100);
+
+const radialGradient = ctx.createRadialGradient(300, 270, 0, 300, 270, 100);
+radialGradient.addColorStop(0, "red");
+radialGradient.addColorStop(0.2, "cyan");
+radialGradient.addColorStop(0.4, "green");
+radialGradient.addColorStop(0.6, "yellow");
+radialGradient.addColorStop(0.8, "blue");
+radialGradient.addColorStop(1, "magenta");
+
+ctx.beginPath();
+ctx.arc(300, 270, 100, 0, Math.PI * 2);
+ctx.fillStyle = radialGradient;
+ctx.fill();
+</script>
+
+</body>
+
+</html>

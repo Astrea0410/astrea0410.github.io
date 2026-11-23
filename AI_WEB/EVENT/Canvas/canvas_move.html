@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 크기</title>
+    <style>
+        canvas {
+            border: 10px dotted black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+<p id="canvasSize"></p>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+document.getElementById("canvasSize").textContent =
+    `캔버스 크기: ${canvas.width} × ${canvas.height} px`;
+//좌표이동과 회전
+ctx.save();
+ctx.translate(300, 110);
+ctx.rotate(Math.PI / 4); // 45도
+ctx.fillStyle = "purple";
+ctx.fillRect(-50, -50, 100, 100);
+ctx.restore();
+</script>
+
+</body>
+</html>

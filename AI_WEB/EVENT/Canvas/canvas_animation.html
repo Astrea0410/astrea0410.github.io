@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 크기</title>
+    <style>
+        canvas {
+            border: 10px dotted black;
+        }
+    </style>
+</head>
+<body>
+<button id="startButton" type="button">동작</button>
+<canvas id="myCanvas" width="600" height="400"></canvas>
+<p id="canvasSize"></p>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+const startButton = document.getElementById("startButton");
+document.getElementById("canvasSize").textContent =
+    `캔버스 크기: ${canvas.width} × ${canvas.height} px`;
+//애니메이션
+let x = 60;
+let y = 130;
+let angle = 0;
+let vx = 3;
+let vy = 2;
+let animationId = null;
+const halfSize = 30;
+const edgePadding = Math.ceil(Math.SQRT2 * halfSize);
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.fillStyle = "deepskyblue";
+    ctx.fillRect(-halfSize, -halfSize, halfSize * 2, halfSize * 2);
+    ctx.fillStyle = "white";
+    ctx.fillRect(-3, -halfSize, 6, halfSize * 2);
+    ctx.restore();
+
+    x += vx;
+    y += vy;
+    angle += Math.hypot(vx, vy) / halfSize;
+
+    if (x < edgePadding || x > canvas.width - edgePadding) {
+        x = Math.max(edgePadding, Math.min(x, canvas.width - edgePadding));
+        vx *= -1;
+    }
+    if (y < edgePadding || y > canvas.height - edgePadding) {
+        y = Math.max(edgePadding, Math.min(y, canvas.height - edgePadding));
+        vy *= -1;
+    }
+
+    animationId = requestAnimationFrame(animate);
+}
+
+startButton.addEventListener("click", () => {
+    if (animationId === null) {
+        startButton.disabled = true;
+        startButton.textContent = "동작 중";
+        animationId = requestAnimationFrame(animate);
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 크기</title>
+    <style>
+        canvas {
+            border: 5px solid black;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="1000" height="1000"></canvas>
+<p id="canvasSize"></p>
+
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+document.getElementById("canvasSize").textContent =
+    `캔버스 크기: ${canvas.width} × ${canvas.height} px`;
+
+//무작위 색상의 사각형
+function drawRandomSquare() {
+    ctx.clearRect(40, 40, 180, 180);
+    ctx.fillStyle = `hsl(${Math.floor(Math.random() * 360)}, 80%, 55%)`;
+    ctx.fillRect(60, 60, 140, 140);
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(60, 60, 140, 140);
+}
+drawRandomSquare();
+setInterval(drawRandomSquare, 1000);
+
+//애니메이션(원, 삼각형)
+let rotation = 0;
+function animateShapes() {
+    ctx.clearRect(330, 40, 620, 250);
+
+    ctx.save();
+    ctx.translate(500, 160);
+    ctx.rotate(rotation);
+    ctx.fillStyle = "tomato";
+    ctx.beginPath();
+    ctx.arc(0, 0, 55, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -45);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(780, 160);
+    ctx.rotate(-rotation);
+    ctx.fillStyle = "royalblue";
+    ctx.beginPath();
+    ctx.moveTo(0, -60);
+    ctx.lineTo(52, 40);
+    ctx.lineTo(-52, 40);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    rotation += 0.025;
+    requestAnimationFrame(animateShapes);
+}
+animateShapes();
+
+//반복문을 활용한 사각형 배치
+for (let row = 0; row < 6; row++) {
+    for (let column = 0; column < 8; column++) {
+        const x = 50 + column * 52;
+        const y = 410 + row * 52;
+        ctx.fillStyle = `hsl(${(column * 35 + row * 20) % 360}, 70%, 55%)`;
+        ctx.fillRect(x, y, 40, 40);
+    }
+}
+
+//재귀 함수의 사각형 프랙탈 구현
+function drawSquareFractal(x, y, size, depth) {
+    ctx.strokeStyle = `hsl(${210 + depth * 18}, 75%, 45%)`;
+    ctx.lineWidth = Math.max(1, depth);
+    ctx.strokeRect(x, y, size, size);
+
+    if (depth === 0) {
+        return;
+    }
+
+    const childSize = size * 0.42;
+    const offset = size - childSize;
+    drawSquareFractal(x, y, childSize, depth - 1);
+    drawSquareFractal(x + offset, y, childSize, depth - 1);
+    drawSquareFractal(x, y + offset, childSize, depth - 1);
+    drawSquareFractal(x + offset, y + offset, childSize, depth - 1);
+}
+
+drawSquareFractal(620, 410, 300, 4);
+</script>
+
+</body>
+</html>
